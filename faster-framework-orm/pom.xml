@@ -7,11 +7,8 @@
         <artifactId>faster</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>faster-framework-mysql</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-
-
-    <name>faster-framework-mysql</name>
+    <artifactId>faster-framework-orm</artifactId>
+    <name>faster-framework-orm</name>
 
     <description>基础框架包, mysql组件 整合mybatis + mybatis-plus</description>
     <packaging>jar</packaging>

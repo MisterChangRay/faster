@@ -1,7 +1,12 @@
 package com.github.misterchangray.financial.controller;
 
+import com.github.misterchangray.common.base.BaseEnum;
 import com.github.misterchangray.common.base.BaseResponse;
+import com.github.misterchangray.common.base.ResEnum;
+import com.github.misterchangray.financial.dao.AccountMapper;
+import com.github.misterchangray.financial.service.AccountService;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,14 +14,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/account")
 public class AccountController {
+    @Autowired
+    private AccountService accountService;
 
     @GetMapping("/{id}")
     public BaseResponse<FinancialAccount> getUserFinancialAccount(@PathVariable("id") String id) {
-        return BaseResponse.ofSuccess(null);
+        return accountService.getUserFinancialAccount(id);
     }
 
     @GetMapping("/list")
@@ -33,6 +41,7 @@ public class AccountController {
 
     @PostMapping("/changeBalance")
     public BaseResponse<List<FinancialAccount>> changeBalanceUserFinancialAccount() {
+
         return BaseResponse.ofSuccess(null);
 
     }
