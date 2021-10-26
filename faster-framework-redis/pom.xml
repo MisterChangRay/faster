@@ -8,7 +8,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>faster-framework-redis</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>faster-framework-redis</name>
     <description>基础框架包, 公共组件 redisson</description>
     <properties>

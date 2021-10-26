@@ -18,6 +18,14 @@ spring:
         show: true
 
 
-
+com:
+  github:
+    misterchangray:
+      redis:
+        single:
+          host: 127.0.0.1
+          port: 1234
+          password: 123456
+          db: 3
 
 
