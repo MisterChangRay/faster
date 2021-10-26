@@ -1,0 +1,23 @@
+
+
+
+spring:
+  shardingsphere:
+    datasource:
+      names: ds0
+      ds0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://192.168.0.173:3306/faster?characterEncoding=utf-8
+        username: root
+        password: 123456
+
+
+    props:
+      sql:
+        show: true
+
+
+
+
+
