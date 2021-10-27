@@ -23,7 +23,8 @@ public class RedissonAutoConfiguration {
         if(Objects.nonNull(redisConfig.getSingle())) {
             String address = String.format("redis://%s:%s",
                     redisConfig.getSingle().getHost(), redisConfig.getSingle().getPort());
-            logger.info("RedissonClient 初始化成功! 初始化连接信息: {}", address);
+            logger.info("RedissonClient 初始化成功! 初始化连接信息: {}, pwd: {}, db: {}", address,
+                    redisConfig.getSingle().getPassword(), redisConfig.getSingle().getDb());
             config.useSingleServer()
                     .setPassword(redisConfig.getSingle().getPassword())
                     .setDatabase(redisConfig.getSingle().getDb())
