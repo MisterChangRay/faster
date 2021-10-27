@@ -1,4 +1,4 @@
-package com.github.misterchangray.mysql.util;
+package com.github.misterchangray.idservice;
 
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +22,7 @@ import java.util.UUID;
  * com.github.misterchangray.faster.appInstanceId=1
  *
  */
-@Component
-public class IDUtil {
+public class IDService {
 
     /**
      * 起始的时间戳
@@ -57,8 +56,8 @@ public class IDUtil {
     private long sequence = 0L; //序列号
     private long lastStmp = -1L;//上一次时间戳
 
-    public synchronized long getId() {
-        return nextId();
+    public synchronized String getId() {
+        return nextId() + "";
     }
 
     /**
@@ -155,9 +154,9 @@ public class IDUtil {
      * 0 < appId & appId < 4095
      * @param appId
      */
-    public void setAppId(@Value("${com.github.misterchangray.faster.appId:-1}") long appId) {
+    public void setAppId(long appId) {
         if (appId > MAX_APP_ID_NUM || appId < 0) {
-            throw new IllegalArgumentException("appId can't be greater than MAX_APP_ID_NUM or less than 0");
+            throw new IllegalArgumentException(String.format("appId can't be greater than MAX_APP_ID_NUM(%s) or less than 0", MAX_APP_ID_NUM));
         }
         this.appId = appId;
     }
@@ -168,10 +167,18 @@ public class IDUtil {
      * 0 < appInstanceId & appInstanceId < 127
      * @param appInstanceId
      */
-    public void setAppInstanceId(@Value("${com.github.misterchangray.faster.appInstanceId:-1}") long appInstanceId) {
+    public void setAppInstanceId(long appInstanceId) {
         if (appInstanceId > MAX_APP_INSTANCE_NUM || appInstanceId < 0) {
-            throw new IllegalArgumentException("appInstanceId can't be greater than MAX_APP_INSTANCE_NUM or less than 0");
+            throw new IllegalArgumentException(String.format("appInstanceId can't be greater than MAX_APP_INSTANCE_NUM(%s) or less than 0", MAX_APP_INSTANCE_NUM));
         }
         this.appInstanceId = appInstanceId;
+    }
+
+    public IDService(long appId, long appInstanceId) {
+        this.setAppId(appId); ;
+        this.setAppId(appInstanceId);
+    }
+
+    public IDService() {
     }
 }
