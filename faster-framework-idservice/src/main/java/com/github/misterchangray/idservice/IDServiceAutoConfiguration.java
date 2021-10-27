@@ -23,7 +23,7 @@ public class IDServiceAutoConfiguration {
         IDService idService = new IDService();
         idService.setAppId(idServiceConfig.getAppId());
         idService.setAppInstanceId(idServiceConfig.getAppInstanceId());
-        logger.error("IDService 初始化成功, appId: {}, appInstanceId: {}!", idServiceConfig.getAppId(), idServiceConfig.getAppInstanceId());
+        logger.info("IDService 初始化成功, appId: {}, appInstanceId: {}!", idServiceConfig.getAppId(), idServiceConfig.getAppInstanceId());
         return idService;
     }
 
