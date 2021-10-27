@@ -10,3 +10,9 @@ spring:
     active: dev
 
 
+com:
+  github:
+    misterchangray:
+      idservice:
+        appId: 1
+        appInstanceId: 1

@@ -1,4 +1,4 @@
-package com.github.misterchangray.financial.v001.mapper.po;
+package com.github.misterchangray.financial.v001.pojo.request;
 
 
 import java.math.BigDecimal;
@@ -6,16 +6,11 @@ import java.math.BigDecimal;
 
 /**
  *
- * 财务账户变动记录
+ * 财务账户变动请求
  *
  *
  * **/
-public class FinancialChangesRecord {
-
-    /**
-     * 账户变动记录ID
-     */
-    private String id;
+public class FinancialChangesRecordRequest {
 
     /**
      * 流水号
@@ -32,23 +27,14 @@ public class FinancialChangesRecord {
      */
     private int booksId;
 
-    // 账户用户ID
-    private String userId;
-
-    // 账户姓名
-    private String name;
-
-    // 账户手机号
-    private String phone;
-
     // 变动金额
     private BigDecimal amount;
 
     // 变动后账户余额
-    private BigDecimal beforeBalance;
+    private BigDecimal afterBalance;
 
     // 变动后冻结余额
-    private BigDecimal beforeFreeze;
+    private BigDecimal afterFreeze;
 
     // 变动朔源ID, 即发起变动这个行为的ID
     // 可以是订单Id, 提现Id, 退款Id
@@ -81,13 +67,6 @@ public class FinancialChangesRecord {
      */
     private int type;
 
-    /**
-     * 变动状态
-     * 1 已结算到余额
-     * 2 未结算
-     */
-    private int status;
-
 
     // 变动详情, 可用于备注
     private String remark;
@@ -95,17 +74,6 @@ public class FinancialChangesRecord {
     // 创建时间
     private long createTime;
 
-    // 更新时间
-    private long updateTime;
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getSerialNumber() {
         return serialNumber;
@@ -131,30 +99,6 @@ public class FinancialChangesRecord {
         this.booksId = booksId;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public BigDecimal getAmount() {
         return amount;
     }
@@ -163,20 +107,20 @@ public class FinancialChangesRecord {
         this.amount = amount;
     }
 
-    public BigDecimal getBeforeBalance() {
-        return beforeBalance;
+    public BigDecimal getAfterBalance() {
+        return afterBalance;
     }
 
-    public void setBeforeBalance(BigDecimal beforeBalance) {
-        this.beforeBalance = beforeBalance;
+    public void setAfterBalance(BigDecimal afterBalance) {
+        this.afterBalance = afterBalance;
     }
 
-    public BigDecimal getBeforeFreeze() {
-        return beforeFreeze;
+    public BigDecimal getAfterFreeze() {
+        return afterFreeze;
     }
 
-    public void setBeforeFreeze(BigDecimal beforeFreeze) {
-        this.beforeFreeze = beforeFreeze;
+    public void setAfterFreeze(BigDecimal afterFreeze) {
+        this.afterFreeze = afterFreeze;
     }
 
     public String getSourceId() {
@@ -195,14 +139,6 @@ public class FinancialChangesRecord {
         this.type = type;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     public String getRemark() {
         return remark;
     }
@@ -217,13 +153,5 @@ public class FinancialChangesRecord {
 
     public void setCreateTime(long createTime) {
         this.createTime = createTime;
-    }
-
-    public long getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(long updateTime) {
-        this.updateTime = updateTime;
     }
 }

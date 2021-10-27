@@ -20,6 +20,7 @@
     <modules>
         <module>faster-framework-common</module>
         <module>faster-framework-orm</module>
+        <module>faster-framework-idservice</module>
         <module>faster-framework-redis</module>
         <module>faster-framework-nacos</module>
         <module>faster-framework-rocketmq</module>

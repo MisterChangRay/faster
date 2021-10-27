@@ -24,31 +24,32 @@ public class AccountController {
 
     @GetMapping("/{id}")
     public BaseResponse<FinancialAccount> getUserFinancialAccount(@PathVariable("id") String id) {
-        return accountService.getUserFinancialAccount(id);
+
+        return null;
     }
 
     @GetMapping("/list")
     public BaseResponse<List<FinancialAccount>> getUserFinancialAccount() {
-        return BaseResponse.ofSuccess(null);
+        return null;
 
     }
 
     @PostMapping("/update")
     public BaseResponse<List<FinancialAccount>> updateUserFinancialAccount() {
-        return BaseResponse.ofSuccess(null);
+        return null;
 
     }
 
     @PostMapping("/changeBalance")
     public BaseResponse<List<FinancialAccount>> changeBalanceUserFinancialAccount() {
 
-        return BaseResponse.ofSuccess(null);
+        return null;
 
     }
 
     @PostMapping("/changeFreeze")
     public BaseResponse<List<FinancialAccount>> changeFreezeUserFinancialAccount() {
-        return BaseResponse.ofSuccess(null);
+        return null;
     }
 
 }
