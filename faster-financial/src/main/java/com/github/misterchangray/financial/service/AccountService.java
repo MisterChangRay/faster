@@ -4,6 +4,7 @@ import com.github.misterchangray.common.base.BaseResponse;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialChangesRecord;
 import com.github.misterchangray.financial.v001.pojo.request.FinancialChangesRecordRequest;
+import com.github.misterchangray.financial.v001.pojo.request.FinancialFreezeRequest;
 
 import java.util.List;
 
@@ -23,6 +24,21 @@ public interface AccountService {
      * @return
      */
     BaseResponse<Boolean> record(FinancialChangesRecordRequest ...financialChangesRecord);
+
+
+    /**
+     * 账户冻结
+     * @return
+     */
+    BaseResponse<String> freeze(FinancialFreezeRequest financialFreezeRequest);
+
+    /**
+     * 账户解冻
+     * @param freezeIds
+     * @return
+     */
+    BaseResponse<Boolean> unFreeze(String freezeIds);
+
 
     BaseResponse<List<FinancialAccount>> getUserFinancialAccount(String ...ids) ;
 

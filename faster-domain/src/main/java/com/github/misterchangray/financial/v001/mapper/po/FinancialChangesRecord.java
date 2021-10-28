@@ -44,6 +44,9 @@ public class FinancialChangesRecord {
     // 变动金额
     private BigDecimal amount;
 
+    // 冻结金额
+    private BigDecimal freeze;
+
     // 变动后账户余额
     private BigDecimal beforeBalance;
 
@@ -56,30 +59,19 @@ public class FinancialChangesRecord {
 
     /**
      *  变动类型
-     *  1 - 999 其他变动
-     *  1 后台账户充值
-     *  2 后台账户扣减
-     *  3 保证金充值
-     *  4 保证金撤销
-     *
-     *
-     *  1000 - 1999 订单变动
-     *  1000 余额支付
-     *  1002 用户取消订单退款
-     *  1003 订单分润
-     *  1004 订单分润冲正
-     *
-     *
-     *  2000 - 2999 充值提现变动
-     *  2000 充值
-     *  2001 提现冻结
-     *  2002 提现成功余额扣减
-     *  2003 提现失败余额冲正
-     *
-     *
-     *
+     * 1 收入
+     * 2 支出
      */
     private int type;
+
+    /**
+     * 渠道ID
+     * 1 支付宝
+     * 2 微信
+     * 3 银联
+     * 4 银行卡
+     */
+    private int channelId;
 
     /**
      * 变动状态
@@ -163,6 +155,14 @@ public class FinancialChangesRecord {
         this.amount = amount;
     }
 
+    public BigDecimal getFreeze() {
+        return freeze;
+    }
+
+    public void setFreeze(BigDecimal freeze) {
+        this.freeze = freeze;
+    }
+
     public BigDecimal getBeforeBalance() {
         return beforeBalance;
     }
@@ -193,6 +193,14 @@ public class FinancialChangesRecord {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(int channelId) {
+        this.channelId = channelId;
     }
 
     public int getStatus() {

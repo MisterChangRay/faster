@@ -8,6 +8,7 @@ import com.github.misterchangray.financial.v001.consts.FinancialRedisKeys;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialChangesRecord;
 import com.github.misterchangray.financial.v001.pojo.request.FinancialChangesRecordRequest;
+import com.github.misterchangray.financial.v001.pojo.request.FinancialFreezeRequest;
 import com.github.misterchangray.idservice.IDService;
 import org.redisson.api.RBucket;
 import org.redisson.api.RedissonClient;
@@ -77,7 +78,55 @@ public class AccountServiceImpl implements AccountService {
             shadowAccount.setBalance(shadowAccount.getBalance().add(financialChangesRecordRequest.getAmount()));
         }
 
+        return BaseResponse.ofSuccess(true);
+    }
+
+    @Override
+    public BaseResponse<String> freeze(FinancialFreezeRequest request) {
+        if(Objects.isNull(request)) {
+            return BaseResponse.ofFail(BaseEnum.INVALID_PARAM);
+        }
+        if(request.getAmount().doubleValue() <= 0) {
+            return BaseResponse.ofFail(BaseEnum.INVALID_PARAM);
+        }
+        FinancialAccount shadowAccount = getUserFinancialAccount(request.getFinancialAccountId());
+        if(Objects.isNull(shadowAccount)) {
+            return BaseResponse.ofFail(BaseEnum.INVALID_PARAM).setMsg("accountId not found!");
+        }
+
+        FinancialChangesRecord financialChangesRecord = buildFinancialChangesRecord(request, shadowAccount);
+        financialLogService.log(financialChangesRecord);
+
+        shadowAccount.setBalance(financialChangesRecord.getAmount());;
+        shadowAccount.setFreeze(financialChangesRecord.getFreeze());
+
+        return BaseResponse.ofSuccess(financialChangesRecord.getId());
+    }
+
+    @Override
+    public BaseResponse<Boolean> unFreeze(String freezeId) {
+
+
         return null;
+    }
+
+    private FinancialChangesRecord buildFinancialChangesRecord(FinancialFreezeRequest request, FinancialAccount shadowAccount) {
+        FinancialChangesRecord financialChangesRecord = new FinancialChangesRecord();
+        financialChangesRecord.setBeforeBalance(shadowAccount.getBalance());
+        financialChangesRecord.setBeforeFreeze(shadowAccount.getFreeze());
+        financialChangesRecord.setAmount(shadowAccount.getBalance().subtract(request.getAmount()));
+        financialChangesRecord.setFreeze(shadowAccount.getFreeze().add(request.getAmount()));
+        financialChangesRecord.setSerialNumber(request.getSerialNumber());
+        financialChangesRecord.setBooksId(1);
+        financialChangesRecord.setCreateTime(request.getCreateTime());
+        financialChangesRecord.setUpdateTime(request.getCreateTime());
+        financialChangesRecord.setName(shadowAccount.getName());
+        financialChangesRecord.setPhone(shadowAccount.getPhone());
+        financialChangesRecord.setFinancialAccountId(request.getFinancialAccountId());
+        financialChangesRecord.setRemark(request.getRemark());
+        financialChangesRecord.setId(idService.getId());
+        financialChangesRecord.setStatus(1);
+        return financialChangesRecord;
     }
 
     private FinancialChangesRecord buildFinancialChangesRecord(FinancialChangesRecordRequest request) {
@@ -96,7 +145,7 @@ public class AccountServiceImpl implements AccountService {
         financialChangesRecord.setFinancialAccountId(request.getFinancialAccountId());
         financialChangesRecord.setRemark(request.getRemark());
         financialChangesRecord.setId(idService.getId());
-
+        financialChangesRecord.setStatus(1);
 
         return financialChangesRecord;
     }

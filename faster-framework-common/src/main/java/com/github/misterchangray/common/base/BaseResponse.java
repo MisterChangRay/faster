@@ -43,39 +43,44 @@ public class BaseResponse<T> {
         return serialNumber;
     }
 
-    public void setSerialNumber(String serialNumber) {
+    public BaseResponse<T> setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
+        return this;
     }
 
     public String getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public BaseResponse<T> setCode(String code) {
         this.code = code;
+        return this;
     }
 
     public String getMsg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
+    public BaseResponse<T> setMsg(String msg) {
         this.msg = msg;
+        return this;
     }
 
     public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
+    public BaseResponse<T> setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+        return this;
     }
 
     public T getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public BaseResponse<T> setData(T data) {
         this.data = data;
+        return this;
     }
 }
