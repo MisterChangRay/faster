@@ -22,12 +22,12 @@ public enum BaseEnum implements ResEnum {
 
     @Override
     public String getCode() {
-        return this.getCode();
+        return this.code;
     }
 
     @Override
     public String getMsg() {
-        return getMsg();
+        return this.msg;
     }
 
 

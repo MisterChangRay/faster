@@ -1,6 +1,6 @@
 package com.github.misterchangray.financial.service.impl;
 
-import com.github.misterchangray.financial.v001.mapper.intf.CacheService;
+import com.github.misterchangray.financial.v001.intf.CacheService;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;

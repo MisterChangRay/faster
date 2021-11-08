@@ -28,13 +28,26 @@ public class BaseResponse<T> {
 
     private static <K> BaseResponse<K> build(ResEnum resEnum, K data) {
         BaseResponse<K> res = new BaseResponse<K>();
-        res.setTimestamp(System.currentTimeMillis());
-        res.setCode(resEnum.getCode());;
-        res.setMsg(resEnum.getMsg());;
-        res.setData(data);
+        res.of(resEnum, data);
         return res;
     }
 
+    public  BaseResponse<T> of(ResEnum resEnum, T data) {
+        this.setTimestamp(System.currentTimeMillis());
+        this.setCode(resEnum.getCode());;
+        this.setMsg(resEnum.getMsg());;
+        this.setData(data);
+        return this;
+    }
+
+    public  BaseResponse<T> success(T data) {
+        return this.of(BaseEnum.SUCCESS, data);
+    }
+
+    public  BaseResponse<T> fail(ResEnum resEnum) {
+        this.of(resEnum, null);
+        return this;
+    }
 
     public String getSerialNumber() {
         return serialNumber;

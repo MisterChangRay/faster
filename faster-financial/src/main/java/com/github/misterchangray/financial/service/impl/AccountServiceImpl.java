@@ -2,15 +2,16 @@ package com.github.misterchangray.financial.service.impl;
 
 import com.github.misterchangray.common.base.BaseEnum;
 import com.github.misterchangray.common.base.BaseResponse;
+import com.github.misterchangray.financial.v001.intf.CacheService;
 import com.github.misterchangray.financial.v001.intf.FinancialAccountService;
 import com.github.misterchangray.financial.v001.intf.FinancialChangesService;
-import com.github.misterchangray.financial.v001.mapper.intf.CacheService;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialChangesRecord;
 import com.github.misterchangray.financial.v001.pojo.request.FinancialChangesRecordRequest;
 import com.github.misterchangray.financial.v001.pojo.request.FinancialFreezeRequest;
 import com.github.misterchangray.financial.v001.pojo.request.FinancialUnFreezeRequest;
 import com.github.misterchangray.financial.v001.pojo.request.OperationUnFreeze;
+import com.github.misterchangray.financial.v001.pojo.response.FinancialChangesRecordResponse;
 import com.github.misterchangray.idservice.IDService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class AccountServiceImpl implements FinancialAccountService {
         if(Objects.isNull(ids)) BaseResponse.ofFail(BaseEnum.INVALID_PARAM);
 
         List<FinancialAccount> res = new ArrayList<>(ids.length);
-        for (String id : ids) res.add(cacheService.getShadowAccount(id));
+        for (String id : ids) res.add(this.getUserFinancialAccount(id));
 
         return BaseResponse.ofSuccess(res);
     }
@@ -63,20 +64,31 @@ public class AccountServiceImpl implements FinancialAccountService {
     }
 
     @Override
-    public BaseResponse<List<String>> income(FinancialChangesRecordRequest... financialChangesRecord) {
-        if(Objects.isNull(financialChangesRecord)) BaseResponse.ofFail(BaseEnum.INVALID_PARAM);
+    public BaseResponse<List<FinancialChangesRecordResponse>> income(FinancialChangesRecordRequest... financialChangesRecords) {
+        if(Objects.isNull(financialChangesRecords)) BaseResponse.ofFail(BaseEnum.INVALID_PARAM);
 
-        for (FinancialChangesRecordRequest financialChangesRecordRequest : financialChangesRecord) {
-            FinancialChangesRecord financialChangesRecord1 = buildFinancialChangesRecord(financialChangesRecordRequest);
+        List<FinancialChangesRecordResponse> res = new ArrayList<>();
+        for (FinancialChangesRecordRequest request : financialChangesRecords) {
+            FinancialChangesRecordResponse tmp = new FinancialChangesRecordResponse();
+            FinancialAccount shadowAccount = getUserFinancialAccount(request.getFinancialAccountId());
+            if (Objects.isNull(shadowAccount)) {
+                tmp.fail(BaseEnum.INVALID_USER);
+                res.add(tmp);
+                continue;
+            }
 
-            financialLogService.addRecord(financialChangesRecord1);
-            FinancialAccount shadowAccount = getUserFinancialAccount(financialChangesRecordRequest.getFinancialAccountId());
-            if(Objects.isNull(shadowAccount)) BaseResponse.ofFail(BaseEnum.INVALID_PARAM);
+            FinancialChangesRecord financialChangesRecord = buildFinancialChangesRecord(request);
+            financialLogService.addRecord(financialChangesRecord);
+            shadowAccount.setBalance(shadowAccount.getBalance().add(request.getAmount()));
 
-            shadowAccount.setBalance(shadowAccount.getBalance().add(financialChangesRecordRequest.getAmount()));
+            tmp.setFinancialAccountId(request.getFinancialAccountId());
+            tmp.setRequestSerialNumber(request.getSerialNumber());
+            tmp.setSerialNumber(financialChangesRecord.getSerialNumber());
+            tmp.success(null);
+            res.add(tmp);
         }
 
-        return BaseResponse.ofSuccess(null);
+        return BaseResponse.ofSuccess(res);
     }
 
     @Override

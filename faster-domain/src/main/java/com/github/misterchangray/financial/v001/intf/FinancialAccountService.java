@@ -6,6 +6,7 @@ import com.github.misterchangray.financial.v001.pojo.request.FinancialChangesRec
 import com.github.misterchangray.financial.v001.pojo.request.FinancialFreezeRequest;
 import com.github.misterchangray.financial.v001.pojo.request.FinancialUnFreezeRequest;
 import com.github.misterchangray.financial.v001.pojo.request.OperationUnFreeze;
+import com.github.misterchangray.financial.v001.pojo.response.FinancialChangesRecordResponse;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public interface FinancialAccountService {
      * @param financialChangesRecord
      * @return
      */
-    BaseResponse<List<String>> income(FinancialChangesRecordRequest ...financialChangesRecord);
+    BaseResponse<List<FinancialChangesRecordResponse>> income(FinancialChangesRecordRequest ...financialChangesRecord);
 
     /**
      * 账户支出
