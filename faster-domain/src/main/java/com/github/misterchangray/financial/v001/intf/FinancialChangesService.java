@@ -20,7 +20,7 @@ public interface FinancialChangesService {
      * @param record
      * @return
      */
-    BaseResponse<List<Boolean>> addRecord(FinancialChangesRecord record);
+    BaseResponse<Boolean> addRecord(FinancialChangesRecord record);
 
 
 

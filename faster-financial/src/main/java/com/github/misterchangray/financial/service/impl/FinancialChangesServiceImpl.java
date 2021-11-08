@@ -16,7 +16,8 @@ public class FinancialChangesServiceImpl implements FinancialChangesService {
 
 
     @Override
-    public BaseResponse<List<Boolean>> addRecord(FinancialChangesRecord record) {
-        return null;
+    public BaseResponse<Boolean> addRecord(FinancialChangesRecord record) {
+        int i = financialChangesMapper.insert(record);
+        return BaseResponse.ofSuccess(true);
     }
 }
