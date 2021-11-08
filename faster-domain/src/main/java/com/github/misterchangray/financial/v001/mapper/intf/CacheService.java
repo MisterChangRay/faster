@@ -1,7 +1,8 @@
-package com.github.misterchangray.financial.service;
+package com.github.misterchangray.financial.v001.mapper.intf;
 
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface CacheService {
@@ -10,26 +11,26 @@ public interface CacheService {
      * @param financialAccount
      * @return
      */
-    int save(FinancialAccount financialAccount);
+    int cache(FinancialAccount financialAccount);
 
     /**
      *  增加 原子操作
      * @param id
      * @return
      */
-    int increment(String id);
+    boolean increment(String id, BigDecimal amount);
 
     /**
      * 减少 原子操作
      * @param id
      * @return
      */
-    int decrement(String id);
+    boolean decrement(String id, BigDecimal amount);
 
 
-    FinancialAccount getAccount(String id);
+    FinancialAccount getShadowAccount(String id);
 
-    List<FinancialAccount> getAccount(String ...ids);
+    List<FinancialAccount> getAccounts(String... ids);
 
 
 }

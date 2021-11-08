@@ -3,8 +3,7 @@ package com.github.misterchangray.financial.controller;
 import com.github.misterchangray.common.base.BaseEnum;
 import com.github.misterchangray.common.base.BaseResponse;
 import com.github.misterchangray.common.base.ResEnum;
-import com.github.misterchangray.financial.dao.AccountMapper;
-import com.github.misterchangray.financial.service.AccountService;
+import com.github.misterchangray.financial.v001.intf.FinancialAccountService;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,7 @@ import java.util.Objects;
 @RequestMapping("/account")
 public class AccountController {
     @Autowired
-    private AccountService accountService;
+    private FinancialAccountService accountService;
 
     @GetMapping("/{id}")
     public BaseResponse<FinancialAccount> getUserFinancialAccount(@PathVariable("id") String id) {

@@ -1,4 +1,4 @@
-package com.github.misterchangray.financial.service;
+package com.github.misterchangray.financial.v001.mapper.intf;
 
 
 /**

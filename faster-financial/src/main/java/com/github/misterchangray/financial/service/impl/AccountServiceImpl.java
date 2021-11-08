@@ -2,16 +2,16 @@ package com.github.misterchangray.financial.service.impl;
 
 import com.github.misterchangray.common.base.BaseEnum;
 import com.github.misterchangray.common.base.BaseResponse;
-import com.github.misterchangray.financial.service.AccountService;
-import com.github.misterchangray.financial.service.FinancialLogService;
-import com.github.misterchangray.financial.v001.consts.FinancialRedisKeys;
+import com.github.misterchangray.financial.v001.intf.FinancialAccountService;
+import com.github.misterchangray.financial.v001.intf.FinancialChangesService;
+import com.github.misterchangray.financial.v001.mapper.intf.CacheService;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialChangesRecord;
 import com.github.misterchangray.financial.v001.pojo.request.FinancialChangesRecordRequest;
 import com.github.misterchangray.financial.v001.pojo.request.FinancialFreezeRequest;
+import com.github.misterchangray.financial.v001.pojo.request.FinancialUnFreezeRequest;
+import com.github.misterchangray.financial.v001.pojo.request.OperationUnFreeze;
 import com.github.misterchangray.idservice.IDService;
-import org.redisson.api.RBucket;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,28 +20,25 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl implements FinancialAccountService {
     @Autowired
-    RedissonClient redissonClient;
+    private FinancialChangesService financialLogService;
     @Autowired
-    FinancialLogService financialLogService;
+    private IDService idService;
     @Autowired
-    IDService idService;
+    private CacheService cacheService;
 
-    public FinancialAccount getShadowAccount(String id) {
-        // 构建Key对象
-        RBucket<FinancialAccount> bucket = redissonClient.getBucket(FinancialRedisKeys.FINANCIAL_ACCOUNT);
-        if(bucket.isExists()) {
-            return bucket.get();
-        }
 
-        return null;
-    }
 
+    /**
+     * 从缓存或数据库中获取账户
+     * @param id
+     * @return
+     */
     public FinancialAccount getUserFinancialAccount(String id) {
         if(Objects.isNull(id)) BaseResponse.ofFail(BaseEnum.INVALID_PARAM);
 
-        FinancialAccount shadowAccount = getShadowAccount(id);
+        FinancialAccount shadowAccount = cacheService.getShadowAccount(id);
         if(Objects.isNull(shadowAccount)) {
             shadowAccount = reBuildFinancialAccount(id);
         }
@@ -55,7 +52,7 @@ public class AccountServiceImpl implements AccountService {
         if(Objects.isNull(ids)) BaseResponse.ofFail(BaseEnum.INVALID_PARAM);
 
         List<FinancialAccount> res = new ArrayList<>(ids.length);
-        for (String id : ids) res.add(getShadowAccount(id));
+        for (String id : ids) res.add(cacheService.getShadowAccount(id));
 
         return BaseResponse.ofSuccess(res);
     }
@@ -66,20 +63,35 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public BaseResponse<Boolean> record(FinancialChangesRecordRequest... financialChangesRecord) {
+    public BaseResponse<List<String>> income(FinancialChangesRecordRequest... financialChangesRecord) {
         if(Objects.isNull(financialChangesRecord)) BaseResponse.ofFail(BaseEnum.INVALID_PARAM);
 
         for (FinancialChangesRecordRequest financialChangesRecordRequest : financialChangesRecord) {
             FinancialChangesRecord financialChangesRecord1 = buildFinancialChangesRecord(financialChangesRecordRequest);
-            if(Objects.isNull(financialChangesRecord1)) BaseResponse.ofFail(BaseEnum.INVALID_PARAM);
 
-            financialLogService.log(financialChangesRecord1);
-            FinancialAccount shadowAccount = getShadowAccount(financialChangesRecordRequest.getFinancialAccountId());
+            financialLogService.addRecord(financialChangesRecord1);
+            FinancialAccount shadowAccount = getUserFinancialAccount(financialChangesRecordRequest.getFinancialAccountId());
+            if(Objects.isNull(shadowAccount)) BaseResponse.ofFail(BaseEnum.INVALID_PARAM);
+
             shadowAccount.setBalance(shadowAccount.getBalance().add(financialChangesRecordRequest.getAmount()));
         }
 
-        return BaseResponse.ofSuccess(true);
+        return BaseResponse.ofSuccess(null);
     }
+
+    @Override
+    public BaseResponse<List<String>> outlay(FinancialChangesRecordRequest... financialChangesRecord) {
+        if(Objects.isNull(financialChangesRecord)) BaseResponse.ofFail(BaseEnum.INVALID_PARAM);
+
+
+        return null;
+    }
+
+    @Override
+    public BaseResponse<String> transfer(FinancialChangesRecordRequest... financialChangesRecord) {
+        return null;
+    }
+
 
     @Override
     public BaseResponse<String> freeze(FinancialFreezeRequest request) {
@@ -91,11 +103,11 @@ public class AccountServiceImpl implements AccountService {
         }
         FinancialAccount shadowAccount = getUserFinancialAccount(request.getFinancialAccountId());
         if(Objects.isNull(shadowAccount)) {
-            return BaseResponse.ofFail(BaseEnum.INVALID_PARAM).setMsg("accountId not found!");
+            return BaseResponse.<String>ofFail(BaseEnum.INVALID_PARAM).setMsg("accountId not found!");
         }
 
         FinancialChangesRecord financialChangesRecord = buildFinancialChangesRecord(request, shadowAccount);
-        financialLogService.log(financialChangesRecord);
+        financialLogService.addRecord(financialChangesRecord);
 
         shadowAccount.setBalance(financialChangesRecord.getAmount());;
         shadowAccount.setFreeze(financialChangesRecord.getFreeze());
@@ -104,11 +116,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public BaseResponse<Boolean> unFreeze(String freezeId) {
-
-
+    public BaseResponse<String> unfreeze(FinancialUnFreezeRequest financialUnFreezeRequest) {
         return null;
     }
+
+    @Override
+    public BaseResponse<String> done(FinancialUnFreezeRequest financialUnFreezeRequest, OperationUnFreeze operationUnFreeze) {
+        return null;
+    }
+
 
     private FinancialChangesRecord buildFinancialChangesRecord(FinancialFreezeRequest request, FinancialAccount shadowAccount) {
         FinancialChangesRecord financialChangesRecord = new FinancialChangesRecord();
@@ -159,22 +175,8 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     public FinancialAccount reBuildFinancialAccount(String id) {
+
         return null;
     }
 
-
-    @Override
-    public BaseResponse<List<FinancialAccount>> updateUserFinancialAccount() {
-        return null;
-    }
-
-    @Override
-    public BaseResponse<List<FinancialAccount>> changeBalanceUserFinancialAccount() {
-        return null;
-    }
-
-    @Override
-    public BaseResponse<List<FinancialAccount>> changeFreezeUserFinancialAccount() {
-        return null;
-    }
 }

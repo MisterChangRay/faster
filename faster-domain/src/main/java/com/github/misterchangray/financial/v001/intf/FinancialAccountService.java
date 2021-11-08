@@ -2,99 +2,78 @@ package com.github.misterchangray.financial.v001.intf;
 
 import com.github.misterchangray.common.base.BaseResponse;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
+import com.github.misterchangray.financial.v001.pojo.request.FinancialChangesRecordRequest;
+import com.github.misterchangray.financial.v001.pojo.request.FinancialFreezeRequest;
+import com.github.misterchangray.financial.v001.pojo.request.FinancialUnFreezeRequest;
+import com.github.misterchangray.financial.v001.pojo.request.OperationUnFreeze;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-
-/**
- * 提供账户操作的常用方法
- */
 public interface FinancialAccountService {
 
-
     /**
-     * 重构缓存 中的用户信息
-     * @param financialId
+     * 开始初始化影子账号
+     * 这里将会自动初始化影子账户
+     * 根据账户活跃度 优先级进行初始化
      */
-    BaseResponse<Boolean> reBuildCache(String financialId) ;
+    void startInitShadowAccount();
 
 
     /**
-     * 批量获取账户信息
-     * 每批不能大于 100
-     * @param financialIds
-     * @return
-     */
-    BaseResponse<List<FinancialAccount>> getFinancialAccount(List<String> financialIds);
-
-
-    /**
-     * 获取用户账户信息
+     * 账户收入
+     * 收入将会立即入账
      *
-     * @param financialId
+     * 账户收入可以使用同步或者异步进行入账操作
+     *
+     * 需要注意的是同一笔入账需要使用同一个流水号
+     *
+     * @param financialChangesRecord
      * @return
      */
-    BaseResponse<FinancialAccount> getFinancialAccount(String financialId);
+    BaseResponse<List<String>> income(FinancialChangesRecordRequest ...financialChangesRecord);
+
+    /**
+     * 账户支出
+     * 支出将会立即从账户扣减
+     * @param financialChangesRecord
+     * @return
+     */
+    BaseResponse<List<String>> outlay(FinancialChangesRecordRequest ...financialChangesRecord);
+
+    /**
+     * 转账
+     * @param financialChangesRecord
+     * @return
+     */
+    BaseResponse<String> transfer(FinancialChangesRecordRequest ...financialChangesRecord);
+
+    /**
+     * 账户金额冻结
+     * @return
+     */
+    BaseResponse<String> freeze(FinancialFreezeRequest financialFreezeRequest);
+
+    /**
+     * 账户解冻
+     * @param financialUnFreezeRequest
+     * @return
+     */
+    BaseResponse<String> unfreeze(FinancialUnFreezeRequest financialUnFreezeRequest);
+
+    /**
+     * 账户冻结完成
+     * @param financialUnFreezeRequest
+     * @return
+     */
+    BaseResponse<String> done(FinancialUnFreezeRequest financialUnFreezeRequest, OperationUnFreeze operationUnFreeze);
 
 
     /**
-     * 冻结账户金额
-     * @param financialId
-     * @param amount
-     * @return freezeId 冻结ID, 解冻时使用
-     */
-    BaseResponse<String> freeze(String financialId, BigDecimal amount);
-
-
-    /**
-     * 解冻账户金额
-     * @param freezeId  冻结金额时返回
+     * 批量获取账户
+     * @param ids
      * @return
      */
-    BaseResponse<Boolean> unFreeze(String freezeId);
-
-
-
-
-    /**
-     * 增加账户余额
-     * @param financialId
-     * @param amount
-     * @return
-     */
-    BaseResponse<Boolean> increaseBalance(String financialId, BigDecimal amount);
-
-
-
-
-    /**
-     * 减少账户余额
-     * @param financialId
-     * @param amount
-     * @return
-     */
-    BaseResponse<Boolean> decreaseBalance(String financialId, BigDecimal amount);
-
-
-    /**
-     * 增加账户冻结金额
-     * @param financialId
-     * @param amount
-     * @return
-     */
-    BaseResponse<Boolean> increaseFreeze(String financialId, BigDecimal amount);
-
-
-
-
-    /**
-     * 减少账户冻结金额
-     * @param financialId
-     * @param amount
-     * @return
-     */
-    BaseResponse<Boolean> decreaseFreeze(String financialId, BigDecimal amount);
+    BaseResponse<List<FinancialAccount>> getUserFinancialAccount(String ...ids) ;
 
 
 }

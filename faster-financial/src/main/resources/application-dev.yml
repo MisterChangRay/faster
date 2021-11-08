@@ -17,10 +17,11 @@ spring:
       sql:
         show: true
 
-
 com:
   github:
     misterchangray:
+      financial:
+        master: 127.0.0.1:7501
       redis:
         single:
           host: 192.168.0.173
@@ -28,4 +29,7 @@ com:
           password: 123456
           db: 0
 
+
+mybatis-plus:
+  mapper-locations: classpath*:**/**/mapper/xml/*.xml
 

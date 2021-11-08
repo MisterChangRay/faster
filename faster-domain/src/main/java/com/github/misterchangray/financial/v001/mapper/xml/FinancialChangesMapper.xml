@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.github.misterchangray.financial.v001.mapper.intf.FinancialChangesMapper">
+    <sql id="base_agent_info_field">
+       id, user_id, name, phone, balance, freeze, status, create_time, update_time
+    </sql>
+
+    <select id="getTerminalByAcode" resultType="java.lang.Integer">
+        select terminal from cp_agent where a_code=#{acode}
+    </select>
+
+</mapper>

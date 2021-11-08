@@ -6,7 +6,9 @@ import java.math.BigDecimal;
 
 /**
  *
- * 财务账号冻结
+ *
+ * 财务余额冻结
+ * 在对业务进行提现, 转账, 付款等支出操作前, 先进行订单的金额冻结。冻结成功后即可进行业务处理
  *
  *
  * **/
@@ -33,6 +35,13 @@ public class FinancialFreezeRequest {
 
     // 创建时间
     private long createTime;
+
+    // 业务变动类型, 由业务端提供
+    private OperationType bizType;
+
+    // 账户解冻时操作, 默认未回滚
+    private OperationUnFreeze operationUnFreeze;
+
 
     public String getSerialNumber() {
         return serialNumber;
@@ -80,5 +89,21 @@ public class FinancialFreezeRequest {
 
     public void setCreateTime(long createTime) {
         this.createTime = createTime;
+    }
+
+    public OperationType getBizType() {
+        return bizType;
+    }
+
+    public void setBizType(OperationType bizType) {
+        this.bizType = bizType;
+    }
+
+    public OperationUnFreeze getOperationUnFreeze() {
+        return operationUnFreeze;
+    }
+
+    public void setOperationUnFreeze(OperationUnFreeze operationUnFreeze) {
+        this.operationUnFreeze = operationUnFreeze;
     }
 }

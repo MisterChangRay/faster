@@ -1,4 +1,4 @@
 package com.github.misterchangray.financial.v001.mapper.intf;
 
-public interface FinancialAccountMapper {
+public interface FinancialChangesMapper {
 }

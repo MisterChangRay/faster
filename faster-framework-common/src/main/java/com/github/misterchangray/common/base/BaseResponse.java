@@ -9,28 +9,25 @@ public class BaseResponse<T> {
     private T data;
 
 
-    public static <T> BaseResponse ofSuccess(ResEnum resEnum, T data) {
-        BaseResponse build = BaseResponse.build(resEnum, data);
-        return build;
+    public static <T> BaseResponse<T> ofSuccess(ResEnum resEnum, T data) {
+        return BaseResponse.build(resEnum, data);
     }
 
-    public static <T> BaseResponse ofSuccess(T data) {
-        BaseResponse build = BaseResponse.build(BaseEnum.SUCCESS, data);
-        return build;
+    public static <T> BaseResponse<T> ofSuccess(T data) {
+        return BaseResponse.build(BaseEnum.SUCCESS, data);
     }
 
 
-    public static <T>  BaseResponse ofFail(ResEnum resEnum) {
-        BaseResponse build = BaseResponse.build(resEnum, null);
-        return build;
+    public static <T>  BaseResponse<T> ofFail(ResEnum resEnum) {
+        return BaseResponse.<T>build(resEnum, null);
     }
 
     public boolean isSuccess() {
         return BaseEnum.SUCCESS.getCode().equals(this.code);
     }
 
-    private static <T> BaseResponse build(ResEnum resEnum, T data) {
-        BaseResponse res = new BaseResponse();
+    private static <K> BaseResponse<K> build(ResEnum resEnum, K data) {
+        BaseResponse<K> res = new BaseResponse<K>();
         res.setTimestamp(System.currentTimeMillis());
         res.setCode(resEnum.getCode());;
         res.setMsg(resEnum.getMsg());;

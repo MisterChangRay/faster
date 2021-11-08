@@ -1,11 +1,12 @@
 package com.github.misterchangray.financial.service.impl;
 
-import com.github.misterchangray.financial.service.CacheService;
+import com.github.misterchangray.financial.v001.mapper.intf.CacheService;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,29 +15,29 @@ public class CacheServiceImpl implements CacheService {
     @Autowired()
     RedissonClient redissonClient;
 
+
     @Override
-    public int save(FinancialAccount financialAccount) {
+    public int cache(FinancialAccount financialAccount) {
         return 0;
     }
 
     @Override
-    public int increment(String id) {
-        return 0;
+    public boolean increment(String id, BigDecimal amount) {
+        return false;
     }
 
     @Override
-    public int decrement(String id) {
-        return 0;
+    public boolean decrement(String id, BigDecimal amount) {
+        return false;
     }
 
-
     @Override
-    public FinancialAccount getAccount(String id) {
+    public FinancialAccount getShadowAccount(String id) {
         return null;
     }
 
     @Override
-    public List<FinancialAccount> getAccount(String... ids) {
+    public List<FinancialAccount> getAccounts(String... ids) {
         return null;
     }
 
