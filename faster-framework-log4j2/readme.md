@@ -1,3 +1,21 @@
+# log4j2 框架引用
+
+系统日志使用lo4j2， 引入此框架包统一解决日志问题
+
+
+##### 1. 引入maven
+```xml
+
+<dependency>
+    <groupId>com.github.misterchangray</groupId>
+    <artifactId>faster-framework-log4j2</artifactId>
+    <version>1.0-SNAPSHOT</version>
+</dependency>
+
+```
+##### 2. 配置`log4j2-spring.xml` 可以在框架包 resource 目录下拷贝源文件并进行修改
+```xml
+
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Properties>
@@ -83,3 +101,20 @@
         </Root>
     </Loggers>
 </Configuration>
+
+```
+
+##### 3. 可以在项目中注入使用了, 注意统一使用slf4j接口进行日志输出
+```java
+     import org.slf4j.Logger;
+     import org.slf4j.LoggerFactory;
+
+     private static final Logger logger = LoggerFactory.getLogger(Test.class);
+
+    @Override
+    public int save(FinancialAccount financialAccount) {
+         logger.error("日志输出..."）;
+    }
+
+```
+
