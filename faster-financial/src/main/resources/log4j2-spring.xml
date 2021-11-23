@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="datePattern">
+            <!-- 日志格式化规则：[日志级别][线程名称-线程ID][日志从JVM生成时间][日志记录时间][日志完全类名][日志具体行] -->
+            <!--            [%d{yyyy-MM-dd HH:mm:ss,SSS}] [%p] [%t-%T] [%r] [%c{10}] [%l] %m%n-->
+            [%d{yyyy-MM-dd HH:mm:ss,SSS}] [%p] [%t-%T] [%r] [%c{1.}.%M:%L] [%X{tradeId}] [%X{code}] %m%n
+        </Property>
+        <!-- 日志的存放根路径 -->
+        <Property name="logBasePath">logs</Property>
+        <Property name="debugLogFilePath">${logBasePath}/debug/app.log</Property>
+        <Property name="infoLogFilePath">${logBasePath}/info/app.log</Property>
+        <Property name="errorLogFilePath">${logBasePath}/error/app.log</Property>
+        <!-- 单个日志文件大小 -->
+        <Property name="logFileSize">60M</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="STDOUT">
+            <PatternLayout pattern="${datePattern}" />
+        </Console>
+        <RollingFile name="debugAppender"
+                     fileName="${debugLogFilePath}"
+                     filePattern="${logBasePath}/debug/debug-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout>
+                <Pattern>${datePattern}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy	size="${logFileSize}" />
+            </Policies>
+            <DefaultRolloverStrategy fileIndex="nomax" max="5000"/>
+        </RollingFile>
+        <RollingFile name="infoAppender"
+                     fileName="${infoLogFilePath}"
+                     filePattern="${logBasePath}/info/info-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <!--			    <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>-->
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout>
+                <Pattern>${datePattern}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy	size="${logFileSize}" />
+            </Policies>
+            <DefaultRolloverStrategy fileIndex="nomax" max="5000"/>
+        </RollingFile>
+        <RollingFile name="errorAppender"
+                     fileName="${errorLogFilePath}"
+                     filePattern="${logBasePath}/error/error-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout>
+                <Pattern>${datePattern}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy	size="${logFileSize}" />
+            </Policies>
+            <DefaultRolloverStrategy fileIndex="nomax" max="5000"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.xd" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="debugAppender" level="debug" />
+            <AppenderRef ref="infoAppender" level="info" />
+            <AppenderRef ref="errorAppender" level="error" />
+        </Logger>
+        <Logger name="org" level="info"/>
+        <Logger name="com.xxl.job"  level="off" />
+        <Root level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="debugAppender" level="debug" />
+            <AppenderRef ref="infoAppender" level="info" />
+            <AppenderRef ref="errorAppender" level="error" />
+        </Root>
+    </Loggers>
+</Configuration>
