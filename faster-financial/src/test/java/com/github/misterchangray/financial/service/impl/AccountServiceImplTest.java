@@ -5,6 +5,7 @@ import com.github.misterchangray.financial.FasterFinancialApplication;
 import com.github.misterchangray.financial.v001.intf.FinancialAccountService;
 import com.github.misterchangray.financial.v001.pojo.request.FinancialChangesRecordRequest;
 import com.github.misterchangray.financial.v001.pojo.response.FinancialChangesRecordResponse;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

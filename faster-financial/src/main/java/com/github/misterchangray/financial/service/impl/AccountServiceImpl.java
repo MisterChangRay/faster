@@ -5,6 +5,7 @@ import com.github.misterchangray.common.base.BaseResponse;
 import com.github.misterchangray.financial.v001.intf.CacheService;
 import com.github.misterchangray.financial.v001.intf.FinancialAccountService;
 import com.github.misterchangray.financial.v001.intf.FinancialChangesService;
+import com.github.misterchangray.financial.v001.mapper.intf.FinancialAccountMapper;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialChangesRecord;
 import com.github.misterchangray.financial.v001.pojo.request.FinancialChangesRecordRequest;
@@ -28,6 +29,8 @@ public class AccountServiceImpl implements FinancialAccountService {
     private IDService idService;
     @Autowired
     private CacheService cacheService;
+    @Autowired
+    private FinancialAccountMapper financialAccountMapper;
 
 
 
@@ -137,6 +140,24 @@ public class AccountServiceImpl implements FinancialAccountService {
         return null;
     }
 
+    @Override
+    public BaseResponse<FinancialAccount> addOrEdit(FinancialAccount financialAccount) {
+        // todo 这里应该做唯一性校验
+        // todo 目前采用手机号做唯一校验
+
+        BaseResponse<FinancialAccount> byPhone = this.getByPhone(financialAccount.getPhone());
+        if(byPhone.isSuccess()) {
+            return BaseResponse.ofFail(BaseEnum.ALREADY_EXISTS);
+        }
+        if(Objects.nonNull(financialAccount.getId())) {
+            financialAccountMapper.udpate(financialAccount);
+        } else {
+            financialAccount.setId(idService.getId());
+            financialAccountMapper.insert(financialAccount);
+        }
+
+        return BaseResponse.ofSuccess(financialAccount);
+    }
 
     private FinancialChangesRecord buildFinancialChangesRecord(FinancialFreezeRequest request, FinancialAccount shadowAccount) {
         FinancialChangesRecord financialChangesRecord = new FinancialChangesRecord();
@@ -191,4 +212,9 @@ public class AccountServiceImpl implements FinancialAccountService {
         return null;
     }
 
+
+    @Override
+    public BaseResponse<FinancialAccount> getByPhone(String phone) {
+        return null;
+    }
 }

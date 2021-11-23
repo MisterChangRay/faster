@@ -12,6 +12,9 @@ import java.util.List;
 
 public interface FinancialAccountService {
 
+
+
+
     /**
      * 开始初始化影子账号
      * 这里将会自动初始化影子账户
@@ -77,4 +80,7 @@ public interface FinancialAccountService {
     BaseResponse<List<FinancialAccount>> getUserFinancialAccount(String ...ids) ;
 
 
+    BaseResponse<FinancialAccount> addOrEdit(FinancialAccount financialAccount);
+
+    BaseResponse<FinancialAccount> getByPhone(String phone);
 }

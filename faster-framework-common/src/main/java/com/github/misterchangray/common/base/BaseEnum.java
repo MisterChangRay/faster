@@ -10,6 +10,8 @@ public enum BaseEnum implements ResEnum {
     INVALID_SESSION("0004", "INVALID_SESSION"),
     INVALID_ACCOUNT("0005", "INVALID_ACCOUNT"),
 
+    ALREADY_EXISTS("0006", "ALREADY_EXISTS"),
+
     ;
 
     private String code;
