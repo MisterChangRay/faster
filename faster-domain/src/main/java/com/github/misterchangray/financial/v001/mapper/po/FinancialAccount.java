@@ -1,7 +1,10 @@
 package com.github.misterchangray.financial.v001.mapper.po;
 
 
+import com.github.misterchangray.financial.v001.pojo.request.FinancialAccountRequest;
+
 import java.math.BigDecimal;
+import java.util.Date;
 
 
 /**
@@ -38,6 +41,19 @@ public class FinancialAccount {
 
     // 更新时间
     private long updateTime;
+
+    public static FinancialAccount valueOf(FinancialAccountRequest financialAccountRequest) {
+        FinancialAccount financialAccount = new FinancialAccount();
+        financialAccount.setId(financialAccountRequest.getId());
+        financialAccount.setFreeze(BigDecimal.ZERO);
+        financialAccount.setBalance(BigDecimal.ZERO);
+        financialAccount.setCreateTime(System.currentTimeMillis());
+        financialAccount.setName(financialAccountRequest.getName());
+        financialAccount.setPhone(financialAccountRequest.getPhone());
+        financialAccount.setUpdateTime(financialAccount.getCreateTime());
+        financialAccount.setUserId(financialAccountRequest.getUserId());
+        return financialAccount;
+    }
 
 
     public String getId() {

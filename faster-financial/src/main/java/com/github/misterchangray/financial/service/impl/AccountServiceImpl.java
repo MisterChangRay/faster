@@ -1,5 +1,8 @@
 package com.github.misterchangray.financial.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.github.misterchangray.common.base.BaseEnum;
 import com.github.misterchangray.common.base.BaseResponse;
 import com.github.misterchangray.financial.v001.intf.CacheService;
@@ -8,10 +11,7 @@ import com.github.misterchangray.financial.v001.intf.FinancialChangesService;
 import com.github.misterchangray.financial.v001.mapper.intf.FinancialAccountMapper;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialChangesRecord;
-import com.github.misterchangray.financial.v001.pojo.request.FinancialChangesRecordRequest;
-import com.github.misterchangray.financial.v001.pojo.request.FinancialFreezeRequest;
-import com.github.misterchangray.financial.v001.pojo.request.FinancialUnFreezeRequest;
-import com.github.misterchangray.financial.v001.pojo.request.OperationUnFreeze;
+import com.github.misterchangray.financial.v001.pojo.request.*;
 import com.github.misterchangray.financial.v001.pojo.response.FinancialChangesRecordResponse;
 import com.github.misterchangray.idservice.IDService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,16 +141,15 @@ public class AccountServiceImpl implements FinancialAccountService {
     }
 
     @Override
-    public BaseResponse<FinancialAccount> addOrEdit(FinancialAccount financialAccount) {
-        // todo 这里应该做唯一性校验
-        // todo 目前采用手机号做唯一校验
+    public BaseResponse<FinancialAccount> addOrEdit(FinancialAccountRequest financialAccountRequest) {
 
+        FinancialAccount financialAccount = FinancialAccount.valueOf(financialAccountRequest);
         BaseResponse<FinancialAccount> byPhone = this.getByPhone(financialAccount.getPhone());
         if(byPhone.isSuccess()) {
             return BaseResponse.ofFail(BaseEnum.ALREADY_EXISTS);
         }
         if(Objects.nonNull(financialAccount.getId())) {
-            financialAccountMapper.udpate(financialAccount);
+            financialAccountMapper.updateById(financialAccount);
         } else {
             financialAccount.setId(idService.getId());
             financialAccountMapper.insert(financialAccount);
@@ -215,6 +214,10 @@ public class AccountServiceImpl implements FinancialAccountService {
 
     @Override
     public BaseResponse<FinancialAccount> getByPhone(String phone) {
-        return null;
+        FinancialAccount financialAccount = financialAccountMapper.getByPhone(phone);
+        if(Objects.isNull(financialAccount)) {
+            return BaseResponse.ofFail(BaseEnum.NOT_FOUND);
+        }
+        return BaseResponse.ofSuccess(financialAccount);
     }
 }

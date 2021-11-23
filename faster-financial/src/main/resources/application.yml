@@ -16,3 +16,5 @@ com:
       idservice:
         appId: 1
         appInstanceId: 1
+logging:
+  config: classpath:log4j2-spring.xml

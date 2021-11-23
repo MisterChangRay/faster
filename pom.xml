@@ -25,6 +25,7 @@
         <module>faster-framework-nacos</module>
         <module>faster-framework-rocketmq</module>
         <module>faster-framework-validation</module>
+        <module>faster-framework-log4j2</module>
         <module>faster-financial</module>
         <module>faster-user</module>
         <module>faster-domain</module>
@@ -32,5 +33,23 @@
 
     <dependencies>
     </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <!-- 是否替换资源中的属性-->
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
+
+
 
 </project>

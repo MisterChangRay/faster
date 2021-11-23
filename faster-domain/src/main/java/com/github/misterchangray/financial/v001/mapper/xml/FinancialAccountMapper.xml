@@ -5,8 +5,11 @@
        id, user_id, name, phone, balance, freeze, status, create_time, update_time
     </sql>
 
-    <select id="getTerminalByAcode" resultType="java.lang.Integer">
-        select terminal from cp_agent where a_code=#{acode}
+    <select id="getByPhone" parameterType="java.lang.String"
+            resultType="com.github.misterchangray.financial.v001.mapper.po.FinancialAccount">
+        select
+        <include refid="base_agent_info_field"></include>
+        from faster_financial_account where phone = #{phone} and status = 1;
     </select>
 
 </mapper>

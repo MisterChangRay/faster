@@ -12,6 +12,8 @@ public enum BaseEnum implements ResEnum {
 
     ALREADY_EXISTS("0006", "ALREADY_EXISTS"),
 
+    NOT_FOUND("0007", "NOT_FOUND"),
+
     ;
 
     private String code;

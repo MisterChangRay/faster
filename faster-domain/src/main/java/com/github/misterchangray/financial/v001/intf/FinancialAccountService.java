@@ -2,10 +2,7 @@ package com.github.misterchangray.financial.v001.intf;
 
 import com.github.misterchangray.common.base.BaseResponse;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
-import com.github.misterchangray.financial.v001.pojo.request.FinancialChangesRecordRequest;
-import com.github.misterchangray.financial.v001.pojo.request.FinancialFreezeRequest;
-import com.github.misterchangray.financial.v001.pojo.request.FinancialUnFreezeRequest;
-import com.github.misterchangray.financial.v001.pojo.request.OperationUnFreeze;
+import com.github.misterchangray.financial.v001.pojo.request.*;
 import com.github.misterchangray.financial.v001.pojo.response.FinancialChangesRecordResponse;
 
 import java.util.List;
@@ -80,7 +77,7 @@ public interface FinancialAccountService {
     BaseResponse<List<FinancialAccount>> getUserFinancialAccount(String ...ids) ;
 
 
-    BaseResponse<FinancialAccount> addOrEdit(FinancialAccount financialAccount);
+    BaseResponse<FinancialAccount> addOrEdit(FinancialAccountRequest financialAccount);
 
     BaseResponse<FinancialAccount> getByPhone(String phone);
 }

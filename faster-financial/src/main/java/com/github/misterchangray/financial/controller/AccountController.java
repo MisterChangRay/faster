@@ -5,6 +5,7 @@ import com.github.misterchangray.common.base.BaseResponse;
 import com.github.misterchangray.common.base.ResEnum;
 import com.github.misterchangray.financial.v001.intf.FinancialAccountService;
 import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
+import com.github.misterchangray.financial.v001.pojo.request.FinancialAccountRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,24 @@ public class AccountController {
      * 带ID就是修改
      * @return
      */
-    @PostMapping()
-    public BaseResponse<FinancialAccount> add(@RequestBody FinancialAccount financialAccount) {
+    @PostMapping("/register")
+    public BaseResponse<FinancialAccount> register(@RequestBody FinancialAccountRequest financialAccount) {
         return accountService.addOrEdit(financialAccount);
+    }
+
+    @PostMapping("/delete/{id}")
+    public BaseResponse<FinancialAccount> delete(@RequestBody FinancialAccount financialAccount) {
+        return accountService.addOrEdit(null);
+    }
+
+    @PostMapping("/update")
+    public BaseResponse<FinancialAccount> update(@RequestBody FinancialAccount financialAccount) {
+        return accountService.addOrEdit(null);
+    }
+
+    @PostMapping("/permission")
+    public BaseResponse<FinancialAccount> permission(@RequestBody FinancialAccount financialAccount) {
+        return accountService.addOrEdit(null);
     }
 
     @GetMapping("/{id}")
