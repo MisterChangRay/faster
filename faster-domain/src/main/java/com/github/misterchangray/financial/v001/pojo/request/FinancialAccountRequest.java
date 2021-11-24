@@ -25,23 +25,17 @@ public class FinancialAccountRequest {
     private String userId;
 
     // 账户姓名
-    @NotNull
+    @NotNull(message = "用户名,2-100个字符")
     @Pattern(regexp = "^.{2,100}$", message = "用户名,2-100个字符")
     private String name;
 
     // 账户手机号
-    @NotNull
-    @Pattern(regexp = "^1\\d{10}$", message = "手机号")
+    @NotNull(message = "手机号11位数字")
+    @Pattern(regexp = "^1\\d{10}$", message = "手机号11位数字")
     private String phone;
 
     // 1 启动 2禁用
     private int status;
-
-    // 创建时间
-    private long createTime;
-
-    // 更新时间
-    private long updateTime;
 
 
     public String getId() {
@@ -82,22 +76,6 @@ public class FinancialAccountRequest {
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(long createTime) {
-        this.createTime = createTime;
-    }
-
-    public long getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(long updateTime) {
-        this.updateTime = updateTime;
     }
 
     public boolean checkParams() {

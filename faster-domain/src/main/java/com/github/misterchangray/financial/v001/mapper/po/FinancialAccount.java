@@ -56,6 +56,7 @@ public class FinancialAccount {
         financialAccount.setPhone(financialAccountRequest.getPhone());
         financialAccount.setUpdateTime(financialAccount.getCreateTime());
         financialAccount.setUserId(financialAccountRequest.getUserId());
+        financialAccount.setStatus(1);
         return financialAccount;
     }
 
