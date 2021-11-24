@@ -1,6 +1,10 @@
 package com.github.misterchangray.financial.v001.pojo.request;
 
 
+import com.github.misterchangray.common.base.BaseEnum;
+import com.github.misterchangray.common.exceptions.BizException;
+import org.springframework.util.StringUtils;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
@@ -94,5 +98,13 @@ public class FinancialAccountRequest {
 
     public void setUpdateTime(long updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public boolean checkParams() {
+        if(!StringUtils.hasLength(this.phone)) {
+            throw new BizException(BaseEnum.INVALID_PARAM);
+        }
+
+        return true;
     }
 }

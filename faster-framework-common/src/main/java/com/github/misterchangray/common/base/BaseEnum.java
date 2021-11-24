@@ -14,6 +14,8 @@ public enum BaseEnum implements ResEnum {
 
     NOT_FOUND("0007", "NOT_FOUND"),
 
+    SYSTEM_ERROR("0008", "SYSTEM_ERROR"),
+
     ;
 
     private String code;

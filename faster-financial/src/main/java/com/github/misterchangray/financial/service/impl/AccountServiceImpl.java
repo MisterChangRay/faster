@@ -142,6 +142,10 @@ public class AccountServiceImpl implements FinancialAccountService {
 
     @Override
     public BaseResponse<FinancialAccount> addOrEdit(FinancialAccountRequest financialAccountRequest) {
+        if(Objects.isNull(financialAccountRequest) ) {
+            return BaseResponse.ofFail(BaseEnum.INVALID_PARAM);
+        }
+        financialAccountRequest.checkParams();
 
         FinancialAccount financialAccount = FinancialAccount.valueOf(financialAccountRequest);
         BaseResponse<FinancialAccount> byPhone = this.getByPhone(financialAccount.getPhone());

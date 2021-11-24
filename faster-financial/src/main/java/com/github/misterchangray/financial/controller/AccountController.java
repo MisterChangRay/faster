@@ -8,6 +8,7 @@ import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
 import com.github.misterchangray.financial.v001.pojo.request.FinancialAccountRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class AccountController {
      * @return
      */
     @PostMapping("/register")
-    public BaseResponse<FinancialAccount> register(@RequestBody FinancialAccountRequest financialAccount) {
+    public BaseResponse<FinancialAccount> register(@RequestBody @Validated FinancialAccountRequest financialAccount) {
         return accountService.addOrEdit(financialAccount);
     }
 

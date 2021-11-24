@@ -1,6 +1,8 @@
 package com.github.misterchangray.financial.v001.mapper.po;
 
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.misterchangray.financial.v001.pojo.request.FinancialAccountRequest;
 
 import java.math.BigDecimal;
@@ -14,8 +16,10 @@ import java.util.Date;
  * 所有金额都使用 decimal, 计算精度保留 6 位
  *
  * **/
+@TableName("faster_financial_account")
 public class FinancialAccount {
     // 金融账户ID
+    @TableId
     private String id;
 
     // 账户用户ID
@@ -37,17 +41,17 @@ public class FinancialAccount {
     private int status;
 
     // 创建时间
-    private long createTime;
+    private Date createTime;
 
     // 更新时间
-    private long updateTime;
+    private Date updateTime;
 
     public static FinancialAccount valueOf(FinancialAccountRequest financialAccountRequest) {
         FinancialAccount financialAccount = new FinancialAccount();
         financialAccount.setId(financialAccountRequest.getId());
         financialAccount.setFreeze(BigDecimal.ZERO);
         financialAccount.setBalance(BigDecimal.ZERO);
-        financialAccount.setCreateTime(System.currentTimeMillis());
+        financialAccount.setCreateTime(new Date());
         financialAccount.setName(financialAccountRequest.getName());
         financialAccount.setPhone(financialAccountRequest.getPhone());
         financialAccount.setUpdateTime(financialAccount.getCreateTime());
@@ -112,19 +116,19 @@ public class FinancialAccount {
         this.status = status;
     }
 
-    public long getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(long createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
-    public long getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(long updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 }
