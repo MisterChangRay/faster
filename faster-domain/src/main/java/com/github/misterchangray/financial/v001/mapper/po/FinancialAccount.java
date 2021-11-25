@@ -18,6 +18,15 @@ import java.util.Date;
  * **/
 @TableName("faster_financial_account")
 public class FinancialAccount {
+    public final static int STATUS_OF_ENABLE = 1;  // 用户启动状态
+    public final static int STATUS_OF_DISABLE = 2; //用户禁用状态
+
+    public final static int PERMISSION_ALL = 0xFFFF;
+    public final static int PERMISSION_WITHDRAW = 0x1;  // 提现权限
+    public final static int PERMISSION_CHARGE = 0x3; // 充值权限
+    public final static int PERMISSION_PAY = 0x7; // 支付权限
+
+
     // 金融账户ID
     @TableId
     private String id;
@@ -36,6 +45,9 @@ public class FinancialAccount {
 
     // 冻结金额
     private BigDecimal freeze;
+
+    // 权限
+    private int permissions;
 
     // 1 启动 2禁用
     private int status;
@@ -56,7 +68,6 @@ public class FinancialAccount {
         financialAccount.setPhone(financialAccountRequest.getPhone());
         financialAccount.setUpdateTime(financialAccount.getCreateTime());
         financialAccount.setUserId(financialAccountRequest.getUserId());
-        financialAccount.setStatus(1);
         return financialAccount;
     }
 
@@ -131,5 +142,13 @@ public class FinancialAccount {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public int getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(int permissions) {
+        this.permissions = permissions;
     }
 }

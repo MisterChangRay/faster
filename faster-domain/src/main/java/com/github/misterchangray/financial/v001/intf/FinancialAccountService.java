@@ -80,4 +80,8 @@ public interface FinancialAccountService {
     BaseResponse<FinancialAccount> addOrEdit(FinancialAccountRequest financialAccount);
 
     BaseResponse<FinancialAccount> getByPhone(String phone);
+
+    BaseResponse<FinancialAccount> disabled(String id);
+
+    BaseResponse<FinancialAccount> enable(String id);
 }

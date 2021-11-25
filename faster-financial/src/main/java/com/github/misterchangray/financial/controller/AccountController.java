@@ -8,6 +8,7 @@ import com.github.misterchangray.financial.v001.mapper.po.FinancialAccount;
 import com.github.misterchangray.financial.v001.pojo.request.FinancialAccountRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,9 +32,9 @@ public class AccountController {
         return accountService.addOrEdit(financialAccount);
     }
 
-    @PostMapping("/delete/{id}")
-    public BaseResponse<FinancialAccount> delete(@RequestBody FinancialAccount financialAccount) {
-        return accountService.addOrEdit(null);
+    @PostMapping("/disable/{id}")
+    public BaseResponse<FinancialAccount> disabled(@PathVariable String id) {
+        return accountService.disabled(id);
     }
 
     @PostMapping("/update")

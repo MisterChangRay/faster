@@ -1,6 +1,7 @@
 package com.github.misterchangray.financial.v001.pojo.request;
 
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
  * 财务余额冻结
  *
  * **/
-public class FinancialUnFreezeRequest {
+public class FinancialUnFreezeRequest implements Serializable {
 
     /**
      * 流水号

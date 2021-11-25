@@ -8,7 +8,7 @@ spring:
       ds0:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://8.210.28.145:7501/faster?characterEncoding=utf-8
+        jdbc-url: jdbc:mysql://8.131.242.140:7501/faster?characterEncoding=utf-8
         username: faster_dev
         password: faster_dev
 
@@ -24,7 +24,7 @@ com:
         master: 127.0.0.1:7501
       redis:
         single:
-          host: 8.210.28.145
+          host: 8.131.242.140
           port: 7502
           password: t&23kfIuvde#.2
           db: 0

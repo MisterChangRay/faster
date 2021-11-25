@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 
@@ -17,7 +18,7 @@ import java.math.BigDecimal;
  * 所有金额都使用 decimal, 计算精度保留 6 位
  *
  * **/
-public class FinancialAccountRequest {
+public class FinancialAccountRequest implements Serializable {
     // 金融账户ID
     private String id;
 
@@ -33,9 +34,6 @@ public class FinancialAccountRequest {
     @NotNull(message = "手机号11位数字")
     @Pattern(regexp = "^1\\d{10}$", message = "手机号11位数字")
     private String phone;
-
-    // 1 启动 2禁用
-    private int status;
 
 
     public String getId() {
@@ -68,14 +66,6 @@ public class FinancialAccountRequest {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public boolean checkParams() {

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.github.misterchangray.common.base.BaseEnum;
 import com.github.misterchangray.common.base.BaseResponse;
+import com.github.misterchangray.common.exceptions.BizException;
 import com.github.misterchangray.financial.v001.intf.CacheService;
 import com.github.misterchangray.financial.v001.intf.FinancialAccountService;
 import com.github.misterchangray.financial.v001.intf.FinancialChangesService;
@@ -16,6 +17,7 @@ import com.github.misterchangray.financial.v001.pojo.response.FinancialChangesRe
 import com.github.misterchangray.idservice.IDService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -155,7 +157,9 @@ public class AccountServiceImpl implements FinancialAccountService {
         if(Objects.nonNull(financialAccount.getId())) {
             financialAccountMapper.updateById(financialAccount);
         } else {
+            financialAccount.setPermissions(FinancialAccount.PERMISSION_ALL);
             financialAccount.setId(idService.getId());
+            financialAccount.setStatus(FinancialAccount.STATUS_OF_ENABLE);
             financialAccountMapper.insert(financialAccount);
         }
 
@@ -223,5 +227,31 @@ public class AccountServiceImpl implements FinancialAccountService {
             return BaseResponse.ofFail(BaseEnum.NOT_FOUND);
         }
         return BaseResponse.ofSuccess(financialAccount);
+    }
+
+
+    @Override
+    public BaseResponse<FinancialAccount> disabled(String id) {
+        return changeStatus(id, FinancialAccount.STATUS_OF_DISABLE);
+    }
+
+
+    public BaseResponse<FinancialAccount> changeStatus(String id, int status) {
+        if(!StringUtils.hasLength(id)) {
+            throw new BizException(BaseEnum.INVALID_PARAM);
+        }
+        FinancialAccount financialAccount = financialAccountMapper.selectById(id);
+        if(Objects.isNull(financialAccount)) {
+            return BaseResponse.ofFail(BaseEnum.NOT_FOUND);
+        }
+
+        financialAccount.setStatus(status);
+        financialAccountMapper.changeStatus(financialAccount);
+        return BaseResponse.ofSuccess(financialAccount);
+    }
+
+    @Override
+    public BaseResponse<FinancialAccount> enable(String id) {
+        return changeStatus(id, FinancialAccount.STATUS_OF_ENABLE);
     }
 }
