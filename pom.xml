@@ -27,9 +27,6 @@
         <module>faster-framework-validation</module>
         <module>faster-framework-log4j2</module>
         <module>faster-framework-global-exception-interceptor</module>
-        <module>faster-financial</module>
-        <module>faster-user</module>
-        <module>faster-domain</module>
     </modules>
 
     <dependencies>
