@@ -1,48 +1,80 @@
 package com.github.misterchangray.monitor;
 
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtMethod;
 
-import java.io.ByteArrayInputStream;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 
 
+/**
+ * @description:
+ * 字节码转换
+ *
+ * @author: Ray.chang
+ *
+ * @create: 2021-12-16 17:27
+ *
+ **/
 public class CostTransformer implements ClassFileTransformer {
 
     @Override
-    public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-
-
+    public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
+                            ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 
         // 这里我们限制下，只针对目标包下进行耗时统计
         if (!className.startsWith("com/github/misterchangray")) {
             return classfileBuffer;
         }
 
-        System.out.println("------------->" + className);
+        return getBytes(loader, className, classfileBuffer);
+    }
 
-        CtClass cl = null;
-        try {
-            ClassPool classPool = ClassPool.getDefault();
-            cl = classPool.makeClass(new ByteArrayInputStream(classfileBuffer));
 
-            for (CtMethod method : cl.getDeclaredMethods()) {
-                // 所有方法，统计耗时；请注意，需要通过`addLocalVariable`来声明局部变量
-                method.addLocalVariable("start", CtClass.longType);
-                method.insertBefore("start = System.currentTimeMillis();");
-                String methodName = method.getLongName();
-                method.insertAfter("System.out.println(\"" + methodName + " cost============: \" + (System" +
-                        ".currentTimeMillis() - start));");
-            }
-
-            byte[] transformed = cl.toBytecode();
-            return transformed;
-        } catch (Exception e) {
-            e.printStackTrace();
+    private byte[] getBytes(ClassLoader loader,
+                            String className,
+                            byte[] classFileBuffer) {
+        ClassReader cr = null;
+        ClassWriter cw = null;
+        ClassVisitor cv = null;
+        if (needComputeMaxs(loader)) {
+            cr = new ClassReader(classFileBuffer);
+            cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
+            cv = new ProfilingClassAdapter(cw, className);
+            cr.accept(cv, ClassReader.EXPAND_FRAMES);
+        } else {
+            cr = new ClassReader(classFileBuffer);
+            cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
+            cv = new ProfilingClassAdapter(cw, className);
+            cr.accept(cv, ClassReader.EXPAND_FRAMES);
         }
-        return classfileBuffer;
+
+        return cw.toByteArray();
+
+    }
+
+    private boolean needComputeMaxs(ClassLoader classLoader) {
+        if (classLoader == null) {
+            return false;
+        }
+
+        String loaderName = getClassLoaderName(classLoader);
+        return loaderName.equals("org.apache.catalina.loader.WebappClassLoader")
+                || loaderName.equals("org.apache.catalina.loader.ParallelWebappClassLoader")
+                || loaderName.equals("org.springframework.boot.loader.LaunchedURLClassLoader")
+                || loaderName.startsWith("org.apache.flink.runtime.execution.librarycache.FlinkUserCodeClassLoaders")
+                ;
+    }
+
+    private String getClassLoaderName(ClassLoader classLoader) {
+        if (classLoader == null) {
+            return "null";
+        }
+
+        return classLoader.getClass().getName();
     }
 }
