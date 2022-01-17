@@ -1,6 +1,7 @@
 package com.github.misterchangray.monitor;
 
 
+import com.github.misterchangray.monitor.utils.Logger;
 import com.github.misterchangray.monitor.utils.TypeDescUtils;
 
 import java.lang.reflect.Method;
@@ -34,7 +35,7 @@ public final class MethodTagMaintainer {
     public int addMethodTag(MethodTag methodTag) {
         int methodId = index.getAndIncrement();
         if (methodId > MAX_NUM) {
-            MyLogger.warn("MethodTagMaintainer.addMethodTag(" + methodTag + "): methodId > MAX_NUM: "
+            Logger.warn("MethodTagMaintainer.addMethodTag(" + methodTag + "): methodId > MAX_NUM: "
                     + methodId + " > " + MAX_NUM + ", ignored!!!");
             return -1;
         }

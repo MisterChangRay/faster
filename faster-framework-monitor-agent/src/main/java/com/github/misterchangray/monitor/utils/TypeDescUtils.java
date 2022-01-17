@@ -1,7 +1,5 @@
 package com.github.misterchangray.monitor.utils;
 
-import com.github.misterchangray.monitor.MyLogger;
-
 import java.lang.reflect.Method;
 
 /**
@@ -69,7 +67,7 @@ public final class TypeDescUtils {
                     return descriptor;
                 }
             } else {
-                MyLogger.error("TypeDescUtils.processDescriptor(" + descriptor + ") Should never arrive here!!! 0");
+                Logger.error("TypeDescUtils.processDescriptor(" + descriptor + ") Should never arrive here!!! 0");
                 return descriptor;
             }
         }
@@ -110,14 +108,14 @@ public final class TypeDescUtils {
                 return idx + 1;
             } else if (ch == ')') {
                 //理论上永远走不到这里
-                MyLogger.error("TypeDescUtils.processDescriptor(" + descriptor + ", " + idx + ", " + sb
+                Logger.error("TypeDescUtils.processDescriptor(" + descriptor + ", " + idx + ", " + sb
                         + ") Should never arrive here!!! 1");
                 return -1;
             }
         }
 
         //理论上永远走不到这里
-        MyLogger.error("TypeDescUtils.processDescriptor(" + descriptor + ", " + idx + ", " + sb
+        Logger.error("TypeDescUtils.processDescriptor(" + descriptor + ", " + idx + ", " + sb
                 + ") Should never arrive here!!! 2");
         return -1;
     }

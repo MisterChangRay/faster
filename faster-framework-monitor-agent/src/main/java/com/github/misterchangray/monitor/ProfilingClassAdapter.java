@@ -1,6 +1,7 @@
 package com.github.misterchangray.monitor;
 
 
+import com.github.misterchangray.monitor.utils.Logger;
 import com.github.misterchangray.monitor.utils.TypeDescUtils;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
@@ -36,7 +37,7 @@ public class ProfilingClassAdapter extends ClassVisitor {
 
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-        MyLogger.debug("ProfilingClassAdapter.visit(" + version + ", " + access + ", " + name + ", "
+        Logger.debug("ProfilingClassAdapter.visit(" + version + ", " + access + ", " + name + ", "
                 + signature + ", " + superName + ", " + Arrays.toString(interfaces) + ")");
 
         super.visit(version, access, name, signature, superName, interfaces);
@@ -92,7 +93,7 @@ public class ProfilingClassAdapter extends ClassVisitor {
         if (mv == null) {
             return null;
         }
-        MyLogger.debug("ProfilingClassAdapter.visitMethod(" + access + ", " + name + ", " + desc + ", "
+        Logger.debug("ProfilingClassAdapter.visitMethod(" + access + ", " + name + ", " + desc + ", "
                 + signature + ", " + Arrays.toString(exceptions) + "), innerClassName=" + innerClassName);
 
         if (isInvocationHandler && isInvokeMethod(name, desc)) {
