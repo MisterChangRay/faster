@@ -5,6 +5,7 @@ import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
+import com.github.misterchangray.monitor.utils.DateFormatUtils;
 import com.github.misterchangray.monitor.utils.Logger;
 
 /**
@@ -24,15 +25,16 @@ public final class ProfilingAspect {
     public static void profiling(final long startNanos, final int methodTagId) {
         try {
             long i = (System.nanoTime() - startNanos);
-            if(i == 0) return;
+            if(i <= millis) return;
+
             long limit = sec * ProfilingConfig.getMonitorConfig().getMaxTTLOfSec();
             if(i < limit) {
                 return;
             }
 
             long spend = i / millis;
-
-            String msg =  methodTagMaintainer.getMethodTag(methodTagId).getFullDesc() + ":" + spend;
+            String msg =  "[" + DateFormatUtils.format(System.currentTimeMillis()) + "] " +
+                    methodTagMaintainer.getMethodTag(methodTagId).getFullDesc() + ": " + spend;
             Recorders.record(new Recorder(logger, true, msg));
         } catch (Exception e) {
             Logger.error("ProfilingAspect.profiling(" + startNanos + ", " + methodTagId + ", "

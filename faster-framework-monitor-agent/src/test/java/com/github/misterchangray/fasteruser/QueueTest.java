@@ -1,16 +1,77 @@
 package com.github.misterchangray.fasteruser;
 
+import com.github.misterchangray.monitor.CpuMonitor;
+import com.github.misterchangray.monitor.JSystem;
+import com.github.misterchangray.monitor.config.ProfilingConfig;
+import com.github.misterchangray.monitor.consts.Consts;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
+import com.github.misterchangray.monitor.utils.DateFormatUtils;
+import org.junit.Test;
 
 public class QueueTest {
-    public static void main(String[] args) {
+
+
+    @Test
+    public void test() {
+        new Thread(() -> {
+            while (true) {
+                double cpuUsed = JSystem.getCpuUsed() * 100;
+
+                long stopMillis = System.currentTimeMillis();
+                if(cpuUsed > 50) {
+                    StringBuilder sb = new StringBuilder(256);
+                    sb.append("MonitorJ CPU [").append(DateFormatUtils.format(System.currentTimeMillis())).append(", ")
+                            .append(DateFormatUtils.format(stopMillis)).append(']').append(Consts.LINE_SEPARATOR);
+
+                    String format = String.format("application: %s, Pid: %s, cpuUsage: %s %% !",
+                           "",
+                            "",
+                            (int) cpuUsed);
+
+                    sb.append(format);
+                    System.out.println(sb.toString());
+
+                }
+
+
+                sleep(1000);
+
+
+            }
+
+        }).start();
+
+
+        for (int i = 0; i < 40; i++) {
+            new Thread(() -> {
+                while (true) {
+
+                }
+
+            }).start();
+
+        }
+        sleep(40000);
+
+    }
+
+    public static void sleep(int i) {
+        try {
+            Thread.sleep(i);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testQueue() {
         for (int i = 0; i < 5; i++) {
             new Thread(() -> {
                 long j =0;
                 while (true) {
                     j ++;
-                    Recorders.record(new Recorder(null, Thread.currentThread().getId()+ "- " + j));
+                    Recorders.record(new Recorder(null, false,Thread.currentThread().getId()+ "- " + j));
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {

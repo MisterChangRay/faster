@@ -40,15 +40,20 @@ public class Starter {
     private static boolean initOtherServers() {
         MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
         if(monitorConfig.isRecordCpuUsage()) {
-            LightWeightScheduler.exec(new CpuMonitor(), 5);
-            LightWeightScheduler.exec(new ThreadMonitor(), 10);
+            CpuMonitor cpuMonitor = new CpuMonitor();
+            LightWeightScheduler.exec(cpuMonitor, 5);
+
+            ThreadMonitor threadMonitor = new ThreadMonitor();
+            LightWeightScheduler.exec(threadMonitor, 10);
         }
         if(monitorConfig.isRecordMemUsed()) {
-            LightWeightScheduler.exec(new MemoryMonitor(), 15);
+            MemoryMonitor memoryMonitor = new MemoryMonitor();
+            LightWeightScheduler.exec(memoryMonitor, 15);
         }
 
         if(monitorConfig.isRecordGC()) {
-            LightWeightScheduler.exec(new GCMonitor(), 30);
+            GCMonitor gcMonitor = new GCMonitor();
+            LightWeightScheduler.exec(gcMonitor, 30);
         }
 
         Logger.startLogger();

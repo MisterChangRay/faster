@@ -62,6 +62,7 @@ public final class ProfilingConfig {
             monitorConfig.setMaxMemUse(getNumber(properties, "maxMemUse", "4194304000"));
             monitorConfig.setProcessId(getProcessID() + "");
 
+            monitorConfig.setAppName(properties.getOrDefault("appName", "").toString());
             ProfilingConfig.setCONFIG(monitorConfig);
             return true;
         } catch (IOException e) {
