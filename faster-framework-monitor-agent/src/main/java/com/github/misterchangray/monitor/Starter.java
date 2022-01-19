@@ -44,7 +44,7 @@ public class Starter {
             LightWeightScheduler.exec(cpuMonitor, 10);
 
             ThreadMonitor threadMonitor = new ThreadMonitor();
-            LightWeightScheduler.exec(threadMonitor, 11);
+            LightWeightScheduler.exec(threadMonitor, 60);
         }
         if(monitorConfig.isRecordMemUsed()) {
             MemoryMonitor memoryMonitor = new MemoryMonitor();
