@@ -3,10 +3,6 @@ package com.github.misterchangray.monitor;
 
 import com.github.misterchangray.monitor.config.MonitorConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
-import com.github.misterchangray.monitor.log.ILogger;
-import com.github.misterchangray.monitor.log.LoggerFactory;
-import com.github.misterchangray.monitor.log.Recorder;
-import com.github.misterchangray.monitor.log.Recorders;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -26,13 +22,11 @@ import java.security.ProtectionDomain;
  *
  **/
 public class CostTransformer implements ClassFileTransformer {
-    public static ILogger logger = LoggerFactory.getLogger("monitor-memory.log");
 
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
                             ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 
-        logger.log( "load " + className);
         if(ProfilingFilter.isNotNeedInject(className)) {
             return classfileBuffer;
         }
