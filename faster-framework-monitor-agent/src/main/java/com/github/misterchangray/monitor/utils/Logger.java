@@ -2,16 +2,21 @@ package com.github.misterchangray.monitor.utils;
 
 import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
+import com.github.misterchangray.monitor.log.Recorder;
+import com.github.misterchangray.monitor.log.Recorders;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by LinShunkang on 2018/3/20
  */
 public final class Logger {
-    static ILogger logger = LoggerFactory.getLogger("monitor.log");
+    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     private static final ThreadLocal<DateFormat> TO_MILLS_DATE_FORMAT = new ThreadLocal<DateFormat>() {
         @Override
@@ -36,6 +41,8 @@ public final class Logger {
         //empty
     }
 
+
+
     public static void setDebugEnable(boolean debugEnable) {
         Logger.debugEnable = debugEnable;
     }
@@ -44,8 +51,9 @@ public final class Logger {
         return debugEnable;
     }
 
+
     public static void info(String msg) {
-        logger.log(getPrefix(INFO_LEVEL) + msg);
+        System.out.println(getPrefix(INFO_LEVEL) + msg);
     }
 
     private static String getPrefix(String logLevel) {
@@ -75,5 +83,18 @@ public final class Logger {
             System.err.println(getPrefix(ERROR_LEVEL) + msg + " " + throwable.getMessage());
             throwable.printStackTrace();
         }
+    }
+
+    public static void startLogger() {
+        executor.execute(() -> {
+            while (true) {
+                Recorder fetch = Recorders.fetch();
+                if(Objects.isNull(fetch)) {
+                    Thread.yield();
+                } else {
+                    fetch.getiLogger().logAndFlush(fetch.getMsg());
+                }
+            }
+        });
     }
 }

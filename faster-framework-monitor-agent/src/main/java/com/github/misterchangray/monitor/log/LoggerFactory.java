@@ -34,7 +34,7 @@ public final class LoggerFactory {
     public static synchronized ILogger getLogger(String logFile) {
         logFile = logFile.trim();
 
-        ILogger logger = new AutoRollingLogger(System.getProperty("user.dir") + "/" + logFile , 100);
+        ILogger logger = new AutoRollingLogger( ProfilingConfig.getMonitorConfig().getLogPath() + logFile , 100);
         LOGGER_MAP.put(logFile, logger);
         return logger;
     }

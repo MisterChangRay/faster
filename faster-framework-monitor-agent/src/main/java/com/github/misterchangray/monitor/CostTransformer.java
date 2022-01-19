@@ -3,7 +3,6 @@ package com.github.misterchangray.monitor;
 
 import com.github.misterchangray.monitor.config.MonitorConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
-import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -33,7 +32,7 @@ public class CostTransformer implements ClassFileTransformer {
 
         MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
         // 这里我们限制下，只针对目标包下进行耗时统计
-        if (className.startsWith(monitorConfig.getScanPackage()) || ProfilingFilter.isNeedInject(className)) {
+        if (className.startsWith(monitorConfig.getMonitorPackage()) || ProfilingFilter.isNeedInject(className)) {
             return getBytes(loader, className, classfileBuffer);
         }
 

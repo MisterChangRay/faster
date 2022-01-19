@@ -1,19 +1,103 @@
 package com.github.misterchangray.monitor.config;
 
+import com.github.misterchangray.monitor.utils.Logger;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.util.Properties;
+
 /**
- * Created by LinShunkang on 2018/5/12
+ * Created by rui.chang on 2022/1/12
  */
 public final class ProfilingConfig {
 
-    private static MonitorConfig BASIC_CONFIG;
+    private static MonitorConfig CONFIG;
 
     public static MonitorConfig getMonitorConfig() {
-        return BASIC_CONFIG;
+        return CONFIG;
 
     }
 
 
-    public static void setBasicConfig(MonitorConfig basicConfig) {
-        BASIC_CONFIG = basicConfig;
+    public static void setCONFIG(MonitorConfig CONFIG) {
+        ProfilingConfig.CONFIG = CONFIG;
     }
+
+
+    public static boolean initProperties() {
+        try (InputStream in = new FileInputStream("./monitorj.properties")) {
+            Properties properties = new Properties();
+            properties.load(in);
+
+            MonitorConfig monitorConfig = new MonitorConfig();
+            monitorConfig.setNotifyUrlOfDingDing(properties.getOrDefault("notifyUrlOfDingDing", "").toString());
+            monitorConfig.setMonitorPackage(properties.getOrDefault("scanPackage", "").toString());
+            if("".equals(monitorConfig.getMonitorPackage()) ||
+                    monitorConfig.getMonitorPackage().startsWith("/") ||
+                    monitorConfig.getMonitorPackage().endsWith("/")) {
+                throw new RuntimeException("scanPackage config error, must not start and end with /");
+            }
+            if(monitorConfig.getMonitorPackage().contains(".")) {
+                monitorConfig.setMonitorPackage(monitorConfig.getMonitorPackage().replaceAll("\\.", "/"));
+            }
+
+
+            monitorConfig.setLogPath(properties.getOrDefault("logPath", System.getProperty("user.dir")).toString());
+            if(!monitorConfig.getLogPath().endsWith(File.separator)) {
+                monitorConfig.setLogPath(monitorConfig.getLogPath() + File.separator + "minitorJ" + File.separator);
+            }
+
+            monitorConfig.setRecordCpuUsage(getBool(properties, "RecordCpuUsage", "true"));
+            monitorConfig.setRecordGC(getBool(properties, "recordGC", "true"));
+            monitorConfig.setRecordMemUsed(getBool(properties, "recordMemUsed", "true"));
+
+            monitorConfig.setMaxTTLOfSec((int) getNumber(properties, "maxTTLOfSec", "3"));
+            monitorConfig.setMaxCpuUsedOfProcess((int) getNumber(properties, "maxCpuUsedOfProcess", "80"));
+            monitorConfig.setMaxThreadOfProcess((int) getNumber(properties, "maxThreadOfProcess", "5000"));
+            monitorConfig.setMaxExceptions((int) getNumber(properties, "maxExceptions", "50"));
+            monitorConfig.setMaxMemUse(getNumber(properties, "maxMemUse", "4194304000"));
+            monitorConfig.setProcessId(getProcessID() + "");
+
+            ProfilingConfig.setCONFIG(monitorConfig);
+            return true;
+        } catch (IOException e) {
+            Logger.error("AbstractBootstrap.initProperties()", e);
+        }
+        return false;
+    }
+
+
+
+
+    public static final int getProcessID() {
+        RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
+        System.out.println(runtimeMXBean.getName());
+        return Integer.valueOf(runtimeMXBean.getName().split("@")[0])
+                .intValue();
+    }
+
+
+
+    public static boolean getBool(Properties properties, String key, String defaultValue) {
+        String tmp = properties.getOrDefault(key, defaultValue).toString().toUpperCase();
+        if("TRUE".equals(tmp) || "FALSE".equals(tmp)) {
+            return Boolean.valueOf(tmp);
+        } else {
+            throw new RuntimeException(key + " config error, must is bool");
+        }
+    }
+
+    public static long getNumber(Properties properties, String key, String defaultValue) {
+        String tmp = properties.getOrDefault(key, defaultValue).toString();
+        if(tmp.matches("^\\d+$")) {
+            return Long.valueOf(tmp);
+        } else {
+            throw new RuntimeException(key + " config error, must is number");
+        }
+    }
+
 }
