@@ -26,6 +26,18 @@ public class JSystem {
     com.sun.management.OperatingSystemMXBean operatingSystemMXBean =
             (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
+    public static int findDeadlockedThreads() {
+        long[] deadlockedThreads = threads.findDeadlockedThreads();
+        return deadlockedThreads.length;
+    }
+
+
+    public static int findMonitorDeadlockedThreads() {
+        long[] monitorDeadlockedThreads = threads.findMonitorDeadlockedThreads();
+        return monitorDeadlockedThreads.length;
+    }
+
+
     public static long getHeapMemoryUsage() {
         //堆内存使用情况
         MemoryUsage heapMemoryUsage = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();

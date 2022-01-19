@@ -18,12 +18,28 @@ public class ThreadMonitor implements Runnable {
         int threadCount = JSystem.getCountOfThreadInProcess();
 
 
+        int deadlockedThreads = JSystem.findDeadlockedThreads();
+        int findMonitorDeadlockedThreads = JSystem.findMonitorDeadlockedThreads();
+
         long stopMillis = System.currentTimeMillis();
+
+
+        if(deadlockedThreads > 0 || findMonitorDeadlockedThreads > 0) {
+            StringBuilder sb = new StringBuilder(256);
+            sb.append("MonitorJ Thread [").append(DateFormatUtils.format(startMillis)).append(", ")
+                    .append(DateFormatUtils.format(stopMillis)).append(']').append(Consts.LINE_SEPARATOR);
+            String format = String.format("application: %s, Pid: %s, has deadlock thread !",
+                    ProfilingConfig.getMonitorConfig().getAppName(),
+                    ProfilingConfig.getMonitorConfig().getProcessId()
+                    );
+            sb.append(format);
+            Recorder recorder = new Recorder(logger, true, sb.toString());
+        }
+
         if(threadCount > 500) {
             StringBuilder sb = new StringBuilder(256);
             sb.append("MonitorJ Thread [").append(DateFormatUtils.format(startMillis)).append(", ")
                     .append(DateFormatUtils.format(stopMillis)).append(']').append(Consts.LINE_SEPARATOR);
-
             String format = String.format("application: %s, Pid: %s, current thread count: %s !",
                     ProfilingConfig.getMonitorConfig().getAppName(),
                     ProfilingConfig.getMonitorConfig().getProcessId(),
