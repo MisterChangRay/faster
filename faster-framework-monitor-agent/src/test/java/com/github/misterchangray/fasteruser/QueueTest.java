@@ -16,6 +16,11 @@ public class QueueTest {
     static List<List> a = new ArrayList<>();
 
     @Test
+    public void test6() {
+
+    }
+
+    @Test
     public void test5() {
         System.out.println(System.getProperty("-Xmx"));
         System.out.println(Runtime.getRuntime().maxMemory());

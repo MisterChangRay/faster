@@ -10,7 +10,7 @@ import com.github.misterchangray.monitor.log.Recorders;
 import com.github.misterchangray.monitor.utils.DateFormatUtils;
 
 public class MemoryMonitor implements Runnable {
-    static ILogger logger = LoggerFactory.getLogger("monitor-memory.log");
+    public static ILogger logger = LoggerFactory.getLogger("monitor-memory.log");
 
 
     @Override
