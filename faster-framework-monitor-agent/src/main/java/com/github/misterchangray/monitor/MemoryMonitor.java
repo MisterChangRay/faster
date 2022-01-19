@@ -23,7 +23,7 @@ public class MemoryMonitor implements Runnable {
         long total = noneHeapMemoryUsage + heapMemoryUsage;
 
         long stopMillis = System.currentTimeMillis();
-        if(total > monitorConfig.getMaxMemUse()) {
+        if(total > monitorConfig.getMaxMemUseKb()) {
             StringBuilder sb = new StringBuilder(256);
             sb.append("MonitorJ Memory [").append(DateFormatUtils.format(startMillis)).append(", ")
                     .append(DateFormatUtils.format(stopMillis)).append(']').append(Consts.LINE_SEPARATOR);

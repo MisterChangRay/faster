@@ -59,7 +59,7 @@ public final class ProfilingConfig {
             monitorConfig.setMaxCpuUsedOfProcess((int) getNumber(properties, "maxCpuUsedOfProcess", "80"));
             monitorConfig.setMaxThreadOfProcess((int) getNumber(properties, "maxThreadOfProcess", "5000"));
             monitorConfig.setMaxExceptions((int) getNumber(properties, "maxExceptions", "50"));
-            monitorConfig.setMaxMemUse(getNumber(properties, "maxMemUse", "4194304000"));
+            monitorConfig.setMaxMemUseKb(getNumber(properties, "maxMemUse", "524288000"));
             monitorConfig.setProcessId(getProcessID() + "");
 
             monitorConfig.setAppName(properties.getOrDefault("appName", "").toString());

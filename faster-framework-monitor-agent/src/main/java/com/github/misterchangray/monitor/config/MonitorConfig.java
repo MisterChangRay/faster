@@ -70,7 +70,7 @@ public class MonitorConfig {
      *
      * 默认为 500MB
      */
-    private long maxMemUse;
+    private long maxMemUseKb;
 
     /**
      * 进程ID
@@ -165,12 +165,12 @@ public class MonitorConfig {
     }
 
 
-    public long getMaxMemUse() {
-        return maxMemUse;
+    public long getMaxMemUseKb() {
+        return maxMemUseKb;
     }
 
-    public void setMaxMemUse(long maxMemUse) {
-        this.maxMemUse = maxMemUse;
+    public void setMaxMemUseKb(long maxMemUseKb) {
+        this.maxMemUseKb = maxMemUseKb;
     }
 
     public String getProcessId() {

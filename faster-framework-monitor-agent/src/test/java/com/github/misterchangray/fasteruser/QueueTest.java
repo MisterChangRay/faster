@@ -9,7 +9,27 @@ import com.github.misterchangray.monitor.log.Recorders;
 import com.github.misterchangray.monitor.utils.DateFormatUtils;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class QueueTest {
+    static List<List> a = new ArrayList<>();
+    @Test
+    public void test4() {
+        while (true) {
+            long noneHeapMemoryUsage = JSystem.getNoneHeapMemoryUsage();
+            System.out.println(noneHeapMemoryUsage);
+            System.out.println(JSystem.getHeapMemoryUsage());
+
+            for (int i = 0; i < 1000; i++) {
+                ArrayList b = new ArrayList();
+                b.add("c");
+                a.add(b);
+            }
+            sleep(10);
+        }
+
+    }
 
 
     @Test

@@ -41,14 +41,14 @@ public class Starter {
         MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
         if(monitorConfig.isRecordCpuUsage()) {
             CpuMonitor cpuMonitor = new CpuMonitor();
-            LightWeightScheduler.exec(cpuMonitor, 5);
+            LightWeightScheduler.exec(cpuMonitor, 10);
 
             ThreadMonitor threadMonitor = new ThreadMonitor();
-            LightWeightScheduler.exec(threadMonitor, 10);
+            LightWeightScheduler.exec(threadMonitor, 11);
         }
         if(monitorConfig.isRecordMemUsed()) {
             MemoryMonitor memoryMonitor = new MemoryMonitor();
-            LightWeightScheduler.exec(memoryMonitor, 15);
+            LightWeightScheduler.exec(memoryMonitor, 12);
         }
 
         if(monitorConfig.isRecordGC()) {
