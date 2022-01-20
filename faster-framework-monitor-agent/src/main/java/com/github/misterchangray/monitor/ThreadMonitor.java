@@ -30,9 +30,6 @@ public class ThreadMonitor implements Runnable {
             StringBuilder sb = new StringBuilder(256);
             sb.append(BannerUtils.buildBanner("MonitorJ Thread DeadLock [", startMillis, stopMillis));
 
-            sb.append("MonitorJ Thread DeadLock [").append(DateFormatUtils.format(startMillis)).append(", ")
-                    .append(DateFormatUtils.format(stopMillis)).append(']').append(Consts.LINE_SEPARATOR);
-
             if(s2 != null) {
                 sb.append(s2);
             }

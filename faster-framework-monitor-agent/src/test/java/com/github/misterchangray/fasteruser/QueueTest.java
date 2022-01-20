@@ -33,8 +33,13 @@ public class QueueTest {
     }
 
     @Test
-    public void test6() {
-        String m = "{\"msgtype\":\"text\", \"text\":{\"content\":\"c测试消息\"}}";
+    public void sendmsg( ) {
+        new QueueTest().dosendmsg("asdfsf");
+    }
+
+    public void dosendmsg( String msg) {
+        msg = msg.replaceAll("\"", "\\\\\"");
+        String m = "{\"msgtype\":\"text\", \"text\":{\"content\":\"" + msg +"\"}}";
         Long timestamp = System.currentTimeMillis();
 
         String sign = "";

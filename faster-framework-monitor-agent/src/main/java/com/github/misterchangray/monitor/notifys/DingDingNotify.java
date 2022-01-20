@@ -38,7 +38,7 @@ public class DingDingNotify implements Notify {
         MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
         if(Objects.isNull(monitorConfig.getNotifyUrlOfDingDing())) return;
 
-        String msg = "{\"msgtype\":\"text\", \"text\":{\"content\":\""+recorder.getMsg()+"\"}}";
+        String msg = "{\"msgtype\":\"text\", \"text\":{\"content\":\""+recorder.getMsg().replaceAll("\"", "")+"\"}}";
         Long timestamp = System.currentTimeMillis();
         String sign = buildSign(timestamp,monitorConfig);
         String s = HttpClient.executePost(monitorConfig.getNotifyUrlOfDingDing() + "&sign=" + sign + "&timestamp=" + timestamp, msg);
