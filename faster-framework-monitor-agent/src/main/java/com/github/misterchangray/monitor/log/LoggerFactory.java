@@ -34,7 +34,12 @@ public final class LoggerFactory {
     public static synchronized ILogger getLogger(String logFile) {
         logFile = logFile.trim();
 
-        ILogger logger = new AutoRollingLogger( ProfilingConfig.getMonitorConfig().getLogPath() + logFile , 10);
+        MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
+        String path = monitorConfig.getJarPath();
+        if(monitorConfig.getLogPath().length() > 3) {
+            path = monitorConfig.getLogPath();
+        }
+        ILogger logger = new AutoRollingLogger( path + logFile , 10);
         LOGGER_MAP.put(logFile, logger);
         return logger;
     }

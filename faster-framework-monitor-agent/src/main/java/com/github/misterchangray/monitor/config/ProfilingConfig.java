@@ -32,11 +32,14 @@ public final class ProfilingConfig {
         String jarpath = ProfilingConfig.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(jarpath);
         jarpath = file.getParent();
-        try (InputStream in = new FileInputStream(jarpath + File.separator + "monitorj.properties")) {
+
+        MonitorConfig monitorConfig = new MonitorConfig();
+        monitorConfig.setJarPath(jarpath + File.separator);
+
+        try (InputStream in = new FileInputStream(jarpath + "monitorj.properties")) {
             Properties properties = new Properties();
             properties.load(in);
 
-            MonitorConfig monitorConfig = new MonitorConfig();
             monitorConfig.setNotifyUrlOfDingDing(properties.getOrDefault("notifyUrlOfDingDing", "").toString());
             monitorConfig.setNotifySecretOfDingDing(properties.getOrDefault("notifySecretOfDingDing", "").toString());
 
@@ -53,7 +56,7 @@ public final class ProfilingConfig {
 
             monitorConfig.setLogPath(properties.getOrDefault("logPath", System.getProperty("user.dir")).toString());
             if(!monitorConfig.getLogPath().endsWith(File.separator)) {
-                monitorConfig.setLogPath(monitorConfig.getLogPath() + File.separator + "minitorJ" + File.separator);
+                monitorConfig.setLogPath(monitorConfig.getLogPath() + File.separator);
             }
 
             monitorConfig.setRecordCpuUsage(getBool(properties, "RecordCpuUsage", "true"));

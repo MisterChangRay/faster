@@ -91,6 +91,20 @@ public class MonitorConfig {
     private boolean debug;
 
 
+    /**
+     * agent 路径
+     */
+    private String jarPath;
+
+
+    public String getJarPath() {
+        return jarPath;
+    }
+
+    public void setJarPath(String jarPath) {
+        this.jarPath = jarPath;
+    }
+
     public boolean isDebug() {
         return debug;
     }
