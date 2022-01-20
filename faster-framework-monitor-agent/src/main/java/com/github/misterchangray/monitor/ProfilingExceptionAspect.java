@@ -7,6 +7,7 @@ import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
+import com.github.misterchangray.monitor.utils.BannerUtils;
 import com.github.misterchangray.monitor.utils.DateFormatUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -34,13 +35,10 @@ public final class ProfilingExceptionAspect {
         MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
 
         long stopMillis = System.currentTimeMillis();
-        sb.append("MonitorJ Exceptions [").append(DateFormatUtils.format(startMillis)).append(", ")
-                .append(DateFormatUtils.format(stopMillis)).append(']').append(Consts.LINE_SEPARATOR);
-        sb.append("application: " + monitorConfig.getAppName() + ", Pid: " + monitorConfig .getProcessId()+ ", occurred exception !" + throwable.getMessage() + Consts.LINE_SEPARATOR);
+        sb.append(BannerUtils.buildBanner("MonitorJ Exception Occurred [", startMillis, stopMillis));
         sb.append(format(throwable));
 
-
-        Recorder recorder = new Recorder(logger, false, sb.toString());
+        Recorder recorder = new Recorder(logger, ProfilingConfig.getMonitorConfig().isNotifyExceptions(), sb.toString());
         Recorders.record(recorder);
     }
     /**

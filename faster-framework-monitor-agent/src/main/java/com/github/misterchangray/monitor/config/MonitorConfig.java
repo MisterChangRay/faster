@@ -97,6 +97,19 @@ public class MonitorConfig {
     private String jarPath;
 
 
+    /**
+     * 是否推送异常
+     */
+    private boolean notifyExceptions;
+
+    public boolean isNotifyExceptions() {
+        return notifyExceptions;
+    }
+
+    public void setNotifyExceptions(boolean notifyExceptions) {
+        this.notifyExceptions = notifyExceptions;
+    }
+
     public String getJarPath() {
         return jarPath;
     }
