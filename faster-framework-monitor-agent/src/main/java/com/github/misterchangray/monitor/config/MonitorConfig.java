@@ -16,6 +16,8 @@ public class MonitorConfig {
      */
     private String notifyUrlOfDingDing;
 
+    private String notifySecretOfDingDing;
+
     /**
      * 方法超时时间
      */
@@ -83,6 +85,13 @@ public class MonitorConfig {
      */
     private String appName;
 
+    public String getNotifySecretOfDingDing() {
+        return notifySecretOfDingDing;
+    }
+
+    public void setNotifySecretOfDingDing(String notifySecretOfDingDing) {
+        this.notifySecretOfDingDing = notifySecretOfDingDing;
+    }
 
     public String getMonitorPackage() {
         return monitorPackage;

@@ -7,6 +7,7 @@ import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
 import com.github.misterchangray.monitor.pojo.JvmGcMetrics;
 import com.github.misterchangray.monitor.pojo.JvmMemoryMetrics;
+import com.github.misterchangray.monitor.utils.BannerUtils;
 import com.github.misterchangray.monitor.utils.DateFormatUtils;
 import com.github.misterchangray.monitor.utils.Logger;
 import com.github.misterchangray.monitor.utils.SetUtils;
@@ -163,8 +164,7 @@ public class GCMonitor implements Runnable {
     public String format(JvmGcMetrics metrics, long startMillis, long stopMillis) {
         String dataTitleFormat = "%-15s%15s%15s%15s%15s%15s%15s%15s%n";
         StringBuilder sb = new StringBuilder((3) * (9 * 3 + 64));
-        sb.append("MonitorJ JVM GC [").append(DateFormatUtils.format(startMillis)).append(", ")
-                .append(DateFormatUtils.format(stopMillis)).append(']').append(Consts.LINE_SEPARATOR);
+        sb.append(BannerUtils.buildBanner("MonitorJ JVM GC ", startMillis, stopMillis));
         sb.append(String.format(dataTitleFormat, "YoungGcCount", "YoungGcTime", "AvgYoungGcTime", "FullGcCount",
                 "FullGcTime", "ZGcCount", "ZGcTime", "AvgZGcTime"));
 
@@ -188,8 +188,7 @@ public class GCMonitor implements Runnable {
     public String format(JvmMemoryMetrics metrics, long startMillis, long stopMillis) {
         String dataTitleFormat = "%-14s%21s%12s%17s%12s%19s%12s%17s%13s%19s%13s%20s%15s%22s%15s%22s%n";
         StringBuilder sb = new StringBuilder((1) * (9 * 19 + 64));
-        sb.append("MonitorJ JVM Memory [").append(DateFormatUtils.format(startMillis)).append(", ")
-                .append(DateFormatUtils.format(stopMillis)).append(']').append(Consts.LINE_SEPARATOR);
+        sb.append(BannerUtils.buildBanner("MonitorJ JVM Memory ", startMillis, stopMillis));
         sb.append(String.format(dataTitleFormat,
                 "SurvivorUsed", "SurvivorUsedPercent",
                 "EdenUsed", "EdenUsedPercent",

@@ -5,7 +5,7 @@ import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
-import com.github.misterchangray.monitor.utils.DateFormatUtils;
+import com.github.misterchangray.monitor.utils.BannerUtils;
 import com.github.misterchangray.monitor.utils.Logger;
 
 /**
@@ -33,14 +33,16 @@ public final class ProfilingAspect {
             }
 
             long spend = i / millis;
-            String msg =  "[" + DateFormatUtils.format(System.currentTimeMillis()) + "] " +
-                    methodTagMaintainer.getMethodTag(methodTagId).getFullDesc() + ": " + spend;
+
+            long now = System.currentTimeMillis();
+            String banner = BannerUtils.buildBanner("MonitorJ Method ", now - spend, now);
+
+            String msg =  banner + methodTagMaintainer.getMethodTag(methodTagId).getFullDesc() + ": " + spend;
             Recorders.record(new Recorder(logger, true, msg));
         } catch (Exception e) {
             Logger.error("ProfilingAspect.profiling(" + startNanos + ", " + methodTagId + ", "
                     + MethodTagMaintainer.getInstance().getMethodTag(methodTagId) + ")", e);
         }
     }
-
 
 }

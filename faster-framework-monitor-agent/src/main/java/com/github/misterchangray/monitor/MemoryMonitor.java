@@ -7,6 +7,7 @@ import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
+import com.github.misterchangray.monitor.utils.BannerUtils;
 import com.github.misterchangray.monitor.utils.DateFormatUtils;
 
 public class MemoryMonitor implements Runnable {
@@ -25,8 +26,7 @@ public class MemoryMonitor implements Runnable {
         long stopMillis = System.currentTimeMillis();
         if(total > monitorConfig.getMaxMemUseKb()) {
             StringBuilder sb = new StringBuilder(256);
-            sb.append("MonitorJ Memory [").append(DateFormatUtils.format(startMillis)).append(", ")
-                    .append(DateFormatUtils.format(stopMillis)).append(']').append(Consts.LINE_SEPARATOR);
+            sb.append(BannerUtils.buildBanner("MonitorJ Memory ", startMillis, stopMillis));
 
             String format = String.format("application: %s, Pid: %s, memoryTotalUsage: %s kb, heap: %s, nonHeap: %s !",
                     ProfilingConfig.getMonitorConfig().getAppName(),

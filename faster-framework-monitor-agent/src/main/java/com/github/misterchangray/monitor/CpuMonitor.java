@@ -6,6 +6,7 @@ import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
+import com.github.misterchangray.monitor.utils.BannerUtils;
 import com.github.misterchangray.monitor.utils.DateFormatUtils;
 
 public class CpuMonitor implements Runnable {
@@ -20,8 +21,7 @@ public class CpuMonitor implements Runnable {
         long stopMillis = System.currentTimeMillis();
         if(cpuUsed > 50) {
             StringBuilder sb = new StringBuilder(256);
-            sb.append("MonitorJ CPU [").append(DateFormatUtils.format(startMillis)).append(", ")
-                    .append(DateFormatUtils.format(stopMillis)).append(']').append(Consts.LINE_SEPARATOR);
+            sb.append(BannerUtils.buildBanner("MonitorJ CPU ", startMillis, stopMillis));
 
             String format = String.format("application: %s, Pid: %s, cpuUsage: %s %% !",
                     ProfilingConfig.getMonitorConfig().getAppName(),

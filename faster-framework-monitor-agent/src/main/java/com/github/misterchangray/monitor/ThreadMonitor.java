@@ -6,6 +6,7 @@ import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
+import com.github.misterchangray.monitor.utils.BannerUtils;
 import com.github.misterchangray.monitor.utils.DateFormatUtils;
 
 public class ThreadMonitor implements Runnable {
@@ -34,12 +35,12 @@ public class ThreadMonitor implements Runnable {
                     );
             sb.append(format);
             Recorder recorder = new Recorder(logger, true, sb.toString());
+            Recorders.record(recorder);
         }
 
         if(threadCount > 500) {
             StringBuilder sb = new StringBuilder(256);
-            sb.append("MonitorJ Thread [").append(DateFormatUtils.format(startMillis)).append(", ")
-                    .append(DateFormatUtils.format(stopMillis)).append(']').append(Consts.LINE_SEPARATOR);
+            sb.append(BannerUtils.buildBanner("MonitorJ Memory ", startMillis, stopMillis));
             String format = String.format("application: %s, Pid: %s, current thread count: %s !",
                     ProfilingConfig.getMonitorConfig().getAppName(),
                     ProfilingConfig.getMonitorConfig().getProcessId(),

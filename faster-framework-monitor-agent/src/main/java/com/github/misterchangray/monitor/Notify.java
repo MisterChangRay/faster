@@ -1,7 +1,10 @@
 package com.github.misterchangray.monitor;
 
-public class Notify {
-    public static void notify(String msg) {
+import com.github.misterchangray.monitor.log.Recorder;
 
-    }
+public interface Notify {
+    void init() ;
+
+    void notify(Recorder recorder);
+
 }

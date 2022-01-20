@@ -35,6 +35,8 @@ public final class ProfilingConfig {
 
             MonitorConfig monitorConfig = new MonitorConfig();
             monitorConfig.setNotifyUrlOfDingDing(properties.getOrDefault("notifyUrlOfDingDing", "").toString());
+            monitorConfig.setNotifySecretOfDingDing(properties.getOrDefault("notifySecretOfDingDing", "").toString());
+
             monitorConfig.setMonitorPackage(properties.getOrDefault("scanPackage", "").toString());
             if("".equals(monitorConfig.getMonitorPackage()) ||
                     monitorConfig.getMonitorPackage().startsWith("/") ||

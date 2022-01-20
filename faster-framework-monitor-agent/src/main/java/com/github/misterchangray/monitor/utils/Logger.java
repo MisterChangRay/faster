@@ -1,9 +1,13 @@
 package com.github.misterchangray.monitor.utils;
 
+import com.github.misterchangray.monitor.Notify;
+import com.github.misterchangray.monitor.config.MonitorConfig;
+import com.github.misterchangray.monitor.config.ProfilingConfig;
 import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
+import com.github.misterchangray.monitor.notifys.DingDingNotify;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,7 +20,8 @@ import java.util.concurrent.Executors;
  * Created by LinShunkang on 2018/3/20
  */
 public final class Logger {
-    private static final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private static final ExecutorService executor = Executors.newFixedThreadPool(4);
+    private static Notify notify = new DingDingNotify();
 
     private static final ThreadLocal<DateFormat> TO_MILLS_DATE_FORMAT = new ThreadLocal<DateFormat>() {
         @Override
@@ -93,6 +98,9 @@ public final class Logger {
                     Thread.yield();
                 } else {
                     fetch.getiLogger().logAndFlush(fetch.getMsg());
+                    if(fetch.isNotify()) {
+                        notify.notify(fetch);
+                    }
                 }
             }
         });

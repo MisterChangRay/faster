@@ -6,10 +6,17 @@ import com.github.misterchangray.monitor.config.ProfilingConfig;
 import com.github.misterchangray.monitor.consts.Consts;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
+import com.github.misterchangray.monitor.notifys.DingDingNotify;
 import com.github.misterchangray.monitor.utils.DateFormatUtils;
+import com.github.misterchangray.monitor.utils.HttpClient;
 import org.junit.Test;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class QueueTest {
@@ -17,7 +24,26 @@ public class QueueTest {
 
     @Test
     public void test6() {
+        String m = "{\"msgtype\":\"text\", \"text\":{\"content\":\"c测试消息\"}}";
+        Long timestamp = System.currentTimeMillis();
 
+        String sign = "";
+        try {
+            String secret = "SEC028a906e7ca41b79f2b91503793025c7b53aaf0ad3fbef0974bc8fc0d4b16a33";
+
+            String stringToSign = timestamp + "\n" + secret;
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(new SecretKeySpec(secret.getBytes("UTF-8"), "HmacSHA256"));
+            byte[] signData = mac.doFinal(stringToSign.getBytes("UTF-8"));
+            sign = URLEncoder.encode(Base64.getEncoder().encodeToString(signData),"UTF-8");
+            System.out.println(sign);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String s = HttpClient.executePost("https://oapi.dingtalk.com/robot/send?access_token=7f2f1abba57510f0538832948844758c8ba4a58e68fc6b28bb26d972dd0ae1b2&sign=" + sign + "&timestamp=" + timestamp ,
+                m);
+        System.out.println(m);
+        System.out.println(s);
     }
 
     @Test
