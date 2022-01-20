@@ -19,6 +19,8 @@ public final class MethodTag {
 
     private final String description;
 
+    private final String simpleMethodDesc;
+
     private final String type;
 
 
@@ -30,9 +32,14 @@ public final class MethodTag {
         this.simpleClassName = simpleClassName;
         this.methodName = methodName;
         this.methodParamDesc = methodParamDesc;
-        this.fullDescription = fullClassName + '.' + methodName + methodParamDesc;
+        this.simpleMethodDesc = fullClassName + '.' + methodName;
+        this.fullDescription = this.simpleMethodDesc + methodParamDesc;
         this.description = simpleClassName + '.' + methodName + methodParamDesc;
         this.type = type;
+    }
+
+    public String getSimpleMethodDesc() {
+        return simpleMethodDesc;
     }
 
     public String getSimpleClassName() {

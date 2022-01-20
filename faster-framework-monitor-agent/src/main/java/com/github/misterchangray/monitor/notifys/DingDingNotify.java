@@ -5,6 +5,7 @@ import com.github.misterchangray.monitor.config.MonitorConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.utils.HttpClient;
+import com.github.misterchangray.monitor.utils.Logger;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -44,7 +45,7 @@ public class DingDingNotify implements Notify {
         Long timestamp = System.currentTimeMillis();
         String sign = buildSign(timestamp,monitorConfig);
         String s = HttpClient.executePost(monitorConfig.getNotifyUrlOfDingDing() + "&sign=" + sign + "&timestamp=" + timestamp, msg);
-        recorder.getiLogger().logAndFlush("发送结果" + s);
+        Logger.debug("DingDing Http Send Result -> " + s);
     }
 
 

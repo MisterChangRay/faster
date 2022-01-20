@@ -36,39 +36,44 @@ public final class ProfilingAspect {
             }
 
             long spend = i / millis;
-
-            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
             if(threadLocal.get() == null) {
                 threadLocal.set(new StackTraceElementExt());
             }
 
-            if(threadLocal.get().getStackTraceElements() == null || threadLocal.get().getStackTraceElements().length < stackTrace.length) {
-                threadLocal.get().setStackTraceElements(stackTrace);
-                threadLocal.get().setTimes(new long[stackTrace.length]);
-            }
+            MethodTag methodTag = methodTagMaintainer.getMethodTag(methodTagId);
 
-            if(threadLocal.get().getStackTraceElements().length > 0) {
-                for (int i1 = 0; i1 < threadLocal.get().getStackTraceElements().length; i1++) {
-                    StackTraceElement stackTraceElement = threadLocal.get().getStackTraceElements()[i1];
-                    if(stackTraceElement.getMethodName().equals( methodTagMaintainer.getMethodTag(methodTagId).getMethodName())) {
-                        threadLocal.get().getTimes()[i1] = spend;
-                    }
+            for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
+                if(stackTraceElement.getMethodName().equals(methodTag.getMethodName())) {
+                    threadLocal.get().getSb().append(stackTraceElement.toString());
+                    threadLocal.get().getSb().append(" : ");
+                    threadLocal.get().getSb().append(spend);
+                    threadLocal.get().getSb().append(Consts.LINE_SEPARATOR);
+                    break;
                 }
             }
 
+            // find the root to print logs
+            if(threadLocal.get().getExitMethodName().length() < 1) {
+                StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+                MethodTag exitMethod = methodTag;
+                for (StackTraceElement stackTraceElement : stackTrace) {
+                    String s = stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName();
+                    MethodTag methodByName = methodTagMaintainer.getMethodByName(s);
+                    if(null == methodByName) {
+                        continue;
+                    }
+                    exitMethod = methodByName;
+                }
+                threadLocal.get().setExitMethodName(exitMethod.getSimpleMethodDesc());
+            }
 
             long now = System.currentTimeMillis();
-            StringBuilder sb = new StringBuilder();
-            sb.append(BannerUtils.buildBanner("MonitorJ Method ", now - spend, now));
-
-            if(Thread.currentThread().getStackTrace().length > 0 && threadLocal.get() != null) {
-                for (int i1 = 1; i1 < threadLocal.get().getStackTraceElements().length; i1++) {
-                    sb.append(threadLocal.get().getStackTraceElements()[i1].toString());
-                    sb.append(" : ");
-                    sb.append(threadLocal.get().getTimes()[i1]);
-                    sb.append(Consts.LINE_SEPARATOR);
-                }
-
+            if(threadLocal.get() != null && methodTag.getSimpleMethodDesc().equals(threadLocal.get().getExitMethodName())) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(BannerUtils.buildBanner("MonitorJ Method ", now - spend, now));
+                sb.append(threadLocal.get().getSb().toString());
+                threadLocal.set(null);
+                threadLocal.remove();;
                 Recorders.record(new Recorder(logger, true, sb.toString()));
             }
         } catch (Exception e) {

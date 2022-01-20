@@ -21,8 +21,8 @@ public final class MethodTagMaintainer {
     private final AtomicInteger index = new AtomicInteger(0);
 
     private final AtomicReferenceArray<MethodTag> methodTagArr = new AtomicReferenceArray<>(MAX_NUM);
+    private final ConcurrentHashMap<String, MethodTag> methodMap = new ConcurrentHashMap<>(4096);
 
-    private final ConcurrentHashMap<Method, Integer> methodMap = new ConcurrentHashMap<>(4096);
 
     private MethodTagMaintainer() {
         //empty
@@ -40,31 +40,14 @@ public final class MethodTagMaintainer {
             return -1;
         }
 
+        Logger.debug("register method tag mapping =====>>>>>>>" + methodTag.getSimpleMethodDesc());
+        methodMap.put(methodTag.getSimpleMethodDesc(), methodTag);
         methodTagArr.set(methodId, methodTag);
         return methodId;
     }
 
-    public int addMethodTag(Method method) {
-        Integer tagId = methodMap.get(method);
-        if (tagId != null) {
-            return tagId;
-        }
-
-        synchronized (this) {
-            tagId = methodMap.get(method);
-            if (tagId != null) {
-                return tagId;
-            }
-
-            tagId = addMethodTag(createMethodTag(method));
-        }
-
-        if (tagId < 0) {
-            return tagId;
-        }
-
-        methodMap.putIfAbsent(method, tagId);
-        return tagId;
+    public MethodTag getMethodByName(String s) {
+        return methodMap.get(s);
     }
 
     private static MethodTag createMethodTag(Method method) {

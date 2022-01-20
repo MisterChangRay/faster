@@ -1,22 +1,27 @@
 package com.github.misterchangray.monitor.stacktrace;
 
 public class StackTraceElementExt {
-    private StackTraceElement[] stackTraceElements;
-    private long[] times;
+    private String exitMethodName;
+    private StringBuilder sb;
 
-    public StackTraceElement[] getStackTraceElements() {
-        return stackTraceElements;
+    public StackTraceElementExt() {
+       this.sb = new StringBuilder();
+       this.exitMethodName = "";
     }
 
-    public void setStackTraceElements(StackTraceElement[] stackTraceElements) {
-        this.stackTraceElements = stackTraceElements;
+    public String getExitMethodName() {
+        return exitMethodName;
     }
 
-    public long[] getTimes() {
-        return times;
+    public void setExitMethodName(String exitMethodName) {
+        this.exitMethodName = exitMethodName;
     }
 
-    public void setTimes(long[] times) {
-        this.times = times;
+    public StringBuilder getSb() {
+        return sb;
+    }
+
+    public void setSb(StringBuilder sb) {
+        this.sb = sb;
     }
 }
