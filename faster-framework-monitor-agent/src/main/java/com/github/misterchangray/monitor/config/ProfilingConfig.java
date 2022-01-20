@@ -31,10 +31,10 @@ public final class ProfilingConfig {
     public static boolean initProperties() {
         String jarpath = ProfilingConfig.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(jarpath);
-        jarpath = file.getParent();
+        jarpath = file.getParent() + File.separator;
 
         MonitorConfig monitorConfig = new MonitorConfig();
-        monitorConfig.setJarPath(jarpath + File.separator);
+        monitorConfig.setJarPath(jarpath );
 
         try (InputStream in = new FileInputStream(jarpath + "monitorj.properties")) {
             Properties properties = new Properties();
