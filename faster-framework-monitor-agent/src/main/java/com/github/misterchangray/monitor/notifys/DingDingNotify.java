@@ -11,6 +11,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.net.URLEncoder;
 import java.util.Base64;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 public class DingDingNotify implements Notify {
 
@@ -33,12 +34,13 @@ public class DingDingNotify implements Notify {
      * }
      * @param recorder
      */
+    private  Pattern pattern = Pattern.compile("\"");
     @Override
     public void notify(Recorder recorder) {
         MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
         if(Objects.isNull(monitorConfig.getNotifyUrlOfDingDing())) return;
 
-        String msg = "{\"msgtype\":\"text\", \"text\":{\"content\":\""+recorder.getMsg().replaceAll("\"", "")+"\"}}";
+        String msg = "{\"msgtype\":\"text\", \"text\":{\"content\":\""+ pattern.matcher(recorder.getMsg()).replaceAll("") + "\"}}";
         Long timestamp = System.currentTimeMillis();
         String sign = buildSign(timestamp,monitorConfig);
         String s = HttpClient.executePost(monitorConfig.getNotifyUrlOfDingDing() + "&sign=" + sign + "&timestamp=" + timestamp, msg);

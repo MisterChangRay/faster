@@ -1,5 +1,6 @@
 package com.github.misterchangray.monitor.config;
 
+import com.github.misterchangray.monitor.consts.Consts;
 import com.github.misterchangray.monitor.utils.Logger;
 
 import java.io.File;
@@ -54,9 +55,12 @@ public final class ProfilingConfig {
             }
 
 
-            monitorConfig.setLogPath(properties.getOrDefault("logPath", System.getProperty("user.dir")).toString());
-            if(!monitorConfig.getLogPath().endsWith(File.separator)) {
-                monitorConfig.setLogPath(monitorConfig.getLogPath() + File.separator);
+            monitorConfig.setLogPath(properties.getOrDefault("logPath", "").toString());
+            if(monitorConfig.getLogPath().length() < 3) {
+                String path = monitorConfig.getJarPath() + "monitorJLogs" + Consts.FILE_SEPARATOR;
+                monitorConfig.setLogPath(path);
+            } else if(monitorConfig.getLogPath().length() > 3 && !monitorConfig.getLogPath().endsWith(Consts.FILE_SEPARATOR)) {
+                monitorConfig.setLogPath(monitorConfig.getLogPath() + Consts.FILE_SEPARATOR);
             }
 
             monitorConfig.setRecordCpuUsage(getBool(properties, "RecordCpuUsage", "true"));

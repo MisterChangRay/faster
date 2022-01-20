@@ -2,6 +2,7 @@ package com.github.misterchangray.monitor.log;
 
 import com.github.misterchangray.monitor.config.MonitorConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
+import com.github.misterchangray.monitor.consts.Consts;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,11 +36,8 @@ public final class LoggerFactory {
         logFile = logFile.trim();
 
         MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
-        String path = monitorConfig.getJarPath();
-        if(monitorConfig.getLogPath().length() > 3) {
-            path = monitorConfig.getLogPath();
-        }
-        ILogger logger = new AutoRollingLogger( path + logFile , 10);
+
+        ILogger logger = new AutoRollingLogger( monitorConfig.getLogPath() + logFile , 10);
         LOGGER_MAP.put(logFile, logger);
         return logger;
     }
