@@ -23,6 +23,16 @@ public class QueueTest {
     static List<List> a = new ArrayList<>();
 
     @Test
+    public void test7() {
+
+        long startMillis = System.currentTimeMillis();
+        int threadCount = JSystem.getCountOfThreadInProcess();
+
+
+        JSystem.findMonitorDeadlockedThreads();
+    }
+
+    @Test
     public void test6() {
         String m = "{\"msgtype\":\"text\", \"text\":{\"content\":\"c测试消息\"}}";
         Long timestamp = System.currentTimeMillis();

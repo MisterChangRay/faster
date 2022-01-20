@@ -1,7 +1,10 @@
 package com.github.misterchangray.monitor;
 
+import com.github.misterchangray.monitor.consts.Consts;
+
 import java.lang.management.*;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class JSystem {
@@ -26,15 +29,27 @@ public class JSystem {
     com.sun.management.OperatingSystemMXBean operatingSystemMXBean =
             (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
-    public static int findDeadlockedThreads() {
-        long[] deadlockedThreads = threads.findDeadlockedThreads();
-        return deadlockedThreads.length;
-    }
-
-
-    public static int findMonitorDeadlockedThreads() {
+    public static StringBuilder findMonitorDeadlockedThreads() {
         long[] monitorDeadlockedThreads = threads.findMonitorDeadlockedThreads();
-        return monitorDeadlockedThreads.length;
+        if(null == monitorDeadlockedThreads) {
+            return null;
+        }
+
+        Map<Thread, StackTraceElement[]> allStackTraces = Thread.getAllStackTraces();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < monitorDeadlockedThreads.length; i++) {
+            ThreadInfo threadInfo = threads.getThreadInfo(monitorDeadlockedThreads[i]);
+            sb.append("ThreadInfo" + i  + ": " + threadInfo.toString() );
+
+            int finalI = i;
+            allStackTraces.forEach((k, v) -> {
+                if(k.getId() == threadInfo.getThreadId() && v != null && v.length > 1) {
+                    sb.append("- StackTrace" + finalI + ": " + v[0].toString() + Consts.LINE_SEPARATOR + Consts.LINE_SEPARATOR);
+                }
+            });
+
+        }
+        return sb;
     }
 
 

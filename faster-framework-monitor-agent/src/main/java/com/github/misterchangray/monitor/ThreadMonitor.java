@@ -8,43 +8,42 @@ import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
 import com.github.misterchangray.monitor.utils.BannerUtils;
 import com.github.misterchangray.monitor.utils.DateFormatUtils;
+import com.github.misterchangray.monitor.utils.Logger;
 
 public class ThreadMonitor implements Runnable {
     static ILogger logger = LoggerFactory.getLogger("monitor-thread.log");
 
     @Override
     public void run() {
-        long startMillis = System.currentTimeMillis();
+        Logger.debug("scan thread ");
 
+        long startMillis = System.currentTimeMillis();
         int threadCount = JSystem.getCountOfThreadInProcess();
 
 
-        int deadlockedThreads = JSystem.findDeadlockedThreads();
-        int findMonitorDeadlockedThreads = JSystem.findMonitorDeadlockedThreads();
+        StringBuilder s2 = JSystem.findMonitorDeadlockedThreads();
 
         long stopMillis = System.currentTimeMillis();
 
 
-        if(deadlockedThreads > 0 || findMonitorDeadlockedThreads > 0) {
+        if(s2 != null) {
             StringBuilder sb = new StringBuilder(256);
-            sb.append("MonitorJ Thread [").append(DateFormatUtils.format(startMillis)).append(", ")
+            sb.append(BannerUtils.buildBanner("MonitorJ Thread DeadLock [", startMillis, stopMillis));
+
+            sb.append("MonitorJ Thread DeadLock [").append(DateFormatUtils.format(startMillis)).append(", ")
                     .append(DateFormatUtils.format(stopMillis)).append(']').append(Consts.LINE_SEPARATOR);
-            String format = String.format("application: %s, Pid: %s, has deadlock thread !",
-                    ProfilingConfig.getMonitorConfig().getAppName(),
-                    ProfilingConfig.getMonitorConfig().getProcessId()
-                    );
-            sb.append(format);
+
+            if(s2 != null) {
+                sb.append(s2);
+            }
             Recorder recorder = new Recorder(logger, true, sb.toString());
             Recorders.record(recorder);
         }
 
         if(threadCount > 500) {
             StringBuilder sb = new StringBuilder(256);
-            sb.append(BannerUtils.buildBanner("MonitorJ Memory ", startMillis, stopMillis));
-            String format = String.format("application: %s, Pid: %s, current thread count: %s !",
-                    ProfilingConfig.getMonitorConfig().getAppName(),
-                    ProfilingConfig.getMonitorConfig().getProcessId(),
-                    threadCount);
+            sb.append(BannerUtils.buildBanner("MonitorJ Thread Count [", startMillis, stopMillis));
+            String format = String.format("current thread count: %s !",threadCount);
 
             sb.append(format);
             Recorder recorder = new Recorder(logger, false, sb.toString());
