@@ -97,6 +97,10 @@ public final class Logger {
                 if(Objects.isNull(fetch)) {
                     Thread.yield();
                 } else {
+                    if(ProfilingConfig.getMonitorConfig().isDebug()) {
+                        Logger.info(fetch.getMsg());
+                    }
+
                     fetch.getiLogger().logAndFlush(fetch.getMsg());
                     if(fetch.isNotify()) {
                         notify.notify(fetch);

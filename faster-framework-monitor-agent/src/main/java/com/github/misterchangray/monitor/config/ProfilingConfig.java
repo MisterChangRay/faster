@@ -29,7 +29,10 @@ public final class ProfilingConfig {
 
 
     public static boolean initProperties() {
-        try (InputStream in = new FileInputStream("./monitorj.properties")) {
+        String jarpath = ProfilingConfig.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        File file = new File(jarpath);
+        jarpath = file.getParent();
+        try (InputStream in = new FileInputStream(jarpath + File.separator + "monitorj.properties")) {
             Properties properties = new Properties();
             properties.load(in);
 
@@ -56,6 +59,8 @@ public final class ProfilingConfig {
             monitorConfig.setRecordCpuUsage(getBool(properties, "RecordCpuUsage", "true"));
             monitorConfig.setRecordGC(getBool(properties, "recordGC", "true"));
             monitorConfig.setRecordMemUsed(getBool(properties, "recordMemUsed", "true"));
+
+            monitorConfig.setDebug(getBool(properties, "debug", "false"));
 
             monitorConfig.setMaxTTLOfSec((int) getNumber(properties, "maxTTLOfSec", "3"));
             monitorConfig.setMaxCpuUsedOfProcess((int) getNumber(properties, "maxCpuUsedOfProcess", "80"));

@@ -85,6 +85,20 @@ public class MonitorConfig {
      */
     private String appName;
 
+    /**
+     * 应用名称
+     */
+    private boolean debug;
+
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+
     public String getNotifySecretOfDingDing() {
         return notifySecretOfDingDing;
     }
