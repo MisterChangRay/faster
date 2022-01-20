@@ -25,11 +25,8 @@ public class QueueTest {
     @Test
     public void test7() {
 
-        long startMillis = System.currentTimeMillis();
-        int threadCount = JSystem.getCountOfThreadInProcess();
-
-
-        JSystem.findMonitorDeadlockedThreads();
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        System.out.println(11);
     }
 
     @Test
