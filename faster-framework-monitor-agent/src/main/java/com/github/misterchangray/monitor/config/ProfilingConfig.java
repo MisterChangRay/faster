@@ -66,7 +66,7 @@ public final class ProfilingConfig {
             monitorConfig.setRecordCpuUsage(getBool(properties, "RecordCpuUsage", "true"));
             monitorConfig.setRecordGC(getBool(properties, "recordGC", "true"));
             monitorConfig.setRecordMemUsed(getBool(properties, "recordMemUsed", "true"));
-            monitorConfig.setRecordMemUsed(getBool(properties, "notifyExceptions", "false"));
+            monitorConfig.setNotifyExceptions(getBool(properties, "notifyExceptions", "false"));
             monitorConfig.setDebug(getBool(properties, "debug", "false"));
 
             monitorConfig.setMaxTTLOfSec((int) getNumber(properties, "maxTTLOfSec", "3"));
