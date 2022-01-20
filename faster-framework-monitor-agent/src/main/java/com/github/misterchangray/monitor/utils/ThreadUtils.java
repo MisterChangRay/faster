@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Created by LinShunkang on 2018/3/16
+ * Created by ray.chang on 2022/1/15
  */
 public final class ThreadUtils {
 

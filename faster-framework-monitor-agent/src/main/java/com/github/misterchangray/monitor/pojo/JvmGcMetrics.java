@@ -1,7 +1,7 @@
 package com.github.misterchangray.monitor.pojo;
 
 /**
- * Created by LinShunkang on 2018/8/19
+ * Created by ray.chang on 2022/1/15
  */
 public class JvmGcMetrics extends Metrics {
 

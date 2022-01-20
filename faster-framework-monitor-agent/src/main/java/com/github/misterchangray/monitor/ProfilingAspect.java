@@ -11,7 +11,7 @@ import com.github.misterchangray.monitor.utils.BannerUtils;
 import com.github.misterchangray.monitor.utils.Logger;
 
 /**
- * Created by LinShunkang on 2018/4/15
+ * Created by ray.chang on 2022/1/19
  */
 public final class ProfilingAspect {
     static ILogger logger = LoggerFactory.getLogger("monitor-methods.log");

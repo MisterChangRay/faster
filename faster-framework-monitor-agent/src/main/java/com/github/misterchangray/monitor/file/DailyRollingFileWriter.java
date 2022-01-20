@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by LinShunkang on 2018/9/7
+ * Created by ray.chang on 2022/1/15
  */
 public class DailyRollingFileWriter extends AutoRollingFileWriter {
 

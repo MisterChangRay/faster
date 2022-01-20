@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by LinShunkang on 2018/3/20
+ * Created by ray.chang on 2022/1/15
  */
 public final class Logger {
     private static final ExecutorService executor = Executors.newFixedThreadPool(4);

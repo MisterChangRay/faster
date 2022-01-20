@@ -3,7 +3,7 @@ package com.github.misterchangray.monitor.pojo;
 import com.github.misterchangray.monitor.utils.NumUtils;
 
 /**
- * Created by LinShunkang on 2018/8/19
+ * Created by ray.chang on 2022/1/19
  * <p>
  * 注意：以下成员变量的单位都是 KB
  */

@@ -1,7 +1,7 @@
 package com.github.misterchangray.monitor.log;
 
 /**
- * Created by LinShunkang on 2018/10/29
+ * Created by ray.chang on 2022/1/15
  */
 public class StdoutLogger implements ILogger {
 

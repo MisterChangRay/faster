@@ -3,7 +3,7 @@ package com.github.misterchangray.monitor.pojo;
 import java.io.Serializable;
 
 /**
- * Created by LinShunkang on 2018/8/19
+ * Created by ray.chang on 2022/1/15
  */
 public abstract class Metrics implements Serializable {
 
