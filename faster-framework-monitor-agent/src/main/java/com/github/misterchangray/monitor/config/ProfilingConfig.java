@@ -45,13 +45,14 @@ public final class ProfilingConfig {
             monitorConfig.setNotifySecretOfDingDing(properties.getOrDefault("notifySecretOfDingDing", "").toString());
 
             monitorConfig.setMonitorPackage(properties.getOrDefault("scanPackage", "").toString());
-            if("".equals(monitorConfig.getMonitorPackage()) ||
-                    monitorConfig.getMonitorPackage().startsWith("/") ||
-                    monitorConfig.getMonitorPackage().endsWith("/")) {
-                throw new RuntimeException("scanPackage config error, must not start and end with /");
+            if("".equals(monitorConfig.getMonitorPackage())) {
+                return false;
             }
-            if(monitorConfig.getMonitorPackage().contains(".")) {
+
+            if(monitorConfig.getMonitorPackage().length() > 0 && monitorConfig.getMonitorPackage().contains(".")) {
                 monitorConfig.setMonitorPackage(monitorConfig.getMonitorPackage().replaceAll("\\.", "/"));
+            } else {
+                throw new RuntimeException("scanPackage config error; like com.test.target ");
             }
 
 
