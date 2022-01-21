@@ -75,8 +75,8 @@ public final class ProfilingConfig {
             monitorConfig.setMaxThreadOfProcess((int) getNumber(properties, "maxThreadOfProcess", "5000"));
             monitorConfig.setMaxExceptions((int) getNumber(properties, "maxExceptions", "50"));
 
-            // 默认取配置最大堆内存 + 100MB堆外内存
-            long defaultMax = Runtime.getRuntime().maxMemory() + 104857600;
+            // 默认取配置最大堆内存 + 300MB堆外内存
+            long defaultMax = Runtime.getRuntime().maxMemory() + 314572800;
             monitorConfig.setMaxMemUseKb(getNumber(properties, "maxMemUse", defaultMax + ""));
             monitorConfig.setProcessId(getProcessID() + "");
 
