@@ -1,6 +1,7 @@
 package com.github.misterchangray.monitor.notifys;
 
 import com.github.misterchangray.monitor.Notify;
+import com.github.misterchangray.monitor.config.CustomConfig;
 import com.github.misterchangray.monitor.config.MonitorConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
 import com.github.misterchangray.monitor.log.Recorder;
@@ -42,10 +43,10 @@ public class DingDingNotify implements Notify {
     }
 
 
-    private static String buildSign(long timestamp, MonitorConfig monitorConfig) {
+    private static String buildSign(long timestamp, CustomConfig customConfig) {
         String sign = "";
         try {
-            String secret = monitorConfig.getNotifySecretOfDingDing();
+            String secret = customConfig.getNotifySecretOfDingDing();
 
             String stringToSign = timestamp + "\n" + secret;
             Mac mac = Mac.getInstance("HmacSHA256");
@@ -61,8 +62,8 @@ public class DingDingNotify implements Notify {
 
     @Override
     public void notify(StringBuilder recorder) {
-        MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
-        if(Objects.isNull(monitorConfig.getNotifyUrlOfDingDing())) return;
+        CustomConfig customConfig =  ProfilingConfig.getCustomConfig();
+        if(Objects.isNull(customConfig.getNotifyUrlOfDingDing())) return;
 
         StringBuilder sb = new StringBuilder();
         sb.append("{\"msgtype\":\"text\", \"text\":{\"content\":\"");
@@ -70,8 +71,8 @@ public class DingDingNotify implements Notify {
         sb.append("\"}}");
 
         Long timestamp = System.currentTimeMillis();
-        String sign = buildSign(timestamp,monitorConfig);
-        String s = HttpClient.executePost(monitorConfig.getNotifyUrlOfDingDing() + "&sign=" + sign + "&timestamp=" + timestamp, sb.toString());
+        String sign = buildSign(timestamp,customConfig);
+        String s = HttpClient.executePost(customConfig.getNotifyUrlOfDingDing() + "&sign=" + sign + "&timestamp=" + timestamp, sb.toString());
         Logger.debug("DingDing Http Send Result -> " + s);
 
     }

@@ -1,5 +1,6 @@
 package com.github.misterchangray.monitor;
 
+import com.github.misterchangray.monitor.config.CustomConfig;
 import com.github.misterchangray.monitor.config.MethodConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
 import com.github.misterchangray.monitor.consts.Consts;
@@ -34,7 +35,7 @@ public final class ProfilingAspect {
             MethodTag methodTag = methodTagMaintainer.getMethodTag(methodTagId);
 
             long limit = sec * ProfilingConfig.getMonitorConfig().getMaxTTLOfSec();
-            MethodConfig methodConfig = ProfilingConfig.getCustomConfig().get(methodTag.getSimpleMethodDesc());
+            MethodConfig methodConfig = ProfilingConfig.getCustomConfig().getMethodsConfig().get(methodTag.getSimpleMethodDesc());
             if(null != methodConfig) {
                 limit = sec * methodConfig.getTtlOfSec();
             }

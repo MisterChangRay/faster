@@ -29,7 +29,7 @@ public class MemoryMonitor implements Runnable {
             sb.append(BannerUtils.buildBanner("MonitorJ Memory ", startMillis, stopMillis));
 
             String format = String.format("application: %s, Pid: %s, memoryTotalUsage: %s kb, heap: %s, nonHeap: %s !",
-                    ProfilingConfig.getMonitorConfig().getAppName(),
+                    ProfilingConfig.getCustomConfig().getAppName(),
                     ProfilingConfig.getMonitorConfig().getProcessId(),
                     (total / 1024), heapMemoryUsage / 1024, noneHeapMemoryUsage / 1024);
 

@@ -24,7 +24,7 @@ public class CpuMonitor implements Runnable {
             sb.append(BannerUtils.buildBanner("MonitorJ CPU ", startMillis, stopMillis));
 
             String format = String.format("application: %s, Pid: %s, cpuUsage: %s %% !",
-                    ProfilingConfig.getMonitorConfig().getAppName(),
+                    ProfilingConfig.getCustomConfig().getAppName(),
                     ProfilingConfig.getMonitorConfig().getProcessId(),
                     (int) cpuUsed);
 

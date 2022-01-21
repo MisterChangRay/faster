@@ -1,5 +1,6 @@
 package com.github.misterchangray.monitor;
 
+import com.github.misterchangray.monitor.config.CustomConfig;
 import com.github.misterchangray.monitor.config.MonitorConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
 import com.github.misterchangray.monitor.utils.LightWeightScheduler;
@@ -38,23 +39,26 @@ public class Starter {
      * @return
      */
     private static boolean initOtherServers() {
-        MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
-        if(monitorConfig.isRecordCpuUsage()) {
+        CustomConfig customConfig = ProfilingConfig.getCustomConfig();
+        if(customConfig.isRecordCpuUsage()) {
             CpuMonitor cpuMonitor = new CpuMonitor();
             LightWeightScheduler.exec(cpuMonitor, 10);
 
             ThreadMonitor threadMonitor = new ThreadMonitor();
             LightWeightScheduler.exec(threadMonitor, 60);
         }
-        if(monitorConfig.isRecordMemUsed()) {
+        if(customConfig.isRecordMemUsed()) {
             MemoryMonitor memoryMonitor = new MemoryMonitor();
             LightWeightScheduler.exec(memoryMonitor, 12);
         }
 
-        if(monitorConfig.isRecordGC()) {
+        if(customConfig.isRecordGC()) {
             GCMonitor gcMonitor = new GCMonitor();
             LightWeightScheduler.exec(gcMonitor, 30);
         }
+
+        AutoReloadConfigMonitor autoReloadConfigMonitor = new AutoReloadConfigMonitor();
+        LightWeightScheduler.exec(autoReloadConfigMonitor, 30);
 
         Logger.startLogger();
         return true;

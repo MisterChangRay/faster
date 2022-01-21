@@ -104,7 +104,7 @@ public final class Logger {
                         if(null == fetch) continue;
 
 
-                        if(ProfilingConfig.getMonitorConfig().isDebug()) {
+                        if(ProfilingConfig.getCustomConfig().isDebug()) {
                             Logger.info(fetch.getMsg());
                         }
 

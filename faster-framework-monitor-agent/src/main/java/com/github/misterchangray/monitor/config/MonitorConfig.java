@@ -14,12 +14,6 @@ public class MonitorConfig {
      */
     private String monitorPackage;
 
-    /**
-     * 钉钉HTTP通知地址
-     */
-    private String notifyUrlOfDingDing;
-
-    private String notifySecretOfDingDing;
 
     /**
      * 方法超时时间
@@ -33,23 +27,13 @@ public class MonitorConfig {
 
 
     /**
-     * 是否记录CPU使用率
-     *
-     */
-    private boolean recordCpuUsage;
-
-    /**
      * 进程使用最大CPU通知阈值
      * 进程使用CPU超过此值后发送通知
      * 默认为90
      */
     private int maxCpuUsedOfProcess;
 
-    /**
-     * 打印GC情况
-     * 每 5/s 打印一次GC情况
-     */
-    private boolean recordGC;
+
 
     /**
      * 一个进程最大线程数
@@ -65,10 +49,6 @@ public class MonitorConfig {
     private int maxExceptions;
 
 
-    /**
-     * 是否记录内存使用情况
-     */
-    private boolean recordMemUsed;
 
     /**
      * 内存使用超过此阈值后发送通知
@@ -84,17 +64,6 @@ public class MonitorConfig {
 
 
     /**
-     * 应用名称
-     */
-    private String appName;
-
-    /**
-     * 应用名称
-     */
-    private boolean debug;
-
-
-    /**
      * agent 路径
      */
     private String jarPath;
@@ -106,50 +75,9 @@ public class MonitorConfig {
 
 
     /**
-     * 是否推送异常
+     * 配置文件路径
      */
-    private boolean notifyExceptions;
-
-
-    public String getProjectPath() {
-        return projectPath;
-    }
-
-    public void setProjectPath(String projectPath) {
-        this.projectPath = projectPath;
-    }
-
-    public boolean isNotifyExceptions() {
-        return notifyExceptions;
-    }
-
-    public void setNotifyExceptions(boolean notifyExceptions) {
-        this.notifyExceptions = notifyExceptions;
-    }
-
-    public String getJarPath() {
-        return jarPath;
-    }
-
-    public void setJarPath(String jarPath) {
-        this.jarPath = jarPath;
-    }
-
-    public boolean isDebug() {
-        return debug;
-    }
-
-    public void setDebug(boolean debug) {
-        this.debug = debug;
-    }
-
-    public String getNotifySecretOfDingDing() {
-        return notifySecretOfDingDing;
-    }
-
-    public void setNotifySecretOfDingDing(String notifySecretOfDingDing) {
-        this.notifySecretOfDingDing = notifySecretOfDingDing;
-    }
+    private String configPath;
 
     public String getMonitorPackage() {
         return monitorPackage;
@@ -157,14 +85,6 @@ public class MonitorConfig {
 
     public void setMonitorPackage(String monitorPackage) {
         this.monitorPackage = monitorPackage;
-    }
-
-    public String getNotifyUrlOfDingDing() {
-        return notifyUrlOfDingDing;
-    }
-
-    public void setNotifyUrlOfDingDing(String notifyUrlOfDingDing) {
-        this.notifyUrlOfDingDing = notifyUrlOfDingDing;
     }
 
     public int getMaxTTLOfSec() {
@@ -183,28 +103,12 @@ public class MonitorConfig {
         this.logPath = logPath;
     }
 
-    public boolean isRecordCpuUsage() {
-        return recordCpuUsage;
-    }
-
-    public void setRecordCpuUsage(boolean recordCpuUsage) {
-        this.recordCpuUsage = recordCpuUsage;
-    }
-
     public int getMaxCpuUsedOfProcess() {
         return maxCpuUsedOfProcess;
     }
 
     public void setMaxCpuUsedOfProcess(int maxCpuUsedOfProcess) {
         this.maxCpuUsedOfProcess = maxCpuUsedOfProcess;
-    }
-
-    public boolean isRecordGC() {
-        return recordGC;
-    }
-
-    public void setRecordGC(boolean recordGC) {
-        this.recordGC = recordGC;
     }
 
     public int getMaxThreadOfProcess() {
@@ -223,15 +127,6 @@ public class MonitorConfig {
         this.maxExceptions = maxExceptions;
     }
 
-    public boolean isRecordMemUsed() {
-        return recordMemUsed;
-    }
-
-    public void setRecordMemUsed(boolean recordMemUsed) {
-        this.recordMemUsed = recordMemUsed;
-    }
-
-
     public long getMaxMemUseKb() {
         return maxMemUseKb;
     }
@@ -248,11 +143,27 @@ public class MonitorConfig {
         this.processId = processId;
     }
 
-    public String getAppName() {
-        return appName;
+    public String getJarPath() {
+        return jarPath;
     }
 
-    public void setAppName(String appName) {
-        this.appName = appName;
+    public void setJarPath(String jarPath) {
+        this.jarPath = jarPath;
+    }
+
+    public String getProjectPath() {
+        return projectPath;
+    }
+
+    public void setProjectPath(String projectPath) {
+        this.projectPath = projectPath;
+    }
+
+    public String getConfigPath() {
+        return configPath;
+    }
+
+    public void setConfigPath(String configPath) {
+        this.configPath = configPath;
     }
 }

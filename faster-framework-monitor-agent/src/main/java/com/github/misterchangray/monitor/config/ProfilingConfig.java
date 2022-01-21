@@ -19,8 +19,7 @@ import java.util.Properties;
  */
 public final class ProfilingConfig {
     private static MonitorConfig monitorConfig;
-    private static Map<String, MethodConfig> customConfig = new HashMap<>();
-
+    private static CustomConfig customConfig;
 
     public static String fileLocation(MonitorConfig monitorConfig, String customFilePath) {
         if(Objects.nonNull(customFilePath) && customFilePath.length() > 3) {
@@ -42,6 +41,7 @@ public final class ProfilingConfig {
         monitorConfig.setProjectPath(projectPath);
 
         String configFilePath = fileLocation(monitorConfig, configFile);
+        monitorConfig.setConfigPath(configFilePath);
 
         try (InputStream in = new FileInputStream(configFilePath)) {
             Properties properties = new Properties();
@@ -52,8 +52,8 @@ public final class ProfilingConfig {
                 return false;
             }
 
-            Map<String, MethodConfig> customConfig = new HashMap<>();
-            if(!initCustomConfig(customConfig, properties, jarpath)) {
+            CustomConfig customConfig = new CustomConfig();
+            if(!initCustomConfig(customConfig, properties)) {
                 return false;
             }
 
@@ -64,7 +64,19 @@ public final class ProfilingConfig {
         return false;
     }
 
-    private static boolean initCustomConfig(Map<String, MethodConfig> customConfig, Properties properties, String jarpath) {
+    private static boolean initCustomConfig(CustomConfig customConfig, Properties properties) {
+        customConfig.setMethodsConfig( new HashMap<>());
+
+
+        customConfig.setNotifyUrlOfDingDing(properties.getOrDefault("notifyUrlOfDingDing", "").toString());
+        customConfig.setNotifySecretOfDingDing(properties.getOrDefault("notifySecretOfDingDing", "").toString());
+        customConfig.setRecordCpuUsage(getBool(properties, "RecordCpuUsage", "true"));
+        customConfig.setRecordGC(getBool(properties, "recordGC", "true"));
+        customConfig.setRecordMemUsed(getBool(properties, "recordMemUsed", "true"));
+        customConfig.setNotifyExceptions(getBool(properties, "notifyExceptions", "false"));
+        customConfig.setDebug(getBool(properties, "debug", "false"));
+        customConfig.setAppName(properties.getOrDefault("appName", "").toString());
+
         for (Object o : properties.keySet()) {
             String key = o.toString().toUpperCase();
             if(!key.startsWith("method")) {
@@ -79,15 +91,51 @@ public final class ProfilingConfig {
                 methodConfig.setTtlOfSec((int) getNumber(properties, prefix+".ttl", "3", 1l));
             }
 
-            customConfig.put(methodConfig.getMethodFullName(), methodConfig);
+            customConfig.getMethodsConfig().put(methodConfig.getMethodFullName(), methodConfig);
         }
         return true;
     }
 
+
+    /**
+     * 重新加载自定义配置
+     */
+    public static void reloadCustomConfig() {
+        CustomConfig tmp = new CustomConfig();
+        boolean hasError = false;
+        try (InputStream in = new FileInputStream(getMonitorConfig().getConfigPath())) {
+            Properties properties = new Properties();
+            properties.load(in);
+
+            initCustomConfig(tmp, properties);
+        } catch (IOException e) {
+            hasError = true;
+        } finally {
+            if(hasError == false) {
+                customConfig = tmp;
+            }
+        }
+    }
+
+    public static MonitorConfig getMonitorConfig() {
+        return monitorConfig;
+    }
+
+    public static void setMonitorConfig(MonitorConfig monitorConfig) {
+        ProfilingConfig.monitorConfig = monitorConfig;
+    }
+
+    public static CustomConfig getCustomConfig() {
+        return customConfig;
+    }
+
+    public static void setCustomConfig(CustomConfig customConfig) {
+        ProfilingConfig.customConfig = customConfig;
+    }
+
     private static boolean initMonitorConfig(MonitorConfig monitorConfig, Properties properties, String jarpath) {
         monitorConfig.setJarPath(jarpath );
-        monitorConfig.setNotifyUrlOfDingDing(properties.getOrDefault("notifyUrlOfDingDing", "").toString());
-        monitorConfig.setNotifySecretOfDingDing(properties.getOrDefault("notifySecretOfDingDing", "").toString());
+
 
         monitorConfig.setMonitorPackage(properties.getOrDefault("scanPackage", "").toString());
         if("".equals(monitorConfig.getMonitorPackage())) {
@@ -109,11 +157,6 @@ public final class ProfilingConfig {
             monitorConfig.setLogPath(monitorConfig.getLogPath() + Consts.FILE_SEPARATOR);
         }
 
-        monitorConfig.setRecordCpuUsage(getBool(properties, "RecordCpuUsage", "true"));
-        monitorConfig.setRecordGC(getBool(properties, "recordGC", "true"));
-        monitorConfig.setRecordMemUsed(getBool(properties, "recordMemUsed", "true"));
-        monitorConfig.setNotifyExceptions(getBool(properties, "notifyExceptions", "false"));
-        monitorConfig.setDebug(getBool(properties, "debug", "false"));
 
         monitorConfig.setMaxTTLOfSec((int) getNumber(properties, "maxTTLOfSec", "3", 1L));
         monitorConfig.setMaxCpuUsedOfProcess((int) getNumber(properties, "maxCpuUsedOfProcess", "80"));
@@ -125,12 +168,11 @@ public final class ProfilingConfig {
         monitorConfig.setMaxMemUseKb(getNumber(properties, "maxMemUse", defaultMax + ""));
         monitorConfig.setProcessId(getProcessID() + "");
 
-        monitorConfig.setAppName(properties.getOrDefault("appName", "").toString());
         return true;
     }
 
 
-    public static final int getProcessID() {
+    private static final int getProcessID() {
         RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
         System.out.println(runtimeMXBean.getName());
         return Integer.valueOf(runtimeMXBean.getName().split("@")[0])
@@ -139,7 +181,7 @@ public final class ProfilingConfig {
 
 
 
-    public static boolean getBool(Properties properties, String key, String defaultValue) {
+    private static boolean getBool(Properties properties, String key, String defaultValue) {
         String tmp = properties.getOrDefault(key, defaultValue).toString().toUpperCase();
         if("TRUE".equals(tmp) || "FALSE".equals(tmp)) {
             return Boolean.valueOf(tmp);
@@ -148,11 +190,11 @@ public final class ProfilingConfig {
         }
     }
 
-    public static long getNumber(Properties properties, String key, String defaultValue) {
+    private static long getNumber(Properties properties, String key, String defaultValue) {
         return getNumber(properties, key, defaultValue, null);
     }
 
-    public static long getNumber(Properties properties, String key, String defaultValue, Long minVal) {
+    private static long getNumber(Properties properties, String key, String defaultValue, Long minVal) {
         String tmp = properties.getOrDefault(key, defaultValue).toString();
         if(tmp.matches("^\\d+$")) {
             long l = Long.valueOf(tmp);
@@ -165,11 +207,5 @@ public final class ProfilingConfig {
         }
     }
 
-    public static MonitorConfig getMonitorConfig() {
-        return monitorConfig;
-    }
 
-    public static Map<String, MethodConfig> getCustomConfig() {
-        return customConfig;
-    }
 }

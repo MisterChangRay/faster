@@ -38,7 +38,7 @@ public final class ProfilingExceptionAspect {
         sb.append(BannerUtils.buildBanner("MonitorJ Exception Occurred [", startMillis, stopMillis));
         sb.append(format(throwable));
 
-        Recorder recorder = new Recorder(logger, ProfilingConfig.getMonitorConfig().isNotifyExceptions(), sb.toString());
+        Recorder recorder = new Recorder(logger, ProfilingConfig.getCustomConfig().isNotifyExceptions(), sb.toString());
         Recorders.getInstance().record(recorder);
     }
     /**
