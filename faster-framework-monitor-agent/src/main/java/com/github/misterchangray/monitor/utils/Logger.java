@@ -103,6 +103,7 @@ public final class Logger {
 
                     for (int i = 0; i < recorders.length; i++) {
                         Recorder fetch = recorders[i];
+                        if(null == fetch) continue;
 
 
                         if(ProfilingConfig.getMonitorConfig().isDebug()) {
