@@ -6,12 +6,20 @@ import com.github.misterchangray.monitor.consts.Consts;
 
 public class BannerUtils {
     public static String buildBanner(String name, Long start, Long end) {
+       return buildBanner(name, start, end, false);
+    }
+
+    public static String buildBanner(String name, Long start, Long end, boolean printThreadId) {
         MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
         StringBuilder sb = new StringBuilder();
         sb.append(name);
         sb.append("[");
         sb.append(monitorConfig.getAppName());
         sb.append("][");
+        if(printThreadId) {
+            sb.append(Thread.currentThread().toString());
+            sb.append("][");
+        }
         sb.append(monitorConfig.getProcessId());
         sb.append("][");
         if(start != null) {

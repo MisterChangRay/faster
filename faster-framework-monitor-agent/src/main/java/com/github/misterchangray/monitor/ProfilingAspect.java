@@ -70,7 +70,7 @@ public final class ProfilingAspect {
             long now = System.currentTimeMillis();
             if(threadLocal.get() != null && methodTag.getSimpleMethodDesc().equals(threadLocal.get().getExitMethodName())) {
                 StringBuilder sb = new StringBuilder();
-                sb.append(BannerUtils.buildBanner("MonitorJ Method ", now - spend, now));
+                sb.append(BannerUtils.buildBanner("MonitorJ Method ", now - spend, now, true));
                 sb.append(threadLocal.get().getSb().toString());
                 threadLocal.set(null);
                 threadLocal.remove();;
