@@ -6,14 +6,6 @@ package com.github.misterchangray.monitor.config;
  * Created by rui.chang on 2022/01/18
  */
 public class MonitorConfig {
-    /**
-     * 监控包路径
-     * 如: com.github.misterchangray
-     * 将会监控以上包路径下的所有类方法
-     *
-     */
-    private String monitorPackage;
-
 
     /**
      * 方法超时时间
@@ -79,13 +71,6 @@ public class MonitorConfig {
      */
     private String configPath;
 
-    public String getMonitorPackage() {
-        return monitorPackage;
-    }
-
-    public void setMonitorPackage(String monitorPackage) {
-        this.monitorPackage = monitorPackage;
-    }
 
     public int getMaxTTLOfSec() {
         return maxTTLOfSec;

@@ -33,7 +33,7 @@ public class CostTransformer implements ClassFileTransformer {
 
         MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
         // 这里我们限制下，只针对目标包下进行耗时统计
-        if (className.startsWith(monitorConfig.getMonitorPackage()) || ProfilingFilter.isNeedInject(className)) {
+        if (ProfilingFilter.isNeedInject(className)) {
             return getBytes(loader, className, classfileBuffer);
         }
 

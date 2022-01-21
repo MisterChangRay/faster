@@ -1,5 +1,6 @@
 package com.github.misterchangray.monitor.config;
 
+import com.github.misterchangray.monitor.ProfilingFilter;
 import com.github.misterchangray.monitor.consts.Consts;
 import com.github.misterchangray.monitor.utils.Logger;
 
@@ -139,18 +140,12 @@ public final class ProfilingConfig {
     private synchronized static boolean initMonitorConfig(MonitorConfig monitorConfig, Properties properties, String jarpath) {
         monitorConfig.setJarPath(jarpath );
 
-
-        monitorConfig.setMonitorPackage(properties.getOrDefault("scanPackage", "").toString());
-        if("".equals(monitorConfig.getMonitorPackage())) {
-            return false;
+        for (Object o : properties.keySet()) {
+            if(o.toString().startsWith("monitorPackage")) {
+                Object o1 = properties.get(o);
+                ProfilingFilter.addIncludePackage(o1.toString().replaceAll("\\.", "/"));
+            }
         }
-
-        if(monitorConfig.getMonitorPackage().length() > 0 && monitorConfig.getMonitorPackage().contains(".")) {
-            monitorConfig.setMonitorPackage(monitorConfig.getMonitorPackage().replaceAll("\\.", "/"));
-        } else {
-            throw new RuntimeException("scanPackage config error; like com.test.target ");
-        }
-
 
         monitorConfig.setLogPath(properties.getOrDefault("logPath", "").toString());
         if(monitorConfig.getLogPath().length() < 3) {
