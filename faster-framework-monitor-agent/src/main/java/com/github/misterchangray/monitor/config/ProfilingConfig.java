@@ -21,7 +21,7 @@ public final class ProfilingConfig {
     private static MonitorConfig monitorConfig;
     private static CustomConfig customConfig;
 
-    public static String fileLocation(MonitorConfig monitorConfig, String customFilePath) {
+    public synchronized static String fileLocation(MonitorConfig monitorConfig, String customFilePath) {
         if(Objects.nonNull(customFilePath) && customFilePath.length() > 3) {
             boolean exists = new File(customFilePath).exists();
             if(!exists) {
@@ -33,29 +33,31 @@ public final class ProfilingConfig {
        return monitorConfig.getProjectPath() + Consts.FILE_SEPARATOR + "monitorj.properties";
     }
 
-    public static boolean initProperties(String configFile) {
-        MonitorConfig monitorConfig = new MonitorConfig();
+    public synchronized static boolean initProperties(String configFile) {
+        MonitorConfig monitorConfigTmp = new MonitorConfig();
         String jarpath = ProfilingConfig.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         String projectPath = System.getProperty("user.dir");
-        monitorConfig.setJarPath(jarpath);
-        monitorConfig.setProjectPath(projectPath + Consts.FILE_SEPARATOR);
+        monitorConfigTmp.setJarPath(jarpath);
+        monitorConfigTmp.setProjectPath(projectPath + Consts.FILE_SEPARATOR);
 
-        String configFilePath = fileLocation(monitorConfig, configFile);
-        monitorConfig.setConfigPath(configFilePath);
+        String configFilePath = fileLocation(monitorConfigTmp, configFile);
+        monitorConfigTmp.setConfigPath(configFilePath);
 
         try (InputStream in = new FileInputStream(configFilePath)) {
             Properties properties = new Properties();
             properties.load(in);
 
 
-            if(!initMonitorConfig(monitorConfig, properties, jarpath)) {
+            if(!initMonitorConfig(monitorConfigTmp, properties, jarpath)) {
                 return false;
             }
+            monitorConfig = monitorConfigTmp;
 
-            CustomConfig customConfig = new CustomConfig();
-            if(!initCustomConfig(customConfig, properties)) {
+            CustomConfig customConfigTmp = new CustomConfig();
+            if(!initCustomConfig(customConfigTmp, properties)) {
                 return false;
             }
+            customConfig = customConfigTmp;
 
             return true;
         } catch (IOException e) {
@@ -64,7 +66,7 @@ public final class ProfilingConfig {
         return false;
     }
 
-    private static boolean initCustomConfig(CustomConfig customConfig, Properties properties) {
+    private synchronized static boolean initCustomConfig(CustomConfig customConfig, Properties properties) {
         customConfig.setMethodsConfig( new HashMap<>());
 
 
@@ -78,7 +80,7 @@ public final class ProfilingConfig {
         customConfig.setAppName(properties.getOrDefault("appName", "").toString());
 
         for (Object o : properties.keySet()) {
-            String key = o.toString().toUpperCase();
+            String key = o.toString().toLowerCase();
             if(!key.startsWith("method")) {
                 continue;
             }
@@ -101,7 +103,7 @@ public final class ProfilingConfig {
     /**
      * 重新加载自定义配置
      */
-    public static void reloadCustomConfig() {
+    public synchronized static void reloadCustomConfig() {
         CustomConfig tmp = new CustomConfig();
         boolean hasError = false;
         try (InputStream in = new FileInputStream(getMonitorConfig().getConfigPath())) {
@@ -134,7 +136,7 @@ public final class ProfilingConfig {
         ProfilingConfig.customConfig = customConfig;
     }
 
-    private static boolean initMonitorConfig(MonitorConfig monitorConfig, Properties properties, String jarpath) {
+    private synchronized static boolean initMonitorConfig(MonitorConfig monitorConfig, Properties properties, String jarpath) {
         monitorConfig.setJarPath(jarpath );
 
 
