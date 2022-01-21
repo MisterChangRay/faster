@@ -143,7 +143,9 @@ public final class ProfilingConfig {
         for (Object o : properties.keySet()) {
             if(o.toString().startsWith("monitorPackage")) {
                 Object o1 = properties.get(o);
-                ProfilingFilter.addIncludePackage(o1.toString().replaceAll("\\.", "/"));
+                String pkg = o1.toString().replaceAll("\\.", "/");
+                ProfilingFilter.addIncludePackage(pkg);
+                Logger.debug("add pkg " + pkg);
             }
         }
 
