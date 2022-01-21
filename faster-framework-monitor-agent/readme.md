@@ -14,7 +14,7 @@
 
 ##### 1. 使用
 在java启动时加以下参数:
-`java -Xms512M -Xmx512m -javaagent:./monitor.jar -jar ./test.jar`
+`java -Xms512M -Xmx512m -javaagent:./monitor.jar=./monitorj.properties -jar ./test.jar`
 
 
 ##### 2. 配置信息

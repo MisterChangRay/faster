@@ -1,5 +1,6 @@
 package com.github.misterchangray.monitor;
 
+import com.github.misterchangray.monitor.config.MethodConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
 import com.github.misterchangray.monitor.consts.Consts;
 import com.github.misterchangray.monitor.log.ILogger;
@@ -30,7 +31,14 @@ public final class ProfilingAspect {
             long i = (System.nanoTime() - startNanos);
             if(i <= millis) return;
 
+            MethodTag methodTag = methodTagMaintainer.getMethodTag(methodTagId);
+
             long limit = sec * ProfilingConfig.getMonitorConfig().getMaxTTLOfSec();
+            MethodConfig methodConfig = ProfilingConfig.getCustomConfig().get(methodTag.getSimpleMethodDesc());
+            if(null != methodConfig) {
+                limit = sec * methodConfig.getTtlOfSec();
+            }
+
             if(i < limit) {
                 return;
             }
@@ -40,7 +48,6 @@ public final class ProfilingAspect {
                 threadLocal.set(new StackTraceElementExt());
             }
 
-            MethodTag methodTag = methodTagMaintainer.getMethodTag(methodTagId);
 
             for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
                 if(stackTraceElement.getMethodName().equals(methodTag.getMethodName())) {

@@ -99,11 +99,25 @@ public class MonitorConfig {
      */
     private String jarPath;
 
+    /**
+     * 项目路径
+     */
+    private String projectPath;
+
 
     /**
      * 是否推送异常
      */
     private boolean notifyExceptions;
+
+
+    public String getProjectPath() {
+        return projectPath;
+    }
+
+    public void setProjectPath(String projectPath) {
+        this.projectPath = projectPath;
+    }
 
     public boolean isNotifyExceptions() {
         return notifyExceptions;

@@ -9,8 +9,8 @@ import java.lang.instrument.Instrumentation;
 
 public class Starter {
 
-    public static void premain(String agentArgs, Instrumentation inst) {
-        if(ProfilingConfig.initProperties()) {
+    public static void premain(String configFile, Instrumentation inst) {
+        if(ProfilingConfig.initProperties(configFile)) {
             if(initOtherServers()) {
                 inst.addTransformer(new CostTransformer(), true);
             }
