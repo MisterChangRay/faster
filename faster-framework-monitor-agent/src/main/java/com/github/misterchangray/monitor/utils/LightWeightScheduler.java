@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public final class LightWeightScheduler {
 
     private static final ScheduledThreadPoolExecutor scheduledExecutor = new ScheduledThreadPoolExecutor(4,
-            ThreadUtils.newThreadFactory("MonitorJ-LightWeightScheduler-"),
+            ThreadUtils.newThreadFactory("MonitorJ-Scheduler-"),
             new ThreadPoolExecutor.DiscardOldestPolicy());
 
     public static void exec(Runnable runnable) {

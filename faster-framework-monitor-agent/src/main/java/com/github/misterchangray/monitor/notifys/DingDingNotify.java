@@ -38,14 +38,7 @@ public class DingDingNotify implements Notify {
     private  Pattern pattern = Pattern.compile("\"");
     @Override
     public void notify(Recorder recorder) {
-        MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
-        if(Objects.isNull(monitorConfig.getNotifyUrlOfDingDing())) return;
-
-        String msg = "{\"msgtype\":\"text\", \"text\":{\"content\":\""+ pattern.matcher(recorder.getMsg()).replaceAll("") + "\"}}";
-        Long timestamp = System.currentTimeMillis();
-        String sign = buildSign(timestamp,monitorConfig);
-        String s = HttpClient.executePost(monitorConfig.getNotifyUrlOfDingDing() + "&sign=" + sign + "&timestamp=" + timestamp, msg);
-        Logger.debug("DingDing Http Send Result -> " + s);
+        this.notify(new StringBuilder(recorder.toString()));
     }
 
 
@@ -66,4 +59,19 @@ public class DingDingNotify implements Notify {
         return "";
     }
 
+    @Override
+    public void notify(StringBuilder recorder) {
+        MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
+        if(Objects.isNull(monitorConfig.getNotifyUrlOfDingDing())) return;
+
+        recorder.append("{\"msgtype\":\"text\", \"text\":{\"content\":\"");
+        recorder.append(pattern.matcher(recorder.toString()).replaceAll(""));
+        recorder.append("\"}}");
+
+        Long timestamp = System.currentTimeMillis();
+        String sign = buildSign(timestamp,monitorConfig);
+        String s = HttpClient.executePost(monitorConfig.getNotifyUrlOfDingDing() + "&sign=" + sign + "&timestamp=" + timestamp, recorder.toString());
+        Logger.debug("DingDing Http Send Result -> " + s);
+
+    }
 }

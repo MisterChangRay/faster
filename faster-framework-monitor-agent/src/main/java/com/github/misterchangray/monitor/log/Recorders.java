@@ -6,6 +6,7 @@ public class Recorders {
     private static int read_index = 0;
     private static int write_index = 0;
     private static int capacity = 0;
+    private static int batchSize = 10;
 
     public static synchronized boolean record(Recorder recorder) {
         if(capacity == MAX_QUEUE) {
@@ -21,7 +22,7 @@ public class Recorders {
         return true;
     }
 
-    public static synchronized Recorder fetch() {
+    public static synchronized Recorder[] fetch() {
         if(capacity == 0) {
             return  null;
         }
@@ -30,9 +31,13 @@ public class Recorders {
             read_index = 0;
         }
 
-        Recorder recorder = recorders[read_index];
-        recorders[read_index++] = null;
-        capacity --;
+        Recorder[] recorder = new Recorder[batchSize];
+        for (int i = 0; i < capacity && i < batchSize; i++) {
+            recorder[i] = recorders[read_index];
+            recorders[read_index ++] = null;
+            capacity --;
+        }
+
         return recorder;
     }
 }

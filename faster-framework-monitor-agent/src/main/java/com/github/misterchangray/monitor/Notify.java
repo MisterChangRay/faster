@@ -7,4 +7,6 @@ public interface Notify {
 
     void notify(Recorder recorder);
 
+    void notify(StringBuilder recorder);
+
 }

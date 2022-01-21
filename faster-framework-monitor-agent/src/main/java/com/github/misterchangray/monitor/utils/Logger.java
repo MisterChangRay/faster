@@ -3,11 +3,13 @@ package com.github.misterchangray.monitor.utils;
 import com.github.misterchangray.monitor.Notify;
 import com.github.misterchangray.monitor.config.MonitorConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
+import com.github.misterchangray.monitor.consts.Consts;
 import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
 import com.github.misterchangray.monitor.notifys.DingDingNotify;
+import com.sun.org.apache.bcel.internal.Const;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,7 +22,7 @@ import java.util.concurrent.Executors;
  * Created by ray.chang on 2022/1/15
  */
 public final class Logger {
-    private static final ExecutorService executor = Executors.newFixedThreadPool(4);
+    private static final ExecutorService executor = Executors.newFixedThreadPool(4, ThreadUtils.newThreadFactory("MonitorJ-Logger-"));
     private static Notify notify = new DingDingNotify();
 
     private static final ThreadLocal<DateFormat> TO_MILLS_DATE_FORMAT = new ThreadLocal<DateFormat>() {
@@ -93,18 +95,30 @@ public final class Logger {
     public static void startLogger() {
         executor.execute(() -> {
             while (true) {
-                Recorder fetch = Recorders.fetch();
-                if(Objects.isNull(fetch)) {
+                Recorder[] recorders = Recorders.fetch();
+                if(Objects.isNull(recorders)) {
                     Thread.yield();
                 } else {
-                    if(ProfilingConfig.getMonitorConfig().isDebug()) {
-                        Logger.info(fetch.getMsg());
+                    StringBuilder sb = new StringBuilder();
+
+                    for (int i = 0; i < recorders.length; i++) {
+                        Recorder fetch = recorders[i];
+
+
+                        if(ProfilingConfig.getMonitorConfig().isDebug()) {
+                            Logger.info(fetch.getMsg());
+                        }
+
+                        fetch.getiLogger().log(fetch.getMsg());
+                        if(fetch.isNotify()) {
+                            sb.append(fetch.getMsg() + Consts.LINE_SEPARATOR);
+                        }
                     }
 
-                    fetch.getiLogger().logAndFlush(fetch.getMsg());
-                    if(fetch.isNotify()) {
-                        notify.notify(fetch);
+                    if(sb.length() > 0) {
+                        notify.notify(sb);
                     }
+
                 }
             }
         });
