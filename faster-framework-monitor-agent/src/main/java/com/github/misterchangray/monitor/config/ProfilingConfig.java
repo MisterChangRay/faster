@@ -38,7 +38,7 @@ public final class ProfilingConfig {
         String jarpath = ProfilingConfig.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         String projectPath = System.getProperty("user.dir");
         monitorConfig.setJarPath(jarpath);
-        monitorConfig.setProjectPath(projectPath);
+        monitorConfig.setProjectPath(projectPath + Consts.FILE_SEPARATOR);
 
         String configFilePath = fileLocation(monitorConfig, configFile);
         monitorConfig.setConfigPath(configFilePath);
@@ -151,7 +151,7 @@ public final class ProfilingConfig {
 
         monitorConfig.setLogPath(properties.getOrDefault("logPath", "").toString());
         if(monitorConfig.getLogPath().length() < 3) {
-            String path = monitorConfig.getJarPath() + "monitorJLogs" + Consts.FILE_SEPARATOR;
+            String path = monitorConfig.getProjectPath() + "monitorJLogs" + Consts.FILE_SEPARATOR;
             monitorConfig.setLogPath(path);
         } else if(monitorConfig.getLogPath().length() > 3 && !monitorConfig.getLogPath().endsWith(Consts.FILE_SEPARATOR)) {
             monitorConfig.setLogPath(monitorConfig.getLogPath() + Consts.FILE_SEPARATOR);
