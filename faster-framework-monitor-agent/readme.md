@@ -20,11 +20,45 @@
 ##### 2. 配置信息
 
 可以配置推送信息, 支持钉钉推送。
-配置文件位于项目根目录`monitor.properties`
+
+配置文件位于项目根目录`monitorj.properties`
+
+配置文件默认为项目目录下, 或者启动时携带配置文件地址. 
+
+如: ` -javaagent:./monitor.jar=/var/data/monitor/monitorj.properties`
+
+启动时将会使用`/var/data/monitor/monitorj.properties`此文件为配置文件
+
+日志默认输出位置为项目目录。
+
 示例配置：
 ```$xslt
-monitorPackage=/com/test/target
+
+# 应用名, 通知时使用
+appName=user_provider_192.168.0.10_9127
+
+# 默认监控包路径
+monitorPackage=com.test.package3
+# 可以添加多个
+monitorPackage[0]=com.test.package1
+monitorPackage[1]=com.test.package2
 maxTTLOfSec=2
+
+# 指定 com.mister.register 方法 超时阈值为 2S
+method[0].name=com.mister.register
+method[0].ttl=2
+# 可以添加多个方法
+method[1].name=com.mister.register2
+method[1].ttl=3
+
+# 钉钉通知URL地址
+notifyUrlOfDingDing=https://oapi.dingtalk.com/robot/send?access_token=72f1abba57510f0538832948844758c8ba4a58e68fc6b28bb26d972dd0ae1b2
+# 钉钉通知密钥
+notifySecretOfDingDing=SEC028a906e7ca41b79f2b91503793025c7b53aaf0ad3fbef0974bc8fc0d4b16a3
+
+
+# 日志路径, 默认项目目录下
+logPath=
 ```
 
 
