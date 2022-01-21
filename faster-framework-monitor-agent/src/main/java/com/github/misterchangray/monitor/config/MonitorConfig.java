@@ -8,6 +8,9 @@ package com.github.misterchangray.monitor.config;
 public class MonitorConfig {
     /**
      * 监控包路径
+     * 如: com.github.misterchangray
+     * 将会监控以上包路径下的所有类方法
+     *
      */
     private String monitorPackage;
 
