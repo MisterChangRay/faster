@@ -64,13 +64,14 @@ public class DingDingNotify implements Notify {
         MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
         if(Objects.isNull(monitorConfig.getNotifyUrlOfDingDing())) return;
 
-        recorder.append("{\"msgtype\":\"text\", \"text\":{\"content\":\"");
-        recorder.append(pattern.matcher(recorder.toString()).replaceAll(""));
-        recorder.append("\"}}");
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\"msgtype\":\"text\", \"text\":{\"content\":\"");
+        sb.append(pattern.matcher(recorder.toString()).replaceAll(""));
+        sb.append("\"}}");
 
         Long timestamp = System.currentTimeMillis();
         String sign = buildSign(timestamp,monitorConfig);
-        String s = HttpClient.executePost(monitorConfig.getNotifyUrlOfDingDing() + "&sign=" + sign + "&timestamp=" + timestamp, recorder.toString());
+        String s = HttpClient.executePost(monitorConfig.getNotifyUrlOfDingDing() + "&sign=" + sign + "&timestamp=" + timestamp, sb.toString());
         Logger.debug("DingDing Http Send Result -> " + s);
 
     }

@@ -24,7 +24,6 @@ public class DeadLockTest {
 
             if(null != monitorDeadlockedThreads) {
                 System.out.println(monitorDeadlockedThreads.toString());
-                new QueueTest().dosendmsg(monitorDeadlockedThreads.toString());
             }
         }
 
