@@ -35,7 +35,7 @@ public class CpuMonitor implements Runnable {
             if(cpuUsed > ProfilingConfig.getMonitorConfig().getMaxCpuUsedOfProcess()) {
                 recorder.setNotify(true);
             }
-            Recorders.record(recorder);
+            Recorders.getInstance().record(recorder);
         }
 
     }

@@ -34,7 +34,7 @@ public class MemoryMonitor implements Runnable {
                     (total / 1024), heapMemoryUsage / 1024, noneHeapMemoryUsage / 1024);
 
             sb.append(format);
-            Recorders.record(new Recorder(logger,  true, sb.toString()));
+            Recorders.getInstance().record(new Recorder(logger,  true, sb.toString()));
         }
 
     }

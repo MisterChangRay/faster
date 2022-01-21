@@ -74,7 +74,7 @@ public final class ProfilingAspect {
                 sb.append(threadLocal.get().getSb().toString());
                 threadLocal.set(null);
                 threadLocal.remove();;
-                Recorders.record(new Recorder(logger, true, sb.toString()));
+                Recorders.getInstance().record(new Recorder(logger, true, sb.toString()));
             }
         } catch (Exception e) {
             Logger.error("ProfilingAspect.profiling(" + startNanos + ", " + methodTagId + ", "

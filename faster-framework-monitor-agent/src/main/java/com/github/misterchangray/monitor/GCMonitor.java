@@ -52,13 +52,13 @@ public class GCMonitor implements Runnable {
         JvmGcMetrics jvmGcMetrics = collectGcMetrics();
         long end = System.currentTimeMillis();
         String format = format(jvmGcMetrics, start, end);
-        Recorders.record(new Recorder(logger, false, format));
+        Recorders.getInstance().record(new Recorder(logger, false, format));
 
         start = System.currentTimeMillis();
         JvmMemoryMetrics jvmMemoryMetrics = collectMemoryMetrics();
         end = System.currentTimeMillis();
         format = format(jvmMemoryMetrics, start, end);
-        Recorders.record(new Recorder(logger, false, format));
+        Recorders.getInstance().record(new Recorder(logger, false, format));
     }
 
 

@@ -88,13 +88,15 @@ public final class Logger {
         }
     }
 
+    /**
+     * 总共4个线程,
+     * 4个线程用于推送
+     */
     public static void startLogger() {
-        executor.execute(() -> {
-            while (true) {
-                Recorder[] recorders = Recorders.fetch();
-                if(Objects.isNull(recorders)) {
-                    Thread.yield();
-                } else {
+        for (int j = 0; j < 4; j++) {
+            executor.execute(() -> {
+                while (true) {
+                    Recorder[] recorders = Recorders.getInstance().fetch();
                     StringBuilder sb = new StringBuilder();
 
                     for (int i = 0; i < recorders.length; i++) {
@@ -115,9 +117,10 @@ public final class Logger {
                     if(sb.length() > 0) {
                         notify.notify(sb);
                     }
-
                 }
-            }
-        });
+            });
+
+        }
+
     }
 }

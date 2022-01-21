@@ -39,7 +39,7 @@ public final class ProfilingExceptionAspect {
         sb.append(format(throwable));
 
         Recorder recorder = new Recorder(logger, ProfilingConfig.getMonitorConfig().isNotifyExceptions(), sb.toString());
-        Recorders.record(recorder);
+        Recorders.getInstance().record(recorder);
     }
     /**
      * 将异常信息转化成字符串

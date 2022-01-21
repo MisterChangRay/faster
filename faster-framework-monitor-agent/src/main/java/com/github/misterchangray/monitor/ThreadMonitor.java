@@ -34,7 +34,7 @@ public class ThreadMonitor implements Runnable {
                 sb.append(s2);
             }
             Recorder recorder = new Recorder(logger, true, sb.toString());
-            Recorders.record(recorder);
+            Recorders.getInstance().record(recorder);
         }
 
         if(threadCount > 500) {
@@ -48,7 +48,7 @@ public class ThreadMonitor implements Runnable {
             if(threadCount > ProfilingConfig.getMonitorConfig().getMaxThreadOfProcess()) {
                 recorder.setNotify(true);
             }
-            Recorders.record(recorder);
+            Recorders.getInstance().record(recorder);
         }
 
     }

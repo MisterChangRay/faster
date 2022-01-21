@@ -28,35 +28,61 @@ public class QueueTest {
         for (int i = 0; i < 5; i++) {
             new Thread(() -> {
                 long j =0;
-                while (true) {
+                for (int k = 0; k < 10000; k++) {
                     j ++;
-                    Recorders.record(new Recorder(null, false,Thread.currentThread().getId()+ "- " + j));
+                    Recorders.getInstance().record(new Recorder(null, false,Thread.currentThread().getId()+ "- " + j));
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+
+                }
+
+                for (int k = 0; k < 10; k++) {
+                    j ++;
+                    Recorders.getInstance().record(new Recorder(null, false,Thread.currentThread().getId()+ "- " + j));
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                for (int k = 0; k < 2; k++) {
+                    j ++;
+                    Recorders.getInstance().record(new Recorder(null, false,Thread.currentThread().getId()+ "- " + j));
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }).start();
         }
 
 
+        for (int k = 0; k < 3; k++) {
+            new Thread(() -> {
+                long i =0;
+                while (true) {
+                    Recorder[] recorders = Recorders.getInstance().fetch();
+                    if(null == recorders) continue;
+                    for (Recorder recorder : recorders) {
+                        if(null == recorder) {
+                            continue;
+                        }
 
-        new Thread(() -> {
-            long i =0;
-            while (true) {
-                Recorder[] recorders = Recorders.fetch();
-                if(null == recorders) continue;
-                for (Recorder recorder : recorders) {
-                    if(null == recorder) {
-                        continue;
+                        System.out.println(recorder.getMsg());
                     }
 
-                    System.out.println(recorder.getMsg());
                 }
+            }).start();
+        }
 
-            }
-        }).start();
+
 
         try {
             Thread.sleep(40000000);
