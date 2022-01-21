@@ -89,6 +89,7 @@ public final class ProfilingConfig {
 
                 methodConfig.setMethodFullName(properties.getProperty(key));
                 methodConfig.setTtlOfSec((int) getNumber(properties, prefix+".ttl", "3", 1l));
+                Logger.debug(String.format("load method config: %s, %s", methodConfig.getMethodFullName(), methodConfig.getTtlOfSec()));
             }
 
             customConfig.getMethodsConfig().put(methodConfig.getMethodFullName(), methodConfig);
