@@ -162,13 +162,13 @@ public class GCMonitor implements Runnable {
     }
 
     public String format(JvmGcMetrics metrics, long startMillis, long stopMillis) {
-        String dataTitleFormat = "%-15s%15s%15s%15s%15s%15s%15s%15s%15s%n";
+        String dataTitleFormat = "%-15s%15s%15s%15s%15s%15s%15s%15s%25s%n";
         StringBuilder sb = new StringBuilder((3) * (9 * 3 + 64));
         sb.append(BannerUtils.buildBanner("MonitorJ JVM GC ", startMillis, stopMillis));
         sb.append(String.format(dataTitleFormat, "YoungGcCount", "YoungGcTime", "AvgYoungGcTime", "FullGcCount",
                 "FullGcTime", "ZGcCount", "ZGcTime", "AvgZGcTime", "TotalMonitorMethods"));
 
-        String dataFormat = "%-15s%15d%15.2f%15d%15d%15d%15d%15.2f%s%n";
+        String dataFormat = "%-15s%15d%15.2f%15d%15d%15d%15d%15.2f%25s%n";
         sb.append(
                 String.format(dataFormat,
                         metrics.getYoungGcCount(),

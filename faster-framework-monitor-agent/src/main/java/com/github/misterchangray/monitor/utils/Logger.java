@@ -110,7 +110,7 @@ public final class Logger {
                             Logger.info(fetch.getMsg());
                         }
 
-                        fetch.getiLogger().log(fetch.getMsg());
+                        fetch.getiLogger().logAndFlush(fetch.getMsg());
                         if(fetch.isNotify()) {
                             sb.append(fetch.getMsg() + Consts.LINE_SEPARATOR);
                         }
