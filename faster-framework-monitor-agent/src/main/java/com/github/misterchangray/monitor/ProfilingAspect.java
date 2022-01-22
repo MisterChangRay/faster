@@ -34,7 +34,7 @@ public final class ProfilingAspect {
 
             MethodTag methodTag = methodTagMaintainer.getMethodTag(methodTagId);
 
-            long limit = sec * ProfilingConfig.getMonitorConfig().getMaxTTLOfSec();
+            long limit = sec * ProfilingConfig.getCustomConfig().getMaxTTLOfSec();
             MethodConfig methodConfig = ProfilingConfig.getCustomConfig().getMethodsConfig().get(methodTag.getSimpleMethodDesc());
             if(null != methodConfig) {
                 limit = sec * methodConfig.getTtlOfSec();

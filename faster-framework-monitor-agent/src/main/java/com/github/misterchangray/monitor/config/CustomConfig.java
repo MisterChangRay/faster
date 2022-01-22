@@ -48,6 +48,101 @@ public class CustomConfig {
     private boolean notifyExceptions;
 
 
+
+    /**
+     * 方法超时时间
+     */
+    private int maxTTLOfSec;
+
+
+
+    /**
+     * 进程使用最大CPU通知阈值
+     * 进程使用CPU超过此值后发送通知
+     * 默认为90
+     */
+    private int maxCpuUsedOfProcess;
+
+
+
+    /**
+     * 一个进程最大线程数
+     * 当前进程线程数超过此值进行通知
+     */
+    private int maxThreadOfProcess;
+
+
+    /**
+     * 最大异常
+     * 超过此异常阈值发送通知
+     */
+    private int maxExceptions;
+
+
+
+    /**
+     * 堆内存使用超过后预警
+     *
+     * 默认为 500MB
+     */
+    private long maxHeapUseKb;
+
+    /**
+     * 堆内存使用超过后预警
+     *
+     * 默认为 500MB
+     */
+    private long maxNonHeapUseKb;
+
+
+    public int getMaxTTLOfSec() {
+        return maxTTLOfSec;
+    }
+
+    public void setMaxTTLOfSec(int maxTTLOfSec) {
+        this.maxTTLOfSec = maxTTLOfSec;
+    }
+
+    public int getMaxCpuUsedOfProcess() {
+        return maxCpuUsedOfProcess;
+    }
+
+    public void setMaxCpuUsedOfProcess(int maxCpuUsedOfProcess) {
+        this.maxCpuUsedOfProcess = maxCpuUsedOfProcess;
+    }
+
+    public int getMaxThreadOfProcess() {
+        return maxThreadOfProcess;
+    }
+
+    public void setMaxThreadOfProcess(int maxThreadOfProcess) {
+        this.maxThreadOfProcess = maxThreadOfProcess;
+    }
+
+    public int getMaxExceptions() {
+        return maxExceptions;
+    }
+
+    public void setMaxExceptions(int maxExceptions) {
+        this.maxExceptions = maxExceptions;
+    }
+
+    public long getMaxHeapUseKb() {
+        return maxHeapUseKb;
+    }
+
+    public void setMaxHeapUseKb(long maxHeapUseKb) {
+        this.maxHeapUseKb = maxHeapUseKb;
+    }
+
+    public long getMaxNonHeapUseKb() {
+        return maxNonHeapUseKb;
+    }
+
+    public void setMaxNonHeapUseKb(long maxNonHeapUseKb) {
+        this.maxNonHeapUseKb = maxNonHeapUseKb;
+    }
+
     public Map<String, MethodConfig> getMethodsConfig() {
         return methodsConfig;
     }

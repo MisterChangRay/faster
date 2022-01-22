@@ -1,5 +1,6 @@
 package com.github.misterchangray.monitor;
 
+import com.github.misterchangray.monitor.config.CustomConfig;
 import com.github.misterchangray.monitor.config.MonitorConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
 import com.github.misterchangray.monitor.consts.Consts;
@@ -18,19 +19,17 @@ public class MemoryMonitor implements Runnable {
     public void run() {
         long startMillis = System.currentTimeMillis();
 
-        MonitorConfig monitorConfig = ProfilingConfig.getMonitorConfig();
+        CustomConfig customConfig = ProfilingConfig.getCustomConfig();
         long noneHeapMemoryUsage = JSystem.getNoneHeapMemoryUsage();
         long heapMemoryUsage = JSystem.getHeapMemoryUsage();
         long total = noneHeapMemoryUsage + heapMemoryUsage;
 
         long stopMillis = System.currentTimeMillis();
-        if(total > monitorConfig.getMaxMemUseKb()) {
+        if(heapMemoryUsage > customConfig.getMaxHeapUseKb() || noneHeapMemoryUsage > customConfig.getMaxNonHeapUseKb() ) {
             StringBuilder sb = new StringBuilder(256);
             sb.append(BannerUtils.buildBanner("MonitorJ Memory ", startMillis, stopMillis));
 
-            String format = String.format("application: %s, Pid: %s, memoryTotalUsage: %s kb, heap: %s, nonHeap: %s !",
-                    ProfilingConfig.getCustomConfig().getAppName(),
-                    ProfilingConfig.getMonitorConfig().getProcessId(),
+            String format = String.format("memoryTotalUsage: %s kb, heap: %s kb, nonHeap: %s kb !",
                     (total / 1024), heapMemoryUsage / 1024, noneHeapMemoryUsage / 1024);
 
             sb.append(format);

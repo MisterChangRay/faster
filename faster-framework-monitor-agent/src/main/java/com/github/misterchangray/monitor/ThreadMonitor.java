@@ -45,7 +45,7 @@ public class ThreadMonitor implements Runnable {
             sb.append(format);
             Recorder recorder = new Recorder(logger, false, sb.toString());
 
-            if(threadCount > ProfilingConfig.getMonitorConfig().getMaxThreadOfProcess()) {
+            if(threadCount > ProfilingConfig.getCustomConfig().getMaxThreadOfProcess()) {
                 recorder.setNotify(true);
             }
             Recorders.getInstance().record(recorder);

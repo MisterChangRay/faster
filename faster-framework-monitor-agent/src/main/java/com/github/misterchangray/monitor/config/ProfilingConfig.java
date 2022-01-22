@@ -80,6 +80,14 @@ public final class ProfilingConfig {
         customConfig.setDebug(getBool(properties, "debug", "false"));
         customConfig.setAppName(properties.getOrDefault("appName", "").toString());
 
+
+        customConfig.setMaxTTLOfSec((int) getNumber(properties, "maxTTLOfSec", "3", 1L));
+        customConfig.setMaxCpuUsedOfProcess((int) getNumber(properties, "maxCpuUsedOfProcess", "80"));
+        customConfig.setMaxThreadOfProcess((int) getNumber(properties, "maxThreadOfProcess", "1000"));
+        customConfig.setMaxExceptions((int) getNumber(properties, "maxExceptions", "50"));
+        customConfig.setMaxHeapUseKb(getNumber(properties, "maxHeapUseKb",  Runtime.getRuntime().maxMemory() + "" ));
+        customConfig.setMaxNonHeapUseKb(getNumber(properties, "maxNonHeapUseKb", "314572800"));
+
         for (Object o : properties.keySet()) {
             String key = o.toString().toLowerCase();
             if(!key.startsWith("method")) {
@@ -158,14 +166,6 @@ public final class ProfilingConfig {
         }
 
 
-        monitorConfig.setMaxTTLOfSec((int) getNumber(properties, "maxTTLOfSec", "3", 1L));
-        monitorConfig.setMaxCpuUsedOfProcess((int) getNumber(properties, "maxCpuUsedOfProcess", "80"));
-        monitorConfig.setMaxThreadOfProcess((int) getNumber(properties, "maxThreadOfProcess", "5000"));
-        monitorConfig.setMaxExceptions((int) getNumber(properties, "maxExceptions", "50"));
-
-        // 默认取配置最大堆内存 + 300MB堆外内存
-        long defaultMax = Runtime.getRuntime().maxMemory() + 314572800;
-        monitorConfig.setMaxMemUseKb(getNumber(properties, "maxMemUse", defaultMax + ""));
         monitorConfig.setProcessId(getProcessID() + "");
 
         return true;

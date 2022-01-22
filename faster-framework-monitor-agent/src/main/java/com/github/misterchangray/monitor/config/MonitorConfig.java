@@ -7,47 +7,12 @@ package com.github.misterchangray.monitor.config;
  */
 public class MonitorConfig {
 
-    /**
-     * 方法超时时间
-     */
-    private int maxTTLOfSec;
 
     /**
      * 日志记录路径
      */
     private String logPath;
 
-
-    /**
-     * 进程使用最大CPU通知阈值
-     * 进程使用CPU超过此值后发送通知
-     * 默认为90
-     */
-    private int maxCpuUsedOfProcess;
-
-
-
-    /**
-     * 一个进程最大线程数
-     * 当前进程线程数超过此值进行通知
-     */
-    private int maxThreadOfProcess;
-
-
-    /**
-     * 最大异常
-     * 超过此异常阈值发送通知
-     */
-    private int maxExceptions;
-
-
-
-    /**
-     * 内存使用超过此阈值后发送通知
-     *
-     * 默认为 500MB
-     */
-    private long maxMemUseKb;
 
     /**
      * 进程ID
@@ -72,52 +37,12 @@ public class MonitorConfig {
     private String configPath;
 
 
-    public int getMaxTTLOfSec() {
-        return maxTTLOfSec;
-    }
-
-    public void setMaxTTLOfSec(int maxTTLOfSec) {
-        this.maxTTLOfSec = maxTTLOfSec;
-    }
-
     public String getLogPath() {
         return logPath;
     }
 
     public void setLogPath(String logPath) {
         this.logPath = logPath;
-    }
-
-    public int getMaxCpuUsedOfProcess() {
-        return maxCpuUsedOfProcess;
-    }
-
-    public void setMaxCpuUsedOfProcess(int maxCpuUsedOfProcess) {
-        this.maxCpuUsedOfProcess = maxCpuUsedOfProcess;
-    }
-
-    public int getMaxThreadOfProcess() {
-        return maxThreadOfProcess;
-    }
-
-    public void setMaxThreadOfProcess(int maxThreadOfProcess) {
-        this.maxThreadOfProcess = maxThreadOfProcess;
-    }
-
-    public int getMaxExceptions() {
-        return maxExceptions;
-    }
-
-    public void setMaxExceptions(int maxExceptions) {
-        this.maxExceptions = maxExceptions;
-    }
-
-    public long getMaxMemUseKb() {
-        return maxMemUseKb;
-    }
-
-    public void setMaxMemUseKb(long maxMemUseKb) {
-        this.maxMemUseKb = maxMemUseKb;
     }
 
     public String getProcessId() {
