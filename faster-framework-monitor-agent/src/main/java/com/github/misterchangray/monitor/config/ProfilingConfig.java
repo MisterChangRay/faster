@@ -87,6 +87,7 @@ public final class ProfilingConfig {
         customConfig.setMaxExceptions((int) getNumber(properties, "maxExceptions", "50"));
         customConfig.setMaxHeapUseKb(getNumber(properties, "maxHeapUseKb",  Runtime.getRuntime().maxMemory() + "" ));
         customConfig.setMaxNonHeapUseKb(getNumber(properties, "maxNonHeapUseKb", "314572800"));
+        customConfig.setServerAddr(properties.getOrDefault("serverAddr", "").toString());
 
         for (Object o : properties.keySet()) {
             String key = o.toString().toLowerCase();
@@ -164,7 +165,6 @@ public final class ProfilingConfig {
         } else if(monitorConfig.getLogPath().length() > 3 && !monitorConfig.getLogPath().endsWith(Consts.FILE_SEPARATOR)) {
             monitorConfig.setLogPath(monitorConfig.getLogPath() + Consts.FILE_SEPARATOR);
         }
-
 
         monitorConfig.setProcessId(getProcessID() + "");
 

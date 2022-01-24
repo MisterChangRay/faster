@@ -57,6 +57,11 @@ public class Starter {
             LightWeightScheduler.exec(gcMonitor, 30);
         }
 
+        if(customConfig.getServerAddr().length() > 3) {
+            HeartbeatMonitor heartbeatMonitor = new HeartbeatMonitor();
+            LightWeightScheduler.exec(heartbeatMonitor, 5);
+        }
+
         AutoReloadConfigMonitor autoReloadConfigMonitor = new AutoReloadConfigMonitor();
         LightWeightScheduler.exec(autoReloadConfigMonitor, 30);
 

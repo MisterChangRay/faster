@@ -95,6 +95,20 @@ public class CustomConfig {
     private long maxNonHeapUseKb;
 
 
+
+    /**
+     * 监控服务中心地址
+     */
+    private String serverAddr;
+
+    public String getServerAddr() {
+        return serverAddr;
+    }
+
+    public void setServerAddr(String serverAddr) {
+        this.serverAddr = serverAddr;
+    }
+
     public int getMaxTTLOfSec() {
         return maxTTLOfSec;
     }
