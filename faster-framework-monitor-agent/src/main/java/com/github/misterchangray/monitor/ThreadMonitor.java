@@ -40,7 +40,7 @@ public class ThreadMonitor implements Runnable {
         if(threadCount > 500) {
             StringBuilder sb = new StringBuilder(256);
             sb.append(BannerUtils.buildBanner("MonitorJ Thread Count [", startMillis, stopMillis));
-            String format = String.format("current thread count: %s !",threadCount);
+            String format = String.format("current thread count: %s , threshold: %s !", threadCount, ProfilingConfig.getCustomConfig().getMaxThreadOfProcess());
 
             sb.append(format);
             Recorder recorder = new Recorder(logger, false, sb.toString());
