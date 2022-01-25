@@ -22,6 +22,16 @@ public final class ProfilingConfig {
     private static MonitorConfig monitorConfig;
     private static CustomConfig customConfig;
 
+    /**
+     * 用户自定义 则使用自定义配置
+     * 如果没有则按以下次序寻找 monitorj.properties 配置文件
+     * - 项目根路径
+     * - agentJar包路径
+     *
+     * @param monitorConfig
+     * @param customFilePath
+     * @return
+     */
     public synchronized static String fileLocation(MonitorConfig monitorConfig, String customFilePath) {
         if(Objects.nonNull(customFilePath) && customFilePath.length() > 3) {
             boolean exists = new File(customFilePath).exists();
@@ -30,18 +40,34 @@ public final class ProfilingConfig {
             }
             return customFilePath;
         }
+        String objectPath = monitorConfig.getProjectPath() + SystemConst.FILE_SEPARATOR + "monitorj.properties";
 
-       return monitorConfig.getProjectPath() + SystemConst.FILE_SEPARATOR + "monitorj.properties";
+        if(new File(objectPath).exists()) {
+            return objectPath;
+        }
+
+        String jarPath = monitorConfig.getJarPath()+ SystemConst.FILE_SEPARATOR + "monitorj.properties";
+
+        if(new File(jarPath).exists()) {
+            return jarPath;
+        }
+
+        throw new RuntimeException("not find configuration file in (projectPath, agentJarPath, customPath)");
     }
 
     public synchronized static boolean initProperties(String configFile) {
         MonitorConfig monitorConfigTmp = new MonitorConfig();
         String jarpath = ProfilingConfig.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        String projectPath = System.getProperty("user.dir");
+        File file = new File(jarpath);
+        jarpath = file.getParent();
         monitorConfigTmp.setJarPath(jarpath);
+        Logger.debug("jarPath:" + jarpath);
+        String projectPath = System.getProperty("user.dir");
         monitorConfigTmp.setProjectPath(projectPath + SystemConst.FILE_SEPARATOR);
+        Logger.debug("projecPath:" + projectPath);
 
         String configFilePath = fileLocation(monitorConfigTmp, configFile);
+        Logger.debug("configurationFilePath: " + configFilePath);
         monitorConfigTmp.setConfigPath(configFilePath);
 
         try (InputStream in = new FileInputStream(configFilePath)) {
