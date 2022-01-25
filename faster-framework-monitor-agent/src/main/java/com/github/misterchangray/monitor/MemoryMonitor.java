@@ -7,6 +7,7 @@ import com.github.misterchangray.monitor.log.LoggerFactory;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
 import com.github.misterchangray.monitor.utils.BannerUtils;
+import com.github.misterchangray.monitor.utils.Logger;
 
 public class MemoryMonitor implements Runnable {
     public static ILogger logger = LoggerFactory.getLogger("monitor-memory.log");
@@ -14,6 +15,7 @@ public class MemoryMonitor implements Runnable {
 
     @Override
     public void run() {
+        Logger.debug("--->>> Start MemoryMonitor");
         long startMillis = System.currentTimeMillis();
 
         CustomConfig customConfig = ProfilingConfig.getCustomConfig();

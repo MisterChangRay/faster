@@ -78,8 +78,8 @@ public final class ProfilingConfig {
         customConfig.setRecordMemUsed(getBool(properties, "recordMemUsed", "true"));
         customConfig.setNotifyExceptions(getBool(properties, "notifyExceptions", "false"));
         customConfig.setDebug(getBool(properties, "debug", "false"));
+        Logger.setDebugEnable(customConfig.isDebug());
         customConfig.setAppName(properties.getOrDefault("appName", "").toString());
-
 
         customConfig.setMaxTTLOfSec((int) getNumber(properties, "maxTTLOfSec", "3", 1L));
         customConfig.setMaxCpuUsedOfProcess((int) getNumber(properties, "maxCpuUsedOfProcess", "80"));

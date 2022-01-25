@@ -13,7 +13,7 @@ public class ThreadMonitor implements Runnable {
 
     @Override
     public void run() {
-        Logger.debug("scan thread ");
+        Logger.debug("--->>> Start ThreadMonitor");
 
         long startMillis = System.currentTimeMillis();
         int threadCount = JSystem.getCountOfThreadInProcess();

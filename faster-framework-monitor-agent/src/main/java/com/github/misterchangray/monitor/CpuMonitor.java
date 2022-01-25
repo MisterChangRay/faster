@@ -6,12 +6,14 @@ import com.github.misterchangray.monitor.log.LoggerFactory;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
 import com.github.misterchangray.monitor.utils.BannerUtils;
+import com.github.misterchangray.monitor.utils.Logger;
 
 public class CpuMonitor implements Runnable {
     static ILogger logger = LoggerFactory.getLogger("monitor-cpu.log");
 
     @Override
     public void run() {
+        Logger.debug("--->>> Start CpuMonitor");
         long startMillis = System.currentTimeMillis();
 
         double cpuUsed = JSystem.getCpuUsed() * 100;

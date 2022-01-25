@@ -20,6 +20,7 @@ public class HeartbeatMonitor implements Runnable {
 
 
 
+        Logger.debug("--->>> Start HeartbeatMonitor");
         String url = customConfig.getServerAddr();
         if(!customConfig.getServerAddr().endsWith("/")) {
             url = url + "/";

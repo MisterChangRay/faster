@@ -46,6 +46,7 @@ public class GCMonitor implements Runnable {
 
     @Override
     public void run() {
+        Logger.debug("--->>> Start GCMonitor");
         long start = System.currentTimeMillis();
         JvmGcMetrics jvmGcMetrics = collectGcMetrics();
         long end = System.currentTimeMillis();
