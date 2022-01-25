@@ -1,4 +1,4 @@
-package com.github.misterchangray.monitor.utils;
+package com.github.misterchangray.common.util;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;

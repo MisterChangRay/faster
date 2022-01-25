@@ -2,7 +2,6 @@ package com.github.misterchangray.monitor.log;
 
 import com.github.misterchangray.monitor.config.MonitorConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
-import com.github.misterchangray.monitor.consts.Consts;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,8 +1,9 @@
 package com.github.misterchangray.monitor.utils;
 
+import com.github.misterchangray.common.consts.SystemConst;
+import com.github.misterchangray.common.util.ThreadUtils;
 import com.github.misterchangray.monitor.Notify;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
-import com.github.misterchangray.monitor.consts.Consts;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
 import com.github.misterchangray.monitor.notifys.DingDingNotify;
@@ -110,7 +111,7 @@ public final class Logger {
 
                         fetch.getiLogger().logAndFlush(fetch.getMsg());
                         if(fetch.isNotify()) {
-                            sb.append(fetch.getMsg() + Consts.LINE_SEPARATOR);
+                            sb.append(fetch.getMsg() + SystemConst.LINE_SEPARATOR);
                         }
                     }
 

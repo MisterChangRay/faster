@@ -35,6 +35,13 @@
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+
+            <artifactId>faster-framework-common</artifactId>
+            <groupId>com.github.misterchangray</groupId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,6 +1,6 @@
 package com.github.misterchangray.monitor;
 
-import com.github.misterchangray.monitor.consts.Consts;
+import com.github.misterchangray.common.consts.SystemConst;
 
 import java.lang.management.*;
 import java.util.List;
@@ -44,7 +44,7 @@ public class JSystem {
             int finalI = i;
             allStackTraces.forEach((k, v) -> {
                 if(k.getId() == threadInfo.getThreadId() && v != null && v.length > 1) {
-                    sb.append("- StackTrace" + finalI + ": " + v[0].toString() + Consts.LINE_SEPARATOR + Consts.LINE_SEPARATOR);
+                    sb.append("- StackTrace" + finalI + ": " + v[0].toString() + SystemConst.LINE_SEPARATOR + SystemConst.LINE_SEPARATOR);
                 }
             });
 

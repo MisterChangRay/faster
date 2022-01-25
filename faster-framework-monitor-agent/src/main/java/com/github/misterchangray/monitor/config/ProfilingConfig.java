@@ -1,7 +1,7 @@
 package com.github.misterchangray.monitor.config;
 
+import com.github.misterchangray.common.consts.SystemConst;
 import com.github.misterchangray.monitor.ProfilingFilter;
-import com.github.misterchangray.monitor.consts.Consts;
 import com.github.misterchangray.monitor.utils.Logger;
 
 import java.io.File;
@@ -31,7 +31,7 @@ public final class ProfilingConfig {
             return customFilePath;
         }
 
-       return monitorConfig.getProjectPath() + Consts.FILE_SEPARATOR + "monitorj.properties";
+       return monitorConfig.getProjectPath() + SystemConst.FILE_SEPARATOR + "monitorj.properties";
     }
 
     public synchronized static boolean initProperties(String configFile) {
@@ -39,7 +39,7 @@ public final class ProfilingConfig {
         String jarpath = ProfilingConfig.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         String projectPath = System.getProperty("user.dir");
         monitorConfigTmp.setJarPath(jarpath);
-        monitorConfigTmp.setProjectPath(projectPath + Consts.FILE_SEPARATOR);
+        monitorConfigTmp.setProjectPath(projectPath + SystemConst.FILE_SEPARATOR);
 
         String configFilePath = fileLocation(monitorConfigTmp, configFile);
         monitorConfigTmp.setConfigPath(configFilePath);
@@ -160,10 +160,10 @@ public final class ProfilingConfig {
 
         monitorConfig.setLogPath(properties.getOrDefault("logPath", "").toString());
         if(monitorConfig.getLogPath().length() < 3) {
-            String path = monitorConfig.getProjectPath() + "monitorJLogs" + Consts.FILE_SEPARATOR;
+            String path = monitorConfig.getProjectPath() + "monitorJLogs" + SystemConst.FILE_SEPARATOR;
             monitorConfig.setLogPath(path);
-        } else if(monitorConfig.getLogPath().length() > 3 && !monitorConfig.getLogPath().endsWith(Consts.FILE_SEPARATOR)) {
-            monitorConfig.setLogPath(monitorConfig.getLogPath() + Consts.FILE_SEPARATOR);
+        } else if(monitorConfig.getLogPath().length() > 3 && !monitorConfig.getLogPath().endsWith(SystemConst.FILE_SEPARATOR)) {
+            monitorConfig.setLogPath(monitorConfig.getLogPath() + SystemConst.FILE_SEPARATOR);
         }
 
         monitorConfig.setProcessId(getProcessID() + "");

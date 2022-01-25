@@ -1,13 +1,11 @@
 package com.github.misterchangray.monitor;
 
 import com.github.misterchangray.monitor.config.ProfilingConfig;
-import com.github.misterchangray.monitor.consts.Consts;
 import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
 import com.github.misterchangray.monitor.log.Recorder;
 import com.github.misterchangray.monitor.log.Recorders;
 import com.github.misterchangray.monitor.utils.BannerUtils;
-import com.github.misterchangray.monitor.utils.DateFormatUtils;
 
 public class CpuMonitor implements Runnable {
     static ILogger logger = LoggerFactory.getLogger("monitor-cpu.log");

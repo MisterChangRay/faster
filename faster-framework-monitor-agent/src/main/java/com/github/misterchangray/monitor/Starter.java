@@ -1,9 +1,8 @@
 package com.github.misterchangray.monitor;
 
+import com.github.misterchangray.common.util.SchedulerExecutor;
 import com.github.misterchangray.monitor.config.CustomConfig;
-import com.github.misterchangray.monitor.config.MonitorConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
-import com.github.misterchangray.monitor.utils.LightWeightScheduler;
 import com.github.misterchangray.monitor.utils.Logger;
 
 import java.lang.instrument.Instrumentation;
@@ -42,28 +41,28 @@ public class Starter {
         CustomConfig customConfig = ProfilingConfig.getCustomConfig();
         if(customConfig.isRecordCpuUsage()) {
             CpuMonitor cpuMonitor = new CpuMonitor();
-            LightWeightScheduler.exec(cpuMonitor, 10);
+            SchedulerExecutor.execWithFixedDelay(cpuMonitor, 10);
 
             ThreadMonitor threadMonitor = new ThreadMonitor();
-            LightWeightScheduler.exec(threadMonitor, 60);
+            SchedulerExecutor.execWithFixedDelay(threadMonitor, 60);
         }
         if(customConfig.isRecordMemUsed()) {
             MemoryMonitor memoryMonitor = new MemoryMonitor();
-            LightWeightScheduler.exec(memoryMonitor, 12);
+            SchedulerExecutor.execWithFixedDelay(memoryMonitor, 12);
         }
 
         if(customConfig.isRecordGC()) {
             GCMonitor gcMonitor = new GCMonitor();
-            LightWeightScheduler.exec(gcMonitor, 30);
+            SchedulerExecutor.execWithFixedDelay(gcMonitor, 30);
         }
 
         if(customConfig.getServerAddr().length() > 3) {
             HeartbeatMonitor heartbeatMonitor = new HeartbeatMonitor();
-            LightWeightScheduler.exec(heartbeatMonitor, 5);
+            SchedulerExecutor.execWithFixedDelay(heartbeatMonitor, 5);
         }
 
         AutoReloadConfigMonitor autoReloadConfigMonitor = new AutoReloadConfigMonitor();
-        LightWeightScheduler.exec(autoReloadConfigMonitor, 30);
+        SchedulerExecutor.execWithFixedDelay(autoReloadConfigMonitor, 30);
 
         Logger.startLogger();
         return true;

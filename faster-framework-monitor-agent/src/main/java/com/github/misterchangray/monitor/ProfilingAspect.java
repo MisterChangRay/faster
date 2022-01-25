@@ -1,9 +1,9 @@
 package com.github.misterchangray.monitor;
 
+import com.github.misterchangray.common.consts.SystemConst;
 import com.github.misterchangray.monitor.config.CustomConfig;
 import com.github.misterchangray.monitor.config.MethodConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
-import com.github.misterchangray.monitor.consts.Consts;
 import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
 import com.github.misterchangray.monitor.log.Recorder;
@@ -55,7 +55,7 @@ public final class ProfilingAspect {
                     threadLocal.get().getSb().append(stackTraceElement.toString());
                     threadLocal.get().getSb().append(" : ");
                     threadLocal.get().getSb().append(spend);
-                    threadLocal.get().getSb().append(Consts.LINE_SEPARATOR);
+                    threadLocal.get().getSb().append(SystemConst.LINE_SEPARATOR);
                     break;
                 }
             }

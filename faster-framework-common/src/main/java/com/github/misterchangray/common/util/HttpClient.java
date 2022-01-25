@@ -1,14 +1,11 @@
-package com.github.misterchangray.monitor.utils;
+package com.github.misterchangray.common.util;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpClient {
-    public static String executePost(String targetURL, String params) {
+    public static String executePost(String targetURL, String params) throws IOException {
         HttpURLConnection connection = null;
 
         try {
@@ -42,8 +39,7 @@ public class HttpClient {
             rd.close();
             return response.toString();
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw e;
         } finally {
             if (connection != null) {
                 connection.disconnect();
