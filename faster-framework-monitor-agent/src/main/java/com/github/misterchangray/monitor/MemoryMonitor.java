@@ -11,7 +11,8 @@ import com.github.misterchangray.monitor.utils.Logger;
 
 public class MemoryMonitor implements Runnable {
     public static ILogger logger = LoggerFactory.getLogger("monitor-memory.log");
-
+    private static long lastTime = 0;
+    private static long sec60 = 60 * 1000;
 
     @Override
     public void run() {
@@ -24,7 +25,14 @@ public class MemoryMonitor implements Runnable {
         long total = noneHeapMemoryUsage + heapMemoryUsage;
 
         long stopMillis = System.currentTimeMillis();
+
+
         if(heapMemoryUsage > customConfig.getMaxHeapUseKb() || noneHeapMemoryUsage > customConfig.getMaxNonHeapUseKb() ) {
+            boolean sentAble = stopMillis - lastTime > sec60 ? true : false;
+            if(sentAble) {
+                lastTime = stopMillis;
+            }
+
             StringBuilder sb = new StringBuilder(256);
             sb.append(BannerUtils.buildBanner("MonitorJ Memory ", startMillis, stopMillis));
 
@@ -33,7 +41,7 @@ public class MemoryMonitor implements Runnable {
                     customConfig.getMaxHeapUseKb() / 1024, customConfig.getMaxNonHeapUseKb() / 1026);
 
             sb.append(format);
-            Recorders.getInstance().record(new Recorder(logger,  true, sb.toString()));
+            Recorders.getInstance().record(new Recorder(logger,  sentAble, sb.toString()));
         }
 
     }

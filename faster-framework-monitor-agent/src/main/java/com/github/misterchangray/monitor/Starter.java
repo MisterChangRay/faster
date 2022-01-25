@@ -48,7 +48,7 @@ public class Starter {
         }
         if(customConfig.isRecordMemUsed()) {
             MemoryMonitor memoryMonitor = new MemoryMonitor();
-            SchedulerExecutor.execWithFixedDelay(memoryMonitor, 12);
+            SchedulerExecutor.execWithFixedDelay(memoryMonitor, 15);
         }
 
         if(customConfig.isRecordGC()) {
