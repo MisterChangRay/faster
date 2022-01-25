@@ -48,7 +48,6 @@ public class MonitorController {
         @Override
         public void run() {
             try {
-                System.out.println("开始执行" + info.getHeartBeat().getAppName());
                 HeartBeatInfo heartBeatInfo = cache.get(info.getHeartBeat().getAppName());
                 if(null == heartBeatInfo) return;
 
