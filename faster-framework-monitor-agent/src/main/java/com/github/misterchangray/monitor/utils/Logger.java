@@ -101,8 +101,9 @@ public final class Logger {
             Recorder fetch = null;
             while (true) {
                 recorders = Recorders.getInstance().fetch();
-                sb = new StringBuilder();
+                if(null == recorders) continue;
 
+                sb = new StringBuilder();
                 for (int i = 0; i < recorders.length; i++) {
                     fetch = recorders[i];
                     if(null == fetch) continue;
