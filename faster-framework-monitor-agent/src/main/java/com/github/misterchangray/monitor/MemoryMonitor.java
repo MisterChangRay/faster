@@ -16,10 +16,15 @@ public class MemoryMonitor implements Runnable {
 
     @Override
     public void run() {
+        CustomConfig customConfig = ProfilingConfig.getCustomConfig();
+        if(!customConfig.isRecordMemUsed()) {
+            return;
+        }
+
+
         Logger.debug("--->>> Start MemoryMonitor");
         long startMillis = System.currentTimeMillis();
 
-        CustomConfig customConfig = ProfilingConfig.getCustomConfig();
         long noneHeapMemoryUsage = JSystem.getNoneHeapMemoryUsage();
         long heapMemoryUsage = JSystem.getHeapMemoryUsage();
         long total = noneHeapMemoryUsage + heapMemoryUsage;

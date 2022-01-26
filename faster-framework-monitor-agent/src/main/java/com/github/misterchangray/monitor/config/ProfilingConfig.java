@@ -102,6 +102,7 @@ public final class ProfilingConfig {
         customConfig.setRecordCpuUsage(getBool(properties, "RecordCpuUsage", "true"));
         customConfig.setRecordGC(getBool(properties, "recordGC", "true"));
         customConfig.setRecordMemUsed(getBool(properties, "recordMemUsed", "true"));
+        customConfig.setRecordThread(getBool(properties, "recordThread", "true"));
         customConfig.setNotifyExceptions(getBool(properties, "notifyExceptions", "false"));
         customConfig.setDebug(getBool(properties, "debug", "false"));
         Logger.setDebugEnable(customConfig.isDebug());

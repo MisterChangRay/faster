@@ -1,6 +1,8 @@
 package com.github.misterchangray.monitor;
 
 import com.github.misterchangray.common.util.SetUtils;
+import com.github.misterchangray.monitor.config.CustomConfig;
+import com.github.misterchangray.monitor.config.ProfilingConfig;
 import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
 import com.github.misterchangray.monitor.log.Recorder;
@@ -46,6 +48,12 @@ public class GCMonitor implements Runnable {
 
     @Override
     public void run() {
+        CustomConfig customConfig = ProfilingConfig.getCustomConfig();
+        if(!customConfig.isRecordGC()) {
+            return;
+        }
+
+
         Logger.debug("--->>> Start GCMonitor");
         long start = System.currentTimeMillis();
         JvmGcMetrics jvmGcMetrics = collectGcMetrics();

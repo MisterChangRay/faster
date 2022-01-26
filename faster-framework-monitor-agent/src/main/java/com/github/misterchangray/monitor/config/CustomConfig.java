@@ -32,6 +32,12 @@ public class CustomConfig {
     private boolean recordCpuUsage;
 
     /**
+     * 是否记录线程情况
+     *
+     */
+    private boolean recordThread;
+
+    /**
      * 打印GC情况
      * 每 5/s 打印一次GC情况
      */
@@ -100,6 +106,14 @@ public class CustomConfig {
      * 监控服务中心地址
      */
     private String serverAddr;
+
+    public boolean isRecordThread() {
+        return recordThread;
+    }
+
+    public void setRecordThread(boolean recordThread) {
+        this.recordThread = recordThread;
+    }
 
     public String getServerAddr() {
         return serverAddr;

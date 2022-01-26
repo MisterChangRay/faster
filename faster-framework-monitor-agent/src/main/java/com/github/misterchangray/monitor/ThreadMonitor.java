@@ -1,5 +1,6 @@
 package com.github.misterchangray.monitor;
 
+import com.github.misterchangray.monitor.config.CustomConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
 import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
@@ -13,6 +14,11 @@ public class ThreadMonitor implements Runnable {
 
     @Override
     public void run() {
+        CustomConfig customConfig = ProfilingConfig.getCustomConfig();
+        if(!customConfig.isRecordThread()) {
+            return;
+        }
+
         Logger.debug("--->>> Start ThreadMonitor");
 
         long startMillis = System.currentTimeMillis();

@@ -1,7 +1,6 @@
 package com.github.misterchangray.monitor;
 
 import com.github.misterchangray.common.util.SchedulerExecutor;
-import com.github.misterchangray.monitor.config.CustomConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
 import com.github.misterchangray.monitor.utils.Logger;
 
@@ -38,28 +37,20 @@ public class Starter {
      * @return
      */
     private static boolean initOtherServers() {
-        CustomConfig customConfig = ProfilingConfig.getCustomConfig();
-        if(customConfig.isRecordCpuUsage()) {
-            CpuMonitor cpuMonitor = new CpuMonitor();
-            SchedulerExecutor.execWithFixedDelay(cpuMonitor, 10);
+        CpuMonitor cpuMonitor = new CpuMonitor();
+        SchedulerExecutor.execWithFixedDelay(cpuMonitor, 10);
 
-            ThreadMonitor threadMonitor = new ThreadMonitor();
-            SchedulerExecutor.execWithFixedDelay(threadMonitor, 60);
-        }
-        if(customConfig.isRecordMemUsed()) {
-            MemoryMonitor memoryMonitor = new MemoryMonitor();
-            SchedulerExecutor.execWithFixedDelay(memoryMonitor, 15);
-        }
+        ThreadMonitor threadMonitor = new ThreadMonitor();
+        SchedulerExecutor.execWithFixedDelay(threadMonitor, 60);
 
-        if(customConfig.isRecordGC()) {
-            GCMonitor gcMonitor = new GCMonitor();
-            SchedulerExecutor.execWithFixedDelay(gcMonitor, 30);
-        }
+        MemoryMonitor memoryMonitor = new MemoryMonitor();
+        SchedulerExecutor.execWithFixedDelay(memoryMonitor, 15);
 
-        if(customConfig.getServerAddr().length() > 3) {
-            HeartbeatMonitor heartbeatMonitor = new HeartbeatMonitor();
-            SchedulerExecutor.execWithFixedDelay(heartbeatMonitor, 5);
-        }
+        GCMonitor gcMonitor = new GCMonitor();
+        SchedulerExecutor.execWithFixedDelay(gcMonitor, 30);
+
+        HeartbeatMonitor heartbeatMonitor = new HeartbeatMonitor();
+        SchedulerExecutor.execWithFixedDelay(heartbeatMonitor, 5);
 
         AutoReloadConfigMonitor autoReloadConfigMonitor = new AutoReloadConfigMonitor();
         SchedulerExecutor.execWithFixedDelay(autoReloadConfigMonitor, 30);

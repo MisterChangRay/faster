@@ -1,5 +1,6 @@
 package com.github.misterchangray.monitor;
 
+import com.github.misterchangray.monitor.config.CustomConfig;
 import com.github.misterchangray.monitor.config.ProfilingConfig;
 import com.github.misterchangray.monitor.log.ILogger;
 import com.github.misterchangray.monitor.log.LoggerFactory;
@@ -15,6 +16,11 @@ public class CpuMonitor implements Runnable {
 
     @Override
     public void run() {
+        CustomConfig customConfig = ProfilingConfig.getCustomConfig();
+        if(!customConfig.isRecordCpuUsage()) {
+            return;
+        }
+
         Logger.debug("--->>> Start CpuMonitor");
         long startMillis = System.currentTimeMillis();
 
