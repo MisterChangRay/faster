@@ -59,7 +59,7 @@ public class MonitorController {
 
                 HeartBeat heartBeat = heartBeatInfo.getHeartBeat();
                 StringBuilder sb = buildBanner(heartBeat);
-                sb.append("application has ben offline !!! path:" + EscapeUtils.escapeJson( heartBeat.getProjectPath()));
+                sb.append("application has been offline !!! path: " + EscapeUtils.escapeJson( heartBeat.getProjectPath()));
                 // send message
                 String url = heartBeat.getDingdingUrl();
                 String sec = heartBeat.getDingdingSec();
