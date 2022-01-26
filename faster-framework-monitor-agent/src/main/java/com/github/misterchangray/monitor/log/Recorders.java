@@ -15,10 +15,6 @@ public class Recorders {
     }
 
     public synchronized boolean record(Recorder recorder) {
-        if(ins.capacity > 10) {
-            this.notifyAll();
-        }
-
         if(capacity == MAX_QUEUE) {
             return false;
         }
@@ -34,11 +30,7 @@ public class Recorders {
 
     public synchronized Recorder[] fetch() {
         if(capacity == 0) {
-            try {
-                this.wait(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            return null;
         }
 
         Recorder[] recorder = new Recorder[batchSize];

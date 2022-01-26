@@ -64,7 +64,7 @@ public class Starter {
         AutoReloadConfigMonitor autoReloadConfigMonitor = new AutoReloadConfigMonitor();
         SchedulerExecutor.execWithFixedDelay(autoReloadConfigMonitor, 30);
 
-        Logger.startLogger();
+        Logger.initLogger();
         return true;
     }
 

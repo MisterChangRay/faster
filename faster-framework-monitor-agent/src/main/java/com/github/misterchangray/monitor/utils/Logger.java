@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
  * Created by ray.chang on 2022/1/15
  */
 public final class Logger {
-    private static final ExecutorService executor = Executors.newFixedThreadPool(4, ThreadUtils.newThreadFactory("MonitorJ-Logger-"));
+    private static final ExecutorService executor = Executors.newSingleThreadExecutor(ThreadUtils.newThreadFactory("MonitorJ-Logger-"));
     private static Notify notify = new DingDingNotify();
 
     private static final ThreadLocal<DateFormat> TO_MILLS_DATE_FORMAT = new ThreadLocal<DateFormat>() {
@@ -91,37 +91,39 @@ public final class Logger {
 
     /**
      * 总共4个线程,
-     * 4个线程用于推送
      */
-    public static void startLogger() {
-        for (int j = 0; j < 4; j++) {
-            executor.execute(() -> {
-                while (true) {
-                    Recorder[] recorders = Recorders.getInstance().fetch();
-                    StringBuilder sb = new StringBuilder();
+    public static void initLogger() {
+        notify.init();
 
-                    for (int i = 0; i < recorders.length; i++) {
-                        Recorder fetch = recorders[i];
-                        if(null == fetch) continue;
+        executor.execute(() -> {
+            Recorder[] recorders = null;
+            StringBuilder sb = null;
+            Recorder fetch = null;
+            while (true) {
+                recorders = Recorders.getInstance().fetch();
+                sb = new StringBuilder();
+
+                for (int i = 0; i < recorders.length; i++) {
+                    fetch = recorders[i];
+                    if(null == fetch) continue;
 
 
-                        if(ProfilingConfig.getCustomConfig().isDebug()) {
-                            Logger.info(fetch.getMsg());
-                        }
-
-                        fetch.getiLogger().logAndFlush(fetch.getMsg());
-                        if(fetch.isNotify()) {
-                            sb.append(fetch.getMsg() + SystemConst.LINE_SEPARATOR);
-                        }
+                    if(ProfilingConfig.getCustomConfig().isDebug()) {
+                        Logger.info(fetch.getMsg());
                     }
 
-                    if(sb.length() > 0) {
-                        notify.notify(sb);
+                    fetch.getiLogger().logAndFlush(fetch.getMsg());
+                    if(fetch.isNotify()) {
+                        sb.append(fetch.getMsg() + SystemConst.LINE_SEPARATOR);
                     }
                 }
-            });
 
-        }
+                if(sb.length() > 0) {
+                    notify.notify(sb);
+                }
+            }
+        });
+
 
     }
 }
