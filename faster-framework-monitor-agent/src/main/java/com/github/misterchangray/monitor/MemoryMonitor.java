@@ -12,7 +12,7 @@ import com.github.misterchangray.monitor.utils.Logger;
 public class MemoryMonitor implements Runnable {
     public static ILogger logger = LoggerFactory.getLogger("monitor-memory.log");
     private static long lastTime = 0;
-    private static long sec60 = 60 * 1000;
+    private static long sec15 = 15 * 1000;
 
     @Override
     public void run() {
@@ -28,7 +28,7 @@ public class MemoryMonitor implements Runnable {
 
 
         if(heapMemoryUsage > customConfig.getMaxHeapUseKb() || noneHeapMemoryUsage > customConfig.getMaxNonHeapUseKb() ) {
-            boolean sentAble = stopMillis - lastTime > sec60 ? true : false;
+            boolean sentAble = stopMillis - lastTime > sec15 ? true : false;
             if(sentAble) {
                 lastTime = stopMillis;
             }

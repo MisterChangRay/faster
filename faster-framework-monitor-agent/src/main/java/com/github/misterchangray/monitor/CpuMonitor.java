@@ -11,7 +11,7 @@ import com.github.misterchangray.monitor.utils.Logger;
 public class CpuMonitor implements Runnable {
     static ILogger logger = LoggerFactory.getLogger("monitor-cpu.log");
     private static long lastTime = 0;
-    private static long sec60 = 60 * 1000;
+    private static long sec15 = 15 * 1000;
 
     @Override
     public void run() {
@@ -35,7 +35,7 @@ public class CpuMonitor implements Runnable {
 
             Recorder recorder = new Recorder(logger, false, sb.toString());
 
-            boolean sentAble = stopMillis - lastTime > sec60 ? true : false;
+            boolean sentAble = stopMillis - lastTime > sec15 ? true : false;
             if(sentAble && cpuUsed > ProfilingConfig.getCustomConfig().getMaxCpuUsedOfProcess()) {
                 lastTime = stopMillis;
                 recorder.setNotify(true);
