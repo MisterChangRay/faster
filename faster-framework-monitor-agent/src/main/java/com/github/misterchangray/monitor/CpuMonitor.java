@@ -31,9 +31,7 @@ public class CpuMonitor implements Runnable {
             StringBuilder sb = new StringBuilder(256);
             sb.append(BannerUtils.buildBanner("MonitorJ CPU ", startMillis, stopMillis));
 
-            String format = String.format("application: %s, Pid: %s, cpuUsage: %s %% , threshold: %s %%!",
-                    ProfilingConfig.getCustomConfig().getAppName(),
-                    ProfilingConfig.getMonitorConfig().getProcessId(),
+            String format = String.format("cpuUsage: %s %% , threshold: %s %%!",
                     (int) cpuUsed,
                     ProfilingConfig.getCustomConfig().getMaxCpuUsedOfProcess());
 
