@@ -14,17 +14,15 @@ import com.github.misterchangray.monitor.utils.Logger;
 import java.util.Objects;
 
 public class DingDingNotify implements Notify {
-    private StringBuilder cache = new StringBuilder();
+    private StringBuffer cache = new StringBuffer();
     private static int kb10 = 10 * 1024;
 
     @Override
     public void init() {
         SchedulerExecutor.execWithFixedDelay(() -> {
-            synchronized (DingDingNotify.class) {
-                if(cache.length() > 0) {
-                    doNotify();
-                    cache = cache.delete(0, cache.length());
-                }
+            if(cache.length() > 0) {
+                doNotify();
+                cache = cache.delete(0, cache.length());
             }
         }, 3);
     }
@@ -54,13 +52,11 @@ public class DingDingNotify implements Notify {
         CustomConfig customConfig =  ProfilingConfig.getCustomConfig();
         if(Objects.isNull(customConfig.getNotifyUrlOfDingDing())) return;
 
-        synchronized (DingDingNotify.class) {
-            if(cache.length() > kb10) {
-              return;
-            }
-
-            cache.append(recorder);
+        if(cache.length() > kb10) {
+          return;
         }
+
+        cache.append(recorder);
     }
 
 
