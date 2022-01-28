@@ -6,7 +6,7 @@ public class StackTraceElementExt {
 
     public StackTraceElementExt() {
        this.sb = new StringBuilder();
-       this.exitMethodName = "";
+       this.exitMethodName = null;
     }
 
     public String getExitMethodName() {

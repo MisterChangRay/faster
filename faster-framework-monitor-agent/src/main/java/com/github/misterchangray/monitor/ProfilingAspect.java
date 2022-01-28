@@ -49,22 +49,24 @@ public final class ProfilingAspect {
                 threadLocal.set(new StackTraceElementExt());
             }
 
-
-            for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
-                if(stackTraceElement.getMethodName().equals(methodTag.getMethodName())) {
-                    threadLocal.get().getSb().append(stackTraceElement.toString());
-                    threadLocal.get().getSb().append(" : ");
-                    threadLocal.get().getSb().append(spend);
-                    threadLocal.get().getSb().append(SystemConst.LINE_SEPARATOR);
-                    break;
-                }
+            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+            // 1. getstacktrace
+            // 2. profilling
+            // 3. targetmthods
+            StackTraceElement stackTraceElement = stackTrace[2];
+            if(stackTraceElement.getMethodName().equals(methodTag.getMethodName())) {
+                threadLocal.get().getSb().append(stackTraceElement.toString());
+                threadLocal.get().getSb().append(" : ");
+                threadLocal.get().getSb().append(spend);
+                threadLocal.get().getSb().append(SystemConst.LINE_SEPARATOR);
             }
 
             // find the root to print logs
-            if(threadLocal.get().getExitMethodName().length() < 1) {
-                StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+            if(threadLocal.get().getExitMethodName() == null) {
+
                 MethodTag exitMethod = methodTag;
-                for (StackTraceElement stackTraceElement : stackTrace) {
+                for (int i1 = 2; i1 < stackTrace.length; i1++) {
+                    stackTraceElement = stackTrace[i1];
                     String s = stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName();
                     MethodTag methodByName = methodTagMaintainer.getMethodByName(s);
                     if(null == methodByName) {
@@ -80,8 +82,8 @@ public final class ProfilingAspect {
                 StringBuilder sb = new StringBuilder();
                 sb.append(BannerUtils.buildBanner("MonitorJ Method ", now - spend, now, true));
                 sb.append(threadLocal.get().getSb().toString());
-                threadLocal.set(null);
-                threadLocal.remove();;
+                threadLocal.get().getSb().setLength(0);
+                threadLocal.get().setExitMethodName(null);
                 Recorders.getInstance().record(new Recorder(logger, true, sb.toString()));
             }
         } catch (Exception e) {
