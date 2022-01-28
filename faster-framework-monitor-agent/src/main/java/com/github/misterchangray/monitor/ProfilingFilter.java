@@ -52,6 +52,7 @@ public final class ProfilingFilter {
 
         // 不注入本身
         excludePackagePrefix.add("com/github/misterchangray/monitor/");
+        excludePackagePrefix.add("com/github/misterchangray/common/util/HttpClient");
 
         // 默认注入的 package
         includePackagePrefix.add("net/paoding/rose/jade/context/JadeInvocationHandler"); //Jade
