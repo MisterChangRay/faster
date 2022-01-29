@@ -99,35 +99,32 @@ public final class Logger {
             Recorder[] recorders = null;
             StringBuilder sb = null;
             Recorder fetch = null;
-            try {
-                while (true) {
-                    recorders = Recorders.getInstance().fetch();
-                    if(null == recorders) {
-                        Thread.sleep(10);
-                        continue;
+            while (true) {
+                recorders = Recorders.getInstance().fetch();
+                if(null == recorders) {
+                    continue;
+                }
+
+                sb = new StringBuilder();
+                for (int i = 0; i < recorders.length; i++) {
+                    fetch = recorders[i];
+                    if(null == fetch) continue;
+
+
+                    if(ProfilingConfig.getCustomConfig().isDebug()) {
+                        Logger.info(fetch.getMsg());
                     }
 
-                    sb = new StringBuilder();
-                    for (int i = 0; i < recorders.length; i++) {
-                        fetch = recorders[i];
-                        if(null == fetch) continue;
-
-
-                        if(ProfilingConfig.getCustomConfig().isDebug()) {
-                            Logger.info(fetch.getMsg());
-                        }
-
-                        fetch.getiLogger().logAndFlush(fetch.getMsg());
-                        if(fetch.isNotify()) {
-                            sb.append(fetch.getMsg() + SystemConst.LINE_SEPARATOR);
-                        }
-                    }
-
-                    if(sb.length() > 0) {
-                        notify.notify(sb);
+                    fetch.getiLogger().logAndFlush(fetch.getMsg());
+                    if(fetch.isNotify()) {
+                        sb.append(fetch.getMsg() + SystemConst.LINE_SEPARATOR);
                     }
                 }
-            } catch (Exception e) { }
+
+                if(sb.length() > 0) {
+                    notify.notify(sb);
+                }
+            }
         });
 
 

@@ -13,25 +13,44 @@ public class QueueTest {
 
     @Test
     public void testQueue() {
-        for (int i = 0; i < 5; i++) {
+
+        for (int k = 0; k < 3; k++) {
             new Thread(() -> {
-                long j =0;
-                for (int k = 0; k < 10000; k++) {
-                    j ++;
-                    Recorders.getInstance().record(new Recorder(null, false,Thread.currentThread().getId()+ "- " + j));
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                long i =0;
+                while (true) {
+                    Recorder[] recorders = Recorders.getInstance().fetch();
+                    if(null == recorders) continue;
+                    for (Recorder recorder : recorders) {
+                        if(null == recorder) {
+                            continue;
+                        }
+
+                        System.out.println(recorder.getMsg());
                     }
 
                 }
+            }).start();
+        }
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < 5; i++) {
+            new Thread(() -> {
+                long j =0;
+//                for (int k = 0; k < 10000; k++) {
+//                    j ++;
+//                    Recorders.getInstance().record(new Recorder(null, false,Thread.currentThread().getId()+ "- " + j));
+//
+//                }
 
                 for (int k = 0; k < 10; k++) {
                     j ++;
                     Recorders.getInstance().record(new Recorder(null, false,Thread.currentThread().getId()+ "- " + j));
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(2000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -52,23 +71,6 @@ public class QueueTest {
         }
 
 
-        for (int k = 0; k < 3; k++) {
-            new Thread(() -> {
-                long i =0;
-                while (true) {
-                    Recorder[] recorders = Recorders.getInstance().fetch();
-                    if(null == recorders) continue;
-                    for (Recorder recorder : recorders) {
-                        if(null == recorder) {
-                            continue;
-                        }
-
-                        System.out.println(recorder.getMsg());
-                    }
-
-                }
-            }).start();
-        }
 
 
 

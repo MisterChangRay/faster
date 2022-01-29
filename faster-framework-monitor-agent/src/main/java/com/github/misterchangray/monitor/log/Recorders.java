@@ -25,12 +25,15 @@ public class Recorders {
 
         recorders[write_index ++] = recorder;
         capacity ++;
+        this.notifyAll();
         return true;
     }
 
     public synchronized Recorder[] fetch() {
         if(capacity == 0) {
-            return null;
+            try {
+                this.wait();
+            } catch (InterruptedException e) { }
         }
 
         Recorder[] recorder = new Recorder[batchSize];
