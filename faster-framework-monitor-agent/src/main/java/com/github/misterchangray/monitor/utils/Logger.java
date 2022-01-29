@@ -99,33 +99,35 @@ public final class Logger {
             Recorder[] recorders = null;
             StringBuilder sb = null;
             Recorder fetch = null;
-            while (true) {
-                recorders = Recorders.getInstance().fetch();
-                if(null == recorders) {
-                    Thread.yield();
-                    continue;
-                }
-
-                sb = new StringBuilder();
-                for (int i = 0; i < recorders.length; i++) {
-                    fetch = recorders[i];
-                    if(null == fetch) continue;
-
-
-                    if(ProfilingConfig.getCustomConfig().isDebug()) {
-                        Logger.info(fetch.getMsg());
+            try {
+                while (true) {
+                    recorders = Recorders.getInstance().fetch();
+                    if(null == recorders) {
+                        Thread.sleep(10);
+                        continue;
                     }
 
-                    fetch.getiLogger().logAndFlush(fetch.getMsg());
-                    if(fetch.isNotify()) {
-                        sb.append(fetch.getMsg() + SystemConst.LINE_SEPARATOR);
+                    sb = new StringBuilder();
+                    for (int i = 0; i < recorders.length; i++) {
+                        fetch = recorders[i];
+                        if(null == fetch) continue;
+
+
+                        if(ProfilingConfig.getCustomConfig().isDebug()) {
+                            Logger.info(fetch.getMsg());
+                        }
+
+                        fetch.getiLogger().logAndFlush(fetch.getMsg());
+                        if(fetch.isNotify()) {
+                            sb.append(fetch.getMsg() + SystemConst.LINE_SEPARATOR);
+                        }
+                    }
+
+                    if(sb.length() > 0) {
+                        notify.notify(sb);
                     }
                 }
-
-                if(sb.length() > 0) {
-                    notify.notify(sb);
-                }
-            }
+            } catch (Exception e) { }
         });
 
 
