@@ -101,7 +101,10 @@ public final class Logger {
             Recorder fetch = null;
             while (true) {
                 recorders = Recorders.getInstance().fetch();
-                if(null == recorders) continue;
+                if(null == recorders) {
+                    Thread.yield();
+                    continue;
+                }
 
                 sb = new StringBuilder();
                 for (int i = 0; i < recorders.length; i++) {
